@@ -1,0 +1,99 @@
+.cta-strip {
+  width: 100%;
+  padding: 22px 0 20px 0;
+  background: linear-gradient(90deg, #38bdf8, #4fd1c5);
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+  transition: background 0.5s ease;
+}
+
+/* Pulse animation on the background */
+.cta-strip.highlight {
+  animation: pulse-bg 3s infinite;
+}
+
+@keyframes pulse-bg {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.15);
+  }
+}
+
+.cta-text {
+  position: relative;
+  z-index: 2;
+  animation: textGlow 3s infinite alternate;
+}
+
+@keyframes textGlow {
+  from {
+    text-shadow: none;
+  }
+  to {
+    text-shadow: 0 0 8px #ffffffbb, 0 0 20px #60a5fabb;
+  }
+}
+
+.cta-btn {
+  font-size: 1.03rem;
+  color: #101828;
+  background: #fff;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 36px;
+  font-weight: 700;
+  box-shadow: 0 6px 24px rgba(25, 171, 190, 0.15);
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 2;
+}
+
+.cta-btn:hover,
+.cta-btn:focus {
+  background: #dbeafe;
+  box-shadow: 0 8px 28px rgba(25, 171, 190, 0.35);
+  transform: scale(1.05);
+  outline: none;
+}
+
+.phone-icon {
+  font-size: 1.3rem;
+  color: #0ea5e9;
+  transition: color 0.3s ease;
+}
+
+.cta-btn:hover .phone-icon,
+.cta-btn:focus .phone-icon {
+  color: #0284c7;
+}
+
+/* Responsive tweaks */
+@media (max-width: 480px) {
+  .cta-strip {
+    flex-direction: column;
+    gap: 15px;
+    padding: 18px 1rem;
+  }
+  .cta-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

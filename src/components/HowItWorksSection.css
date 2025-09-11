@@ -1,0 +1,389 @@
+.how-section {
+  padding: 80px 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.section-header {
+  margin-bottom: 60px;
+}
+
+.how-title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.how-subtitle {
+  font-size: 1.2rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Flow Diagram Animations */
+.flow-container {
+  margin-bottom: 60px;
+}
+
+.flow-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 30px;
+  position: relative;
+  min-height: 120px;
+}
+
+/* Sun Animation */
+.sun-container {
+  position: relative;
+}
+
+.sun {
+  font-size: 3rem;
+  position: relative;
+  animation: rotate 8s linear infinite;
+}
+
+.sun-rays {
+  position: absolute;
+  inset: -20px;
+  border: 3px solid #fbbf24;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.energy-particles {
+  position: absolute;
+  top: 50%;
+  right: -30px;
+}
+
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #fbbf24;
+  border-radius: 50%;
+  animation: flow-right 2s linear infinite;
+}
+
+.particle:nth-child(1) { animation-delay: 0s; top: -10px; }
+.particle:nth-child(2) { animation-delay: 0.7s; top: 0; }
+.particle:nth-child(3) { animation-delay: 1.4s; top: 10px; }
+
+/* Solar Panel */
+.solar-panel {
+  position: relative;
+}
+
+.panel-surface {
+  width: 80px;
+  height: 60px;
+  background: #1e293b;
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  padding: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.panel-cell {
+  background: #3b82f6;
+  border-radius: 2px;
+  animation: panel-glow 2s ease-in-out infinite;
+}
+
+.energy-flow.flow-1 {
+  position: absolute;
+  top: 50%;
+  right: -30px;
+  width: 30px;
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6, transparent);
+  animation: flow-right 1.5s linear infinite;
+}
+
+/* Inverter */
+.inverter-box {
+  position: relative;
+}
+
+.inverter {
+  width: 70px;
+  height: 50px;
+  background: #374151;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.inverter-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.led-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  animation: blink 1s ease-in-out infinite;
+}
+
+.waveform {
+  margin-top: 4px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.wave {
+  width: 30px;
+  height: 2px;
+  background: #10b981;
+  position: relative;
+  animation: waveform 1s ease-in-out infinite;
+}
+
+.energy-flow.flow-2 {
+  position: absolute;
+  top: 50%;
+  right: -30px;
+  width: 30px;
+  height: 3px;
+  background: linear-gradient(90deg, #10b981, transparent);
+  animation: flow-right 1.5s linear infinite;
+}
+
+/* Smart Home */
+.smart-home {
+  position: relative;
+}
+
+.house {
+  font-size: 3rem;
+  position: relative;
+}
+
+.wifi-signal {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+}
+
+.wifi-signal span {
+  display: block;
+  width: 4px;
+  height: 4px;
+  background: #10b981;
+  border-radius: 50%;
+  margin: 2px 0;
+  animation: wifi-pulse 1.5s ease-in-out infinite;
+}
+
+.wifi-signal span:nth-child(2) { animation-delay: 0.2s; }
+.wifi-signal span:nth-child(3) { animation-delay: 0.4s; }
+
+/* Progress Bar */
+.flow-progress {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Step Cards */
+.steps-container {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 60px;
+}
+
+.step-card {
+  min-width: 280px;
+  border-radius: 20px !important;
+  border: none !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.step-card.active {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 20px 64px rgba(0, 0, 0, 0.15) !important;
+}
+
+.step-content {
+  padding: 30px 20px;
+  text-align: center;
+  position: relative;
+}
+
+.step-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  display: block;
+  animation: float 3s ease-in-out infinite;
+}
+
+.step-number {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, #3b82f6, #1e40af);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.step-title {
+  font-size: 1.4rem !important;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 12px !important;
+}
+
+.step-desc {
+  color: #64748b !important;
+  line-height: 1.6;
+  margin: 0 !important;
+}
+
+.step-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.indicator-fill {
+  height: 100%;
+  width: 0;
+  transition: width 3s ease-in-out;
+}
+
+.step-card.active .indicator-fill {
+  width: 100%;
+}
+
+/* Energy Stats */
+.energy-stats {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1e293b;
+  animation: count-up 2s ease-out;
+}
+
+.stat-label {
+  font-size: 1rem;
+  color: #64748b;
+  margin-top: 8px;
+}
+
+/* Keyframe Animations */
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.1); opacity: 0.3; }
+}
+
+@keyframes flow-right {
+  0% { transform: translateX(-100px); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(100px); opacity: 0; }
+}
+
+@keyframes panel-glow {
+  0%, 100% { box-shadow: inset 0 0 5px rgba(59, 130, 246, 0.5); }
+  50% { box-shadow: inset 0 0 15px rgba(59, 130, 246, 0.8); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes waveform {
+  0% { transform: scaleY(1); }
+  50% { transform: scaleY(2); }
+  100% { transform: scaleY(1); }
+}
+
+@keyframes wifi-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes count-up {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .flow-diagram {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .energy-flow {
+    display: none;
+  }
+  
+  .how-title {
+    font-size: 2.2rem;
+  }
+  
+  .energy-stats {
+    gap: 30px;
+  }
+  
+  .steps-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}

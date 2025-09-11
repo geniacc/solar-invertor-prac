@@ -1,0 +1,97 @@
+.hero-banner {
+  position: relative;
+  min-height: 82vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.blur-glass-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 60% 10%,rgba(255,225,96,0.13) 10%,transparent 55%),
+    linear-gradient(rgba(20,30,48,0.78),rgba(36,37,36,0.89));
+  backdrop-filter: blur(6px) brightness(1);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 710px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 3.3rem 1.2rem 2rem 1.2rem;
+  background: none;
+}
+
+.gradient-title {
+  background-image: linear-gradient(90deg,#ffe066 20%,#4fd1c5 63%,#60a5fa 90%);
+  -webkit-background-clip: text;
+  color: transparent !important;
+  font-size: 2.55rem !important;
+  font-weight: 900 !important;
+  text-shadow: 0 6px 40px #0006;
+  letter-spacing: -0.5px;
+  margin-bottom: 7px;
+}
+
+.hero-subtext {
+  color: #f3ffe1 !important;
+  font-size: 1.28rem !important;
+  margin-bottom: 0 !important;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  text-shadow: 0 2px 24px #000c;
+}
+
+.hero-learnmore {
+  color: #3fe7fa;
+  background: rgba(34,197,94,0.095);
+  margin-top: 20px;
+  border-radius: 12px;
+  padding: 12px 22px 11px 22px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  box-shadow: 0 2px 12px #21d4fd12;
+}
+
+.glow-icon {
+  margin-bottom: 22px;
+  filter: drop-shadow(0 0 16px #ffe066cc) drop-shadow(0 0 28px #ffe06633);
+  animation: iconGlow 2.6s infinite alternate;
+}
+@keyframes iconGlow {
+  from { filter: drop-shadow(0 0 16px #ffe066cc) drop-shadow(0 0 30px #fd0);}
+  to   { filter: drop-shadow(0 0 28px #4fd1c5cc) drop-shadow(0 0 30px #60a5fa);}
+}
+
+@media (max-width: 900px) {
+  .gradient-title { font-size: 1.7rem !important;}
+  .hero-content { padding: 2.3rem 0.7rem 1.5rem 0.7rem; }
+}
+@media (max-width: 640px) {
+  .hero-content { padding: 1.5rem 0.1rem;}
+  .gradient-title { font-size: 1.1rem !important;}
+}
+.sparkle-particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.40;
+  mix-blend-mode: lighten;
+  background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+  animation: sparkleMove 16s linear infinite;
+}
+@keyframes sparkleMove {
+  0% { background-position: 0 0; opacity: .40; }
+  50% { background-position: 120px 80px; opacity: .52; }
+  100% { background-position: 0 0; opacity: .40; }
+}
