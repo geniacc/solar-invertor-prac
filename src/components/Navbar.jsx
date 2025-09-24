@@ -47,9 +47,9 @@ export function Navbar() {
       const pastHero = currentScrollY > heroHeight * 0.8
       setIsAfterHero(pastHero)
       
-      // Always show navbar after hero section, regardless of scroll direction
+      // Only show navbar after hero section
       if (pastHero) {
-        setIsVisible(true)
+        setIsVisible(currentScrollY < lastScrollY || currentScrollY < 100)
         setIsScrolled(currentScrollY > 50)
       } else {
         setIsVisible(false)
