@@ -1,0 +1,107 @@
+/* --- Root variables for easy theme management --- */
+:root {
+  --perspective: 1400px;
+  --grid-gap: 32px;
+  --transform-rotate-x: 45deg;
+  --transform-rotate-z: -37deg;
+  --card-border-radius: 18px;
+  --image-border-radius: 13px;
+}
+
+/* --- Main containers --- */
+.grid-perspective-wrapper {
+  perspective: var(--perspective);
+  width: 100%;
+  /* UPDATED: Increased max-width to give the grid more space */
+  max-width: 1100px;
+  margin: 32px auto 38px auto;
+  position: relative;
+  min-height: 400px; /* Provides space for the animation */
+  padding: 2rem 0;
+  z-index: 2;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--grid-gap);
+  transform: rotateX(var(--transform-rotate-x)) rotateZ(var(--transform-rotate-z));
+  transform-style: preserve-3d;
+}
+
+.grid-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--grid-gap);
+  will-change: transform;
+}
+
+/* --- Interactive Card --- */
+.grid-card {
+  background: rgba(30, 41, 59, 0.95);
+  border-radius: var(--card-border-radius);
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  transition: box-shadow 0.3s ease;
+
+  /* --- CSS rules to prevent blurring on transform --- */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  outline: 1px solid transparent; /* Another trick to force sharper rendering */
+}
+.grid-card:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 3px;
+}
+
+.grid-card-image {
+  display: block;
+  /* UPDATED: Increased image height */
+  height: 160px;
+  width: calc(100% - 20px);
+  margin: 10px;
+  object-fit: cover;
+  border-radius: var(--image-border-radius);
+  background-color: #334155;
+}
+
+.grid-card-label {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  color: #c7d2fe;
+  font-weight: 500;
+  font-size: 15px;
+  text-align: center;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+}
+
+/* --- Media Queries for Responsiveness --- */
+@media (max-width: 1024px) {
+  .grid-container {
+    grid-template-columns: repeat(3, 1fr);
+    --transform-rotate-x: 35deg;
+    --transform-rotate-z: -25deg;
+    --grid-gap: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr);
+    --transform-rotate-x: 25deg;
+    --transform-rotate-z: -15deg;
+    --grid-gap: 20px;
+  }
+  .grid-card-image {
+    /* UPDATED: Adjusted height for smaller screens to be proportionally larger */
+    height: 140px;
+  }
+  .grid-card-label {
+    font-size: 13px;
+  }
+}
+

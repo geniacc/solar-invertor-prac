@@ -1,0 +1,22 @@
+/* === DOT GRID BACKGROUND === */
+
+.dot-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.dot-pattern {
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(circle, rgba(6, 182, 212, 0.3) 1px, transparent 1px);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
+  animation: drift 20s linear infinite;
+}
+
+@keyframes drift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(30px, 30px); }
+}

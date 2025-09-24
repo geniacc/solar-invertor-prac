@@ -1,65 +1,76 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Avatar, Rate, Button } from 'antd';
-import { StarFilled, UserOutlined, SafetyCertificateOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { LeftOutlined, RightOutlined, ThunderboltOutlined, SettingOutlined, WifiOutlined } from '@ant-design/icons';
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import CountUp from "react-countup";
+import image1 from "../assets/image1.JPG";
+import image2 from "../assets/image2.JPG";
+import image3 from "../assets/image3.JPG";
+import image4 from "../assets/image4.JPG";
+import image5 from "../assets/image5.JPG";
+import image6 from "../assets/image6.JPG";
+import image7 from "../assets/image7.JPG";
+import image8 from "../assets/image8.JPG";
 import './StatsSection.css';
 
 const stats = [
-  { icon: <UserOutlined />, value: 1500, label: "Happy Customers", color: "#3b82f6" },
-  { icon: <StarFilled />, value: 4.8, label: "Avg. Rating", color: "#fbbf24" },
-  { icon: <SafetyCertificateOutlined />, value: 100, label: "Uptime Guarantee", color: "#10b981" }
+  { img: image1, value: 2500, label: "Inverters Installed", color: "#3b82f6", textColor: "#ffffff", icon: <ThunderboltOutlined /> },
+  { img: image2, value: 4.9, label: "Customer Rating", color: "#fbbf24", textColor: "#000000", icon: <SettingOutlined /> },
+  { img: image3, value: 99.8, label: "Inverter Uptime", color: "#10b981", textColor: "#ffffff", icon: <WifiOutlined /> }
 ];
 
-// Updated testimonials array as requested
+// Customer testimonials focused on inverter experience
 const testimonials = [
   {
     quote:
-      "The attention to detail and innovative features have completely transformed our workflow. This is exactly what we've been looking for.",
-    name: "Sarah Chen",
-    designation: "Product Manager at TechFlow",
-    location: "",
+      "The ZUICE smart inverter has revolutionized our energy management. The efficiency and monitoring capabilities are outstanding.",
+    name: "Rajesh Kumar",
+    designation: "Homeowner, Mumbai",
+    location: "Mumbai, Maharashtra",
     rating: 5,
-    savings: "",
-    src: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    savings: "₹2,500/month saved",
+    src: image4,
   },
   {
     quote:
-      "Implementation was seamless and the results exceeded our expectations. The platform's flexibility is remarkable.",
-    name: "Michael Rodriguez",
-    designation: "CTO at InnovateSphere",
-    location: "",
+      "Installation was professional and the inverter performance exceeded expectations. The mobile app monitoring is fantastic.",
+    name: "Priya Sharma",
+    designation: "Business Owner, Delhi",
+    location: "Delhi, NCR",
     rating: 5,
-    savings: "",
-    src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    savings: "₹4,200/month saved",
+    src: image5,
   },
   {
     quote:
-      "This solution has significantly improved our team's productivity. The intuitive interface makes complex tasks simple.",
-    name: "Emily Watson",
-    designation: "Operations Director at CloudScale",
-    location: "",
+      "The smart inverter technology has made our solar system incredibly efficient. The predictive maintenance alerts are a game-changer.",
+    name: "Amit Patel",
+    designation: "Engineer, Bangalore",
+    location: "Bangalore, Karnataka",
     rating: 5,
-    savings: "",
-    src: "https://images.unsplash.com/photo-1623582854588-d60de57fa33f?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    savings: "₹3,800/month saved",
+    src: image6,
   },
   {
     quote:
-      "Outstanding support and robust features. It's rare to find a product that delivers on all its promises.",
-    name: "James Kim",
-    designation: "Engineering Lead at DataPro",
-    location: "",
+      "Outstanding inverter performance and excellent customer support. The IoT monitoring features are exactly what we needed.",
+    name: "Sunita Reddy",
+    designation: "Factory Owner, Chennai",
+    location: "Chennai, Tamil Nadu",
     rating: 5,
-    savings: "",
-    src: "https://images.unsplash.com/photo-1636041293178-808a6762ab39?q=80&w=3464&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    savings: "₹6,500/month saved",
+    src: image7,
   },
   {
     quote:
-      "The scalability and performance have been game-changing for our organization. Highly recommend to any growing business.",
-    name: "Lisa Thompson",
-    designation: "VP of Technology at FutureNet",
-    location: "",
+      "The ZUICE inverter has been running flawlessly for 2 years. The efficiency and reliability are unmatched in the market.",
+    name: "Vikram Singh",
+    designation: "Residential Customer, Pune",
+    location: "Pune, Maharashtra",
     rating: 5,
-    savings: "",
-    src: "https://images.unsplash.com/photo-1624561172888-ac93c696e10c?q=80&w=2592&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    savings: "₹2,800/month saved",
+    src: image8,
   },
 ];
 
@@ -67,28 +78,21 @@ const StatsSection = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [animatedValues, setAnimatedValues] = useState([0, 0, 0]);
   const [isVisible, setIsVisible] = useState(false);
+  const controls = useAnimation();
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+    triggerOnce: false
+  });
 
   // Animate stats values on component mount
   useEffect(() => {
-    setIsVisible(true);
-    const targets = stats.map(s => s.value);
-    const stepCounts = 100;
-    let step = 0;
-    const timer = setInterval(() => {
-      step++;
-      if (step > stepCounts) {
-        clearInterval(timer);
-        setAnimatedValues(targets);
-      } else {
-        const newVals = targets.map((target, i) => {
-          let val = (target / stepCounts) * step;
-          return i === 1 ? val.toFixed(1) : Math.floor(val);
-        });
-        setAnimatedValues(newVals);
-      }
-    }, 20);
-    return () => clearInterval(timer);
-  }, []);
+    if (inView) {
+      setIsVisible(true);
+      controls.start("visible");
+    } else {
+      controls.start("hidden");
+    }
+  }, [inView, controls]);
 
   // Auto-rotate testimonials every 5 seconds
   useEffect(() => {
@@ -105,91 +109,149 @@ const StatsSection = () => {
     setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 50, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
+
   return (
-    <section className="stats-testimonials-section">
+    <motion.section 
+      ref={ref}
+      variants={containerVariants}
+      initial="hidden"
+      animate={controls}
+      className="stats-testimonials-section"
+    >
       {/* Animated Stats Section */}
-      <div className="stats-container">
-        <h2 className="stats-title">Trusted by Thousands</h2>
+      <motion.div variants={itemVariants} className="stats-container">
+        <h2 className="stats-title text-gray-900 dark:text-gray-100">Trusted by Thousands</h2>
         <div className="stats-grid">
           {stats.map((stat, idx) => (
-            <div className={`stat-card ${isVisible ? 'animate' : ''}`} key={idx}>
-              <div className="stat-icon" style={{ color: stat.color }}>
-                {stat.icon}
+            <motion.div 
+              className="stat-card" 
+              key={idx}
+              variants={itemVariants}
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <div className="stat-img-container" style={{ color: stat.color }}>
+                <div className="stat-icon">{stat.icon}</div>
               </div>
               <div className="stat-value" style={{ color: stat.color }}>
-                {idx === 0 && animatedValues[0].toLocaleString() + '+'}
-                {idx === 1 && animatedValues[1] + '/5'}
-                {idx === 2 && animatedValues[2] + '%'}
+                <CountUp 
+                  end={stat.value} 
+                  duration={2} 
+                  suffix={idx === 0 ? '+' : idx === 1 ? '/5' : '%'}
+                  decimals={idx === 1 ? 1 : 0}
+                />
               </div>
-              <div className="stat-label">{stat.label}</div>
+              <div className="stat-label text-gray-700 dark:text-gray-200">{stat.label}</div>
               <div className="stat-pulse" style={{ backgroundColor: stat.color }}></div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Testimonials Section */}
-      <div className="testimonials-container">
+      <motion.div variants={itemVariants} className="testimonials-container">
         <h2 className="testimonials-title">What Our Customers Say</h2>
         <div className="testimonial-carousel">
-          <Button
-            className="carousel-btn prev"
-            icon={<LeftOutlined />}
-            onClick={prevTestimonial}
-            shape="circle"
-            size="large"
-            aria-label="Previous testimonial"
-          />
-          <Card className="testimonial-card" aria-live="polite" aria-atomic="true">
-            <div className="testimonial-content">
-              <div className="quote-marks">"</div>
-              <p className="testimonial-quote">{testimonials[currentTestimonial].quote}</p>
-              <div className="customer-info">
-                <Avatar
-                  size={60}
-                  src={testimonials[currentTestimonial].src}
-                  alt={testimonials[currentTestimonial].name}
-                  className="customer-avatar"
-                />
-                <div className="customer-details">
-                  <h4 className="customer-name">{testimonials[currentTestimonial].name}</h4>
-                  <p className="customer-designation">{testimonials[currentTestimonial].designation}</p>
-                  {testimonials[currentTestimonial].location && (
-                    <p className="customer-location">📍 {testimonials[currentTestimonial].location}</p>
-                  )}
-                  <Rate
-                    disabled
-                    value={testimonials[currentTestimonial].rating || 5}
-                    className="customer-rating"
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Button
+              className="carousel-btn prev"
+              icon={<LeftOutlined />}
+              onClick={prevTestimonial}
+              shape="circle"
+              size="large"
+              aria-label="Previous testimonial"
+            />
+          </motion.div>
+          <motion.div
+            key={currentTestimonial}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -50 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card className="testimonial-card" aria-live="polite" aria-atomic="true">
+              <div className="testimonial-content">
+                <div className="quote-marks">"</div>
+                <p className="testimonial-quote">{testimonials[currentTestimonial].quote}</p>
+                <div className="customer-info">
+                  <Avatar
+                    size={60}
+                    src={testimonials[currentTestimonial].src}
+                    alt={testimonials[currentTestimonial].name}
+                    className="customer-avatar"
                   />
-                  {testimonials[currentTestimonial].savings && (
-                    <div className="savings-badge">💰 {testimonials[currentTestimonial].savings}</div>
-                  )}
+                  <div className="customer-details">
+                    <h4 className="customer-name">{testimonials[currentTestimonial].name}</h4>
+                    <p className="customer-designation">{testimonials[currentTestimonial].designation}</p>
+                    {testimonials[currentTestimonial].location && (
+                      <p className="customer-location">📍 {testimonials[currentTestimonial].location}</p>
+                    )}
+                    <Rate
+                      disabled
+                      value={testimonials[currentTestimonial].rating || 5}
+                      className="customer-rating"
+                    />
+                    {testimonials[currentTestimonial].savings && (
+                      <div className="savings-badge">💰 {testimonials[currentTestimonial].savings}</div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </Card>
-          <Button
-            className="carousel-btn next"
-            icon={<RightOutlined />}
-            onClick={nextTestimonial}
-            shape="circle"
-            size="large"
-            aria-label="Next testimonial"
-          />
+            </Card>
+          </motion.div>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Button
+              className="carousel-btn next"
+              icon={<RightOutlined />}
+              onClick={nextTestimonial}
+              shape="circle"
+              size="large"
+              aria-label="Next testimonial"
+            />
+          </motion.div>
         </div>
         <div className="testimonial-indicators">
           {testimonials.map((_, index) => (
-            <button
+            <motion.button
               key={index}
               className={`indicator ${index === currentTestimonial ? 'active' : ''}`}
               onClick={() => setCurrentTestimonial(index)}
               aria-label={`Show testimonial #${index + 1}`}
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.8 }}
             />
           ))}
         </div>
-      </div>
-    </section>
+      </motion.div>
+    </motion.section>
   );
 };
 

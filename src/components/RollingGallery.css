@@ -1,0 +1,86 @@
+.gallery-container {
+  position: relative;
+  height: 350px;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 60px;
+}
+
+.gallery-gradient {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 15%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.gallery-gradient-left {
+  left: 0;
+  background: linear-gradient(to left, rgba(248, 249, 250, 0) 0%, #f8f9fa 100%);
+}
+
+.gallery-gradient-right {
+  right: 0;
+  background: linear-gradient(to right, rgba(248, 249, 250, 0) 0%, #f8f9fa 100%);
+}
+
+.gallery-content {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  /* Increased perspective for a less dramatic 3D effect */
+  perspective: 1500px;
+  transform-style: preserve-3d;
+}
+
+.gallery-track {
+  display: flex;
+  height: auto;
+  min-height: 200px;
+  justify-content: center;
+  align-items: center;
+  cursor: grab;
+  transform-style: preserve-3d;
+  width: 100%;
+}
+
+.gallery-track:active {
+    cursor: grabbing;
+}
+
+.gallery-item {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Reduced padding to allow images to appear closer */
+  padding: 4%;
+  backface-visibility: hidden;
+}
+
+.gallery-img {
+  pointer-events: none;
+  /* Adjusted image size for the new layout */
+  height: 180px; /* <-- INCREASED from 150px */
+  width: 280px; /* <-- INCREASED from 240px */
+  border-radius: 12px;
+  border: 4px solid #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-img {
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .gallery-img {
+    /* Adjusted mobile sizes */
+    height: 130px; /* <-- INCREASED from 110px */
+    width: 190px; /* <-- INCREASED from 180px */
+  }
+}
+

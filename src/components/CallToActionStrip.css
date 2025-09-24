@@ -1,19 +1,63 @@
 .cta-strip {
   width: 100%;
-  padding: 22px 0 20px 0;
-  background: linear-gradient(90deg, #38bdf8, #4fd1c5);
+  padding: 40px 0;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 50%, rgba(236, 72, 153, 0.08) 0%, transparent 50%),
+    linear-gradient(135deg, #0c101b 0%, #1a1a2e 50%, #16213e 100%);
   color: #fff;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 700;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 30px;
+  gap: 40px;
   position: relative;
   overflow: hidden;
   cursor: default;
-  transition: background 0.5s ease;
+  transition: all 0.5s ease;
+  border-top: 1px solid rgba(6, 182, 212, 0.3);
+  border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+  margin: 60px 0;
+  border-radius: 24px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.cta-strip::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, #38bdf8, #4fd1c5);
+  opacity: 0.1;
+  animation: ctaGradient 4s ease-in-out infinite;
+}
+
+.cta-strip::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.2), transparent);
+  animation: ctaShimmer 3s infinite;
+}
+
+@keyframes ctaGradient {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.2; }
+}
+
+@keyframes ctaShimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
 }
 
 /* Pulse animation on the background */
@@ -47,31 +91,45 @@
 
 .cta-btn {
   font-size: 1.03rem;
-  color: #101828;
-  background: #fff;
-  border: none;
+  color: #ffffff;
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  border: 1px solid rgba(6, 182, 212, 0.5);
   border-radius: 25px;
   padding: 12px 36px;
   font-weight: 700;
-  box-shadow: 0 6px 24px rgba(25, 171, 190, 0.15);
+  box-shadow: 0 6px 24px rgba(6, 182, 212, 0.3);
   cursor: pointer;
-  transition:
-    background 0.25s ease,
-    box-shadow 0.3s ease,
-    transform 0.2s ease;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   gap: 8px;
   position: relative;
   z-index: 2;
+  overflow: hidden;
+}
+
+.cta-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.cta-btn:hover::before {
+  left: 100%;
 }
 
 .cta-btn:hover,
 .cta-btn:focus {
-  background: #dbeafe;
-  box-shadow: 0 8px 28px rgba(25, 171, 190, 0.35);
-  transform: scale(1.05);
+  background: linear-gradient(135deg, #0891b2, #0e7490);
+  box-shadow: 0 8px 28px rgba(6, 182, 212, 0.5);
+  transform: scale(1.05) translateY(-2px);
   outline: none;
+  border-color: rgba(6, 182, 212, 0.8);
 }
 
 .phone-icon {
