@@ -1,7 +1,7 @@
 export const products = [
   {
     id: 1,
-    name: "Zuice MU1000 Solar Hybrid PCU - 50Ah",
+    name: "Zuice μ1000 Hybrid PCU - 50Ah",
     category: "Solar Hybrid PCU",
     power: "1KVA",
     efficiency: "90%",
@@ -28,21 +28,22 @@ export const products = [
       "Frequency": "50Hz ±3%",
       "Battery Type": "LiFePo4 50Ah",
       "Solar Input": "Max 660Wp",
-      "Efficiency": ">90% SCC, >85% Inverter",
+      "Efficiency": ">90% SCC, >85% UPS",
       "Dimensions": "445 x 385 x 170 mm",
       "Weight": "18 kg",
       "Warranty": "2 Years PCU + 3 Years Battery"
     },
     images: [
-      "/api/placeholder/400/300",
-      "/api/placeholder/400/300",
-      "/api/placeholder/400/300"
+      "/src/assets/image1.JPG",
+      "/src/assets/image2.JPG",
+      "/src/assets/image3.JPG",
+      "/src/assets/image4.JPG"
     ],
-    description: "The Zuice MU1000 Solar Hybrid PCU with 50Ah LiFePo4 battery is perfect for small homes and offices. It combines solar charging, battery backup, and grid power in one compact unit."
+    description: "The Zuice μ1000 Hybrid PCU with 50Ah LiFePo4 battery is perfect for small homes and offices. It combines renewable charging, battery backup, and grid power in one compact unit."
   },
   {
     id: 2,
-    name: "Zuice MU1000 Pro - 86Ah Battery",
+    name: "Zuice μ1000 Pro - 86Ah Battery",
     category: "Solar Hybrid PCU",
     power: "1KVA",
     efficiency: "90%",
@@ -69,21 +70,22 @@ export const products = [
       "Frequency": "50Hz ±3%",
       "Battery Type": "LiFePo4 86Ah",
       "Solar Input": "Max 660Wp",
-      "Efficiency": ">90% SCC, >85% Inverter",
+      "Efficiency": ">90% SCC, >85% UPS",
       "Dimensions": "445 x 385 x 170 mm",
       "Weight": "20 kg",
       "Warranty": "2 Years PCU + 3 Years Battery"
     },
     images: [
-      "/api/placeholder/400/300",
-      "/api/placeholder/400/300",
-      "/api/placeholder/400/300"
+      "/src/assets/image5.JPG",
+      "/src/assets/image6.JPG",
+      "/src/assets/image7.JPG",
+      "/src/assets/image8.JPG"
     ],
-    description: "The Zuice MU1000 Pro with 86Ah battery offers extended backup time for medium-sized homes and small businesses with higher power requirements."
+    description: "The Zuice μ1000 Pro with 86Ah battery offers extended backup time for medium-sized homes and small businesses with higher power requirements."
   },
   {
     id: 3,
-    name: "Zuice MU1000 Max - 100Ah Battery",
+    name: "Zuice μ1000 Max - 100Ah Battery",
     category: "Solar Hybrid PCU",
     power: "1KVA",
     efficiency: "90%",
@@ -110,21 +112,22 @@ export const products = [
       "Frequency": "50Hz ±3%",
       "Battery Type": "LiFePo4 100Ah",
       "Solar Input": "Max 660Wp",
-      "Efficiency": ">90% SCC, >85% Inverter",
+      "Efficiency": ">90% SCC, >85% UPS",
       "Dimensions": "445 x 385 x 170 mm",
       "Weight": "21 kg",
       "Warranty": "2 Years PCU + 3 Years Battery"
     },
     images: [
-      "/api/placeholder/400/300",
-      "/api/placeholder/400/300",
-      "/api/placeholder/400/300"
+      "/src/assets/image1.JPG",
+      "/src/assets/image3.JPG",
+      "/src/assets/image5.JPG",
+      "/src/assets/image7.JPG"
     ],
-    description: "The Zuice MU1000 Max with 100Ah battery provides maximum backup time for larger homes and commercial applications requiring extended power backup."
+    description: "The Zuice μ1000 Max with 100Ah battery provides maximum backup time for larger homes and commercial applications requiring extended power backup."
   },
   {
     id: 4,
-    name: "Zuice MU1000 Monitoring Kit",
+    name: "Zuice μ1000 Monitoring Kit",
     category: "Accessories",
     power: "Monitoring System",
     efficiency: "Real-time",
@@ -150,17 +153,19 @@ export const products = [
       "App Support": "iOS, Android",
       "Data Storage": "Cloud + Local",
       "Update Frequency": "Real-time",
-      "Compatibility": "All Zuice MU1000 Models",
+      "Compatibility": "All Zuice μ1000 Models",
       "Installation": "Plug & Play",
       "Dimensions": "120 x 80 x 25 mm",
       "Weight": "200g",
       "Warranty": "1 Year"
     },
     images: [
-      "/api/placeholder/400/300",
-      "/api/placeholder/400/300"
+      "/src/assets/image2.JPG",
+      "/src/assets/image4.JPG",
+      "/src/assets/image6.JPG",
+      "/src/assets/image8.JPG"
     ],
-    description: "Advanced monitoring kit for Zuice MU1000 systems with mobile app integration and real-time performance tracking."
+    description: "Advanced monitoring kit for Zuice μ1000 systems with mobile app integration and real-time performance tracking."
   }
 ];
 

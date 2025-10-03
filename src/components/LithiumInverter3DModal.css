@@ -1,0 +1,368 @@
+/* === LITHIUM INVERTER 3D MODAL STYLES === */
+
+.lithium-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  perspective: 1200px;
+  padding: 20px;
+}
+
+.lithium-modal-content-3d {
+  background: linear-gradient(135deg, #0c101b 0%, #1a1a2e 50%, #16213e 100%);
+  border-radius: 24px;
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease-out;
+}
+
+.lithium-modal-content-3d::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.05), rgba(236, 72, 153, 0.05));
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lithium-modal-content-3d > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Modal Header */
+.lithium-modal-header-3d {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px;
+  border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+  background: rgba(6, 182, 212, 0.05);
+}
+
+.lithium-modal-title-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lithium-product-icon-3d {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(6, 182, 212, 0.2), rgba(16, 185, 129, 0.1));
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #f59e0b;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+}
+
+.lithium-modal-title {
+  color: #f1f5f9;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, #f59e0b, #06b6d4, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.lithium-modal-subtitle {
+  color: #94a3b8;
+  font-size: 14px;
+  margin: 4px 0 0 0;
+  font-weight: 500;
+}
+
+.lithium-close-btn-3d {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 12px;
+  color: #ef4444;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  height: 44px;
+  width: 44px;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.lithium-close-btn-3d:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.5);
+  transform: scale(1.05);
+}
+
+/* 3D Canvas Container */
+.lithium-canvas-container {
+  height: 500px;
+  position: relative;
+  background: radial-gradient(ellipse at center, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
+  overflow: hidden;
+}
+
+.lithium-canvas-container canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Controls Section */
+.lithium-controls-section {
+  padding: 24px 32px;
+  border-top: 1px solid rgba(6, 182, 212, 0.2);
+  background: rgba(6, 182, 212, 0.02);
+}
+
+.lithium-controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.lithium-control-group {
+  background: rgba(6, 182, 212, 0.05);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+
+.lithium-control-group:hover {
+  background: rgba(6, 182, 212, 0.08);
+  border-color: rgba(6, 182, 212, 0.3);
+}
+
+.lithium-control-label {
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.lithium-control-button {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(6, 182, 212, 0.05));
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: 8px;
+  color: #06b6d4;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  transition: all 0.2s ease;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.lithium-control-button:hover {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(6, 182, 212, 0.1));
+  border-color: rgba(6, 182, 212, 0.5);
+  transform: translateY(-1px);
+}
+
+.lithium-control-button:active {
+  transform: translateY(0);
+}
+
+.lithium-control-button.active {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.3), rgba(6, 182, 212, 0.2));
+  border-color: rgba(6, 182, 212, 0.6);
+  color: #f1f5f9;
+}
+
+/* Product Info */
+.lithium-product-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(6, 182, 212, 0.1);
+}
+
+.lithium-info-item {
+  text-align: center;
+  padding: 12px;
+  background: rgba(6, 182, 212, 0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(6, 182, 212, 0.1);
+}
+
+.lithium-info-value {
+  color: #06b6d4;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.lithium-info-label {
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Loading State */
+.lithium-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+  color: #94a3b8;
+}
+
+.lithium-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(6, 182, 212, 0.2);
+  border-top: 3px solid #06b6d4;
+  border-radius: 50%;
+  animation: lithium-spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes lithium-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .lithium-modal-overlay {
+    padding: 10px;
+  }
+
+  .lithium-modal-content-3d {
+    max-height: 95vh;
+    border-radius: 16px;
+  }
+
+  .lithium-modal-header-3d {
+    padding: 16px 20px;
+  }
+
+  .lithium-modal-title {
+    font-size: 20px;
+  }
+
+  .lithium-product-icon-3d {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+
+  .lithium-canvas-container {
+    height: 400px;
+  }
+
+  .lithium-controls-section {
+    padding: 16px 20px;
+  }
+
+  .lithium-controls-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .lithium-product-info {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lithium-modal-header-3d {
+    padding: 12px 16px;
+  }
+
+  .lithium-modal-title-section {
+    gap: 12px;
+  }
+
+  .lithium-modal-title {
+    font-size: 18px;
+  }
+
+  .lithium-product-icon-3d {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  .lithium-canvas-container {
+    height: 350px;
+  }
+
+  .lithium-controls-section {
+    padding: 12px 16px;
+  }
+
+  .lithium-product-info {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Animation for modal entrance */
+.lithium-modal-overlay {
+  animation: lithium-fadeIn 0.3s ease-out;
+}
+
+.lithium-modal-content-3d {
+  animation: lithium-slideIn 0.3s ease-out;
+}
+
+@keyframes lithium-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes lithium-slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

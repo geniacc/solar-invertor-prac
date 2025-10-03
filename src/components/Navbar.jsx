@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
-  Menu, 
-  X, 
   Search, 
   ShoppingCart, 
   User, 
+  Menu, 
+  X, 
+  Zap, 
   Sun, 
   Moon,
-  Zap,
+  Bell,
+  Heart,
+  Settings,
+  LogOut,
   ChevronDown,
-  Cpu,
-  Shield,
-  Battery
+  Globe,
+  Phone,
+  Mail
 } from 'lucide-react'
 import { Button } from './ui/Button'
 import { ThemeToggle } from './ThemeToggle'
-import { useCartStore, useUIStore, useUserStore } from '../store/useStore'
-import { cn } from '../lib/utils'
+import { useCartStore, useUserStore } from '../store/useStore';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -28,229 +31,377 @@ const navigation = [
   { name: 'Contact', href: '/contact' }
 ]
 
-export function Navbar() {
-  const location = useLocation()
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isVisible, setIsVisible] = useState(false) // Start hidden
-  const [lastScrollY, setLastScrollY] = useState(0)
-  const [isAfterHero, setIsAfterHero] = useState(false)
-  const { getTotalItems, openCart } = useCartStore()
-  const { isMobileMenuOpen, toggleMobileMenu, closeMobileMenu } = useUIStore()
-  const { isAuthenticated, user } = useUserStore()
+const authenticatedNavigation = [
+  { name: 'Home', href: '/' },
+  { name: 'Products', href: '/products' },
+  { name: 'Services', href: '/services' },
+  { name: 'Device Dashboard', href: '/device-dashboard' },
+  { name: 'Device Monitoring', href: '/device-monitoring' },
+  { name: 'About', href: '/about' },
+  { name: 'Contact', href: '/contact' }
+]
+
+const Navbar = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [notifications, setNotifications] = useState(3);
+  
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { items } = useCartStore();
+  const { user, isAuthenticated, logout } = useUserStore();
+
+  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY
-      const heroHeight = window.innerHeight // Assuming hero is full viewport height
-      
-      // Check if we're past the hero section
-      const pastHero = currentScrollY > heroHeight * 0.8
-      setIsAfterHero(pastHero)
-      
-      // Only show navbar after hero section
-      if (pastHero) {
-        setIsVisible(currentScrollY < lastScrollY || currentScrollY < 100)
-        setIsScrolled(currentScrollY > 50)
-      } else {
-        setIsVisible(false)
-      }
-      
-      setLastScrollY(currentScrollY)
-    }
+      setIsScrolled(window.scrollY > 20);
+    };
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [lastScrollY])
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-  // Close mobile menu when route changes
   useEffect(() => {
-    closeMobileMenu()
-  }, [location.pathname, closeMobileMenu])
+    setIsMobileMenuOpen(false);
+    setIsSearchOpen(false);
+    setIsUserMenuOpen(false);
+  }, [location]);
 
-  const totalItems = getTotalItems()
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+      setIsSearchOpen(false);
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+    setIsUserMenuOpen(false);
+    navigate('/');
+  };
+
+  const navbarVariants = {
+    top: {
+      backgroundColor: 'rgba(15, 23, 42, 0.8)',
+      backdropFilter: 'blur(8px)',
+      borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+    },
+    scrolled: {
+      backgroundColor: 'rgba(15, 23, 42, 0.95)',
+      backdropFilter: 'blur(20px)',
+      borderBottom: '1px solid rgba(6, 182, 212, 0.3)',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+    }
+  };
+
+  const mobileMenuVariants = {
+    closed: {
+      opacity: 0,
+      height: 0,
+      transition: {
+        duration: 0.3,
+        ease: 'easeInOut'
+      }
+    },
+    open: {
+      opacity: 1,
+      height: 'auto',
+      transition: {
+        duration: 0.3,
+        ease: 'easeInOut'
+      }
+    }
+  };
+
+  const searchVariants = {
+    closed: {
+      width: 0,
+      opacity: 0,
+      transition: {
+        duration: 0.3,
+        ease: 'easeInOut'
+      }
+    },
+    open: {
+      width: '300px',
+      opacity: 1,
+      transition: {
+        duration: 0.3,
+        ease: 'easeInOut'
+      }
+    }
+  };
 
   return (
-    <motion.header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled 
-          ? "bg-background/80 backdrop-blur-xl border-b border-border/50 shadow-lg shadow-primary/5" 
-          : "bg-transparent"
-      )}
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ 
-        y: isVisible ? 0 : -100, 
-        opacity: isVisible ? 1 : 0 
-      }}
-      transition={{ 
-        duration: 0.3, 
-        ease: [0.25, 0.46, 0.45, 0.94] 
-      }}
-    >
-      {/* Futuristic glow effect */}
-      <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-cyan-500/10 to-purple-500/10 opacity-50" />
-      
-      {/* Animated border */}
-      <motion.div 
-        className="absolute bottom-0 left-0 h-[1px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"
-        animate={{ 
-          scaleX: [0, 1, 0],
-          opacity: [0, 1, 0]
-        }}
-        transition={{ 
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        style={{ width: '100%' }}
-      />
-      
-      <nav className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <motion.div
-            className="flex items-center space-x-2"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Link to="/" className="flex items-center space-x-2 group">
+    <>
+      <motion.nav
+        className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+        initial="top"
+        animate={isScrolled ? 'scrolled' : 'top'}
+        variants={navbarVariants}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <motion.div 
+              className="flex items-center space-x-3"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Link to="/" className="flex items-center space-x-3">
+                <motion.div
+                  className="relative"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                >
+                  <Zap className="h-8 w-8 text-cyan-400" />
+                  <motion.div
+                    className="absolute inset-0 rounded-full bg-cyan-400/20"
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                </motion.div>
+                <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                  Zuice
+                </span>
+              </Link>
+            </motion.div>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-8">
+              {(isAuthenticated ? authenticatedNavigation : navigation).map((item) => {
+                const isActive = location.pathname === item.href;
+                return (
+                  <motion.div
+                    key={item.name}
+                    className="relative"
+                    whileHover={{ y: -2 }}
+                    whileTap={{ y: 0 }}
+                  >
+                    <Link
+                      to={item.href}
+                      className={`relative px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                        isActive
+                          ? 'text-cyan-400'
+                          : 'text-gray-300 hover:text-white'
+                      }`}
+                    >
+                      {item.name}
+                      {isActive && (
+                        <motion.div
+                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500"
+                          layoutId="activeTab"
+                          initial={false}
+                          transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                        />
+                      )}
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Right Side Actions */}
+            <div className="flex items-center space-x-4">
+              {/* Search */}
+              <div className="hidden md:flex items-center">
+                <AnimatePresence>
+                  {isSearchOpen && (
+                    <motion.form
+                      onSubmit={handleSearch}
+                      className="relative mr-2"
+                      variants={searchVariants}
+                      initial="closed"
+                      animate="open"
+                      exit="closed"
+                    >
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search products..."
+                        className="w-full px-4 py-2 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
+                        autoFocus
+                      />
+                    </motion.form>
+                  )}
+                </AnimatePresence>
+                <motion.button
+                  onClick={() => setIsSearchOpen(!isSearchOpen)}
+                  className="p-2 text-gray-400 hover:text-white transition-colors duration-200"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Search className="h-5 w-5" />
+                </motion.button>
+              </div>
+
+              {/* Notifications */}
+              {isAuthenticated && (
+                <motion.button
+                  className="relative p-2 text-gray-400 hover:text-white transition-colors duration-200"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Bell className="h-5 w-5" />
+                  {notifications > 0 && (
+                    <motion.span
+                      className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                    >
+                      {notifications}
+                    </motion.span>
+                  )}
+                </motion.button>
+              )}
+
+              {/* Wishlist */}
+              {isAuthenticated && (
+                <motion.button
+                  className="p-2 text-gray-400 hover:text-white transition-colors duration-200"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Heart className="h-5 w-5" />
+                </motion.button>
+              )}
+
+              {/* Theme Toggle */}
+              <ThemeToggle />
+
+              {/* Cart */}
               <motion.div
                 className="relative"
-                animate={{ rotate: [0, 360] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-              >
-                <Zap className="h-8 w-8 text-purple-500 group-hover:text-purple-400 transition-colors" />
-                <motion.div
-                  className="absolute inset-0 bg-purple-500/20 rounded-full blur-md"
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-              </motion.div>
-              <span className="text-xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                Zuice Solar
-              </span>
-            </Link>
-          </motion.div>
-
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
-            {navigation.map((item, index) => (
-              <motion.div
-                key={item.name}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <Link
-                  to={item.href}
-                  className={cn(
-                    "relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-lg group",
-                    location.pathname === item.href
-                      ? "text-blue-400 bg-blue-500/10 dark:text-blue-300"
-                      : "text-foreground hover:text-blue-400 dark:hover:text-blue-300 hover:bg-blue-500/5"
-                  )}
+                  to="/cart"
+                  className="relative p-2 text-gray-400 hover:text-white transition-colors duration-200"
                 >
-                  <span className="relative z-10">{item.name}</span>
-                  {location.pathname === item.href && (
-                    <motion.div
-                      layoutId="navbar-indicator"
-                      className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-cyan-500/20 rounded-lg border border-purple-500/30"
-                      initial={false}
-                    />
+                  <ShoppingCart className="h-5 w-5" />
+                  {totalItems > 0 && (
+                    <motion.span
+                      className="absolute -top-1 -right-1 h-5 w-5 bg-gradient-to-r from-cyan-400 to-purple-500 text-white text-xs rounded-full flex items-center justify-center font-medium"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                    >
+                      {totalItems}
+                    </motion.span>
                   )}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-cyan-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
-                    initial={false}
-                  />
                 </Link>
               </motion.div>
-            ))}
-          </div>
 
-          {/* Right Side Actions */}
-          <div className="flex items-center space-x-2">
-            {/* Search Button */}
-            <Button variant="ghost" size="icon" className="hidden sm:flex">
-              <Search className="h-5 w-5" />
-            </Button>
+              {/* User Menu */}
+              {isAuthenticated ? (
+                <div className="relative">
+                  <motion.button
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                    className="flex items-center space-x-2 p-2 text-gray-400 hover:text-white transition-colors duration-200"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-sm font-medium">
+                        {user?.name?.charAt(0) || 'U'}
+                      </span>
+                    </div>
+                    <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isUserMenuOpen ? 'rotate-180' : ''}`} />
+                  </motion.button>
 
-            {/* Theme Toggle */}
-            <ThemeToggle />
-
-            {/* Cart Button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={openCart}
-              className="relative"
-            >
-              <ShoppingCart className="h-5 w-5" />
-              {totalItems > 0 && (
-                <motion.span
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="absolute -top-1 -right-1 h-5 w-5 bg-primary text-primary-foreground text-xs rounded-full flex items-center justify-center font-medium"
-                >
-                  {totalItems}
-                </motion.span>
+                  <AnimatePresence>
+                    {isUserMenuOpen && (
+                      <motion.div
+                        className="absolute right-0 mt-2 w-48 bg-gray-800/95 backdrop-blur-lg border border-gray-600 rounded-lg shadow-xl"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <div className="py-2">
+                          <Link
+                            to="/profile"
+                            className="flex items-center space-x-3 px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700/50 transition-colors duration-200"
+                          >
+                            <User className="h-4 w-4" />
+                            <span>Profile</span>
+                          </Link>
+                          <Link
+                            to="/settings"
+                            className="flex items-center space-x-3 px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700/50 transition-colors duration-200"
+                          >
+                            <Settings className="h-4 w-4" />
+                            <span>Settings</span>
+                          </Link>
+                          <hr className="my-2 border-gray-600" />
+                          <button
+                            onClick={handleLogout}
+                            className="flex items-center space-x-3 w-full px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700/50 transition-colors duration-200"
+                          >
+                            <LogOut className="h-4 w-4" />
+                            <span>Sign Out</span>
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <div className="hidden md:flex items-center space-x-3">
+                  <Link to="/login">
+                    <Button variant="ghost" size="sm">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link to="/register">
+                    <Button size="sm">
+                      Sign Up
+                    </Button>
+                  </Link>
+                </div>
               )}
-            </Button>
 
-            {/* User Menu */}
-            {isAuthenticated ? (
-              <div className="hidden lg:flex items-center space-x-2">
-                <Button variant="ghost" size="sm">
-                  <User className="h-4 w-4 mr-2" />
-                  {user?.name || 'Account'}
-                  <ChevronDown className="h-4 w-4 ml-1" />
-                </Button>
-              </div>
-            ) : (
-              <div className="hidden lg:flex items-center space-x-2">
-                <Link to="/login">
-                  <Button variant="ghost" size="sm">
-                    Sign In
-                  </Button>
-                </Link>
-                <Link to="/register">
-                  <Button size="sm">
-                    Sign Up
-                  </Button>
-                </Link>
-              </div>
-            )}
-
-            {/* Mobile Menu Button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleMobileMenu}
-              className="lg:hidden"
-            >
-              <AnimatePresence mode="wait">
-                {isMobileMenuOpen ? (
-                  <motion.div
-                    key="close"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <X className="h-5 w-5" />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="menu"
-                    initial={{ rotate: 90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Menu className="h-5 w-5" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </Button>
+              {/* Mobile Menu Button */}
+              <motion.button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden p-2 text-gray-400 hover:text-white transition-colors duration-200"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <AnimatePresence mode="wait">
+                  {isMobileMenuOpen ? (
+                    <motion.div
+                      key="close"
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <X className="h-6 w-6" />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="menu"
+                      initial={{ rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Menu className="h-6 w-6" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.button>
+            </div>
           </div>
         </div>
 
@@ -258,77 +409,139 @@ export function Navbar() {
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="lg:hidden border-t border-border bg-background/95 backdrop-blur-md"
+              className="md:hidden bg-gray-800/95 backdrop-blur-lg border-t border-gray-600"
+              variants={mobileMenuVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
             >
               <div className="px-4 py-6 space-y-4">
-                {/* Mobile Navigation Links */}
-                <div className="space-y-2">
-                  {navigation.map((item, index) => (
-                    <motion.div
-                      key={item.name}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <Link
-                        to={item.href}
-                        className={cn(
-                          "block px-3 py-2 text-base font-medium rounded-lg transition-colors",
-                          location.pathname === item.href
-                            ? "bg-primary text-primary-foreground"
-                            : "text-muted-foreground hover:text-foreground hover:bg-accent"
-                        )}
-                      >
-                        {item.name}
-                      </Link>
-                    </motion.div>
-                  ))}
-                </div>
-
                 {/* Mobile Search */}
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="pt-4 border-t border-border"
-                >
-                  <Button variant="outline" className="w-full justify-start">
-                    <Search className="h-4 w-4 mr-2" />
-                    Search products...
-                  </Button>
-                </motion.div>
+                <form onSubmit={handleSearch} className="relative">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search products..."
+                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
+                  />
+                  <button
+                    type="submit"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                  >
+                    <Search className="h-5 w-5" />
+                  </button>
+                </form>
+
+                {/* Mobile Navigation */}
+                <div className="space-y-2">
+                  {(isAuthenticated ? authenticatedNavigation : navigation).map((item) => {
+                    const isActive = location.pathname === item.href;
+                    return (
+                      <motion.div
+                        key={item.name}
+                        whileHover={{ x: 10 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Link
+                          to={item.href}
+                          className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200 ${
+                            isActive
+                              ? 'text-cyan-400 bg-cyan-400/10'
+                              : 'text-gray-300 hover:text-white hover:bg-gray-700/50'
+                          }`}
+                        >
+                          {item.name}
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
+                </div>
 
                 {/* Mobile Auth */}
                 {!isAuthenticated && (
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.6 }}
-                    className="pt-4 border-t border-border space-y-2"
-                  >
+                  <div className="pt-4 border-t border-gray-600 space-y-3">
                     <Link to="/login" className="block">
-                      <Button variant="outline" className="w-full">
+                      <Button variant="ghost" className="w-full justify-center">
                         Sign In
                       </Button>
                     </Link>
                     <Link to="/register" className="block">
-                      <Button className="w-full">
+                      <Button className="w-full justify-center">
                         Sign Up
                       </Button>
                     </Link>
-                  </motion.div>
+                  </div>
                 )}
+
+                {/* Mobile User Menu */}
+                {isAuthenticated && (
+                  <div className="pt-4 border-t border-gray-600 space-y-3">
+                    <div className="flex items-center space-x-3 px-4 py-2">
+                      <div className="w-10 h-10 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full flex items-center justify-center">
+                        <span className="text-white font-medium">
+                          {user?.name?.charAt(0) || 'U'}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="text-white font-medium">{user?.name || 'User'}</p>
+                        <p className="text-gray-400 text-sm">{user?.email}</p>
+                      </div>
+                    </div>
+                    <Link
+                      to="/profile"
+                      className="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-lg transition-colors duration-200"
+                    >
+                      <User className="h-5 w-5" />
+                      <span>Profile</span>
+                    </Link>
+                    <Link
+                      to="/settings"
+                      className="flex items-center space-x-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-lg transition-colors duration-200"
+                    >
+                      <Settings className="h-5 w-5" />
+                      <span>Settings</span>
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center space-x-3 w-full px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-lg transition-colors duration-200"
+                    >
+                      <LogOut className="h-5 w-5" />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                )}
+
+                {/* Quick Contact */}
+                <div className="pt-4 border-t border-gray-600">
+                  <h4 className="text-white font-medium mb-3">Quick Contact</h4>
+                  <div className="space-y-2">
+                    <a
+                      href="tel:+15551234567"
+                      className="flex items-center space-x-3 px-4 py-2 text-gray-300 hover:text-white transition-colors duration-200"
+                    >
+                      <Phone className="h-4 w-4" />
+                      <span>+1 (555) 123-4567</span>
+                    </a>
+                    <a
+                      href="mailto:info@zuice.com"
+                      className="flex items-center space-x-3 px-4 py-2 text-gray-300 hover:text-white transition-colors duration-200"
+                    >
+                      <Mail className="h-4 w-4" />
+                      <span>info@zuice.com</span>
+                    </a>
+                  </div>
+                </div>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
-      </nav>
-    </motion.header>
-  )
-}
+      </motion.nav>
 
-export default Navbar
+      {/* Spacer to prevent content from hiding behind fixed navbar */}
+      <div className="h-16" />
+    </>
+  );
+};
+
+export default Navbar;

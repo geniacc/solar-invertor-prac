@@ -26,7 +26,7 @@ const ChatBot = () => {
     {
       id: 1,
       type: 'bot',
-      content: "Hi! I'm your Zuice Solar Assistant. I'm here to help you with everything about our revolutionary Zuice Solar solutions - from technical specifications to installation guidance. How can I assist you today?",
+      content: "Hi! I'm your Zuice Assistant. I'm here to help you with everything about our revolutionary Zuice solutions - from technical specifications to installation guidance. How can I assist you today?",
       timestamp: new Date(),
       quickReplies: [
         "Tell me about Zuice models",
@@ -65,27 +65,27 @@ const ChatBot = () => {
   const solarKnowledgeBase = {
     mu1000Models: {
       keywords: ['mu1000', 'models', 'variants', 'types', 'difference', 'compare'],
-      response: "Our Zuice Solar Hybrid PCU series offers four powerful variants:\n\n⚡ **Zuice-12V-1KVA**: Perfect for small homes and cabins\n⚡ **Zuice-24V-2KVA**: Ideal for medium-sized residential applications\n⚡ **Zuice-48V-3KVA**: Great for larger homes with higher energy needs\n⚡ **Zuice-48V-5KVA**: Commercial-grade solution for maximum power\n\nAll models feature pure sine wave output, MPPT charge controller, and hybrid functionality. Which capacity suits your needs?"
+      response: "Our Zuice Hybrid PCU series offers four powerful variants:\n\n⚡ **Zuice-12V-1KVA**: Perfect for small homes and cabins\n⚡ **Zuice-24V-2KVA**: Ideal for medium-sized residential applications\n⚡ **Zuice-48V-3KVA**: Great for larger homes with higher energy needs\n⚡ **Zuice-48V-5KVA**: Commercial-grade solution for maximum power\n\nAll models feature pure sine wave output, MPPT charge controller, and hybrid functionality. Which capacity suits your needs?"
     },
     specifications: {
       keywords: ['specifications', 'specs', 'technical', 'features', 'capacity', 'efficiency'],
-      response: "Zuice MU1000 Technical Specifications:\n\n🔋 **Pure Sine Wave Output**: Clean, stable power\n⚡ **MPPT Technology**: 99.5% tracking efficiency\n🔄 **Hybrid Functionality**: Solar + Grid + Battery\n📊 **LCD Display**: Real-time monitoring\n🛡️ **Protection Features**: Over-voltage, under-voltage, short circuit\n🌡️ **Operating Temperature**: -10°C to +50°C\n📱 **Smart Monitoring**: Mobile app connectivity\n\nNeed detailed specs for a specific model?"
+      response: "Zuice μ1000 Technical Specifications:\n\n🔋 **Pure Sine Wave Output**: Clean, stable power\n⚡ **MPPT Technology**: 99.5% tracking efficiency\n🔄 **Hybrid Functionality**: Renewable + Grid + Battery\n📊 **LCD Display**: Real-time monitoring\n🛡️ **Protection Features**: Over-voltage, under-voltage, short circuit\n🌡️ **Operating Temperature**: -10°C to +50°C\n📱 **Smart Monitoring**: Mobile app connectivity\n\nNeed detailed specs for a specific model?"
     },
     installation: {
       keywords: ['installation', 'install', 'setup', 'requirements', 'wiring'],
-      response: "Zuice MU1000 Installation Requirements:\n\n🏠 **Location**: Well-ventilated, dry area away from direct sunlight\n⚡ **Electrical**: Proper grounding and circuit protection\n🔧 **Tools**: Basic electrical tools and multimeter\n📏 **Space**: Minimum 30cm clearance on all sides\n👷 **Professional**: Certified electrician recommended\n📋 **Permits**: Check local electrical codes\n\nInstallation typically takes 2-4 hours. Planning an installation?"
+      response: "Zuice μ1000 Installation Requirements:\n\n🏠 **Location**: Well-ventilated, dry area away from direct sunlight\n⚡ **Electrical**: Proper grounding and circuit protection\n🔧 **Tools**: Basic electrical tools and multimeter\n📏 **Space**: Minimum 30cm clearance on all sides\n👷 **Professional**: Certified electrician recommended\n📋 **Permits**: Check local electrical codes\n\nInstallation typically takes 2-4 hours. Planning an installation?"
     },
     hybrid: {
       keywords: ['hybrid', 'battery', 'grid', 'solar', 'backup', 'switching'],
-      response: "Zuice MU1000 Hybrid Functionality:\n\n☀️ **Solar Priority**: Uses solar power first\n🔋 **Battery Backup**: Seamless switching during outages\n⚡ **Grid Integration**: Automatic grid tie capability\n🔄 **Load Management**: Intelligent power distribution\n📊 **Energy Optimization**: Maximum efficiency algorithms\n⏰ **Time-of-Use**: Smart grid interaction\n\nThe system automatically manages all power sources for optimal efficiency. Want to know more about a specific feature?"
+      response: "Zuice μ1000 Hybrid Functionality:\n\n🔋 **Renewable Priority**: Uses renewable energy first\n🔋 **Battery Backup**: Seamless switching during outages\n⚡ **Grid Integration**: Automatic grid tie capability\n🔄 **Load Management**: Intelligent power distribution\n📊 **Energy Optimization**: Maximum efficiency algorithms\n⏰ **Time-of-Use**: Smart grid interaction\n\nThe system automatically manages all power sources for optimal efficiency. Want to know more about a specific feature?"
     },
     maintenance: {
       keywords: ['maintenance', 'service', 'cleaning', 'care', 'upkeep', 'warranty'],
-      response: "Zuice MU1000 Maintenance Guidelines:\n\n✅ **Monthly Check**: Monitor LCD display readings\n🧹 **Cleaning**: Keep vents dust-free\n🔧 **Connections**: Inspect terminals quarterly\n📱 **App Monitoring**: Check performance remotely\n🛡️ **Warranty**: 2-year comprehensive coverage\n👨‍🔧 **Service**: Annual professional inspection recommended\n\nMinimal maintenance required thanks to robust design. Need specific maintenance tips?"
+      response: "Zuice μ1000 Maintenance Guidelines:\n\n✅ **Monthly Check**: Monitor LCD display readings\n🧹 **Cleaning**: Keep vents dust-free\n🔧 **Connections**: Inspect terminals quarterly\n📱 **App Monitoring**: Check performance remotely\n🛡️ **Warranty**: 2-year comprehensive coverage\n👨‍🔧 **Service**: Annual professional inspection recommended\n\nMinimal maintenance required thanks to robust design. Need specific maintenance tips?"
     },
     pricing: {
-      keywords: ['price', 'cost', 'buy', 'purchase', 'quote', 'budget'],
-      response: "Zuice Pricing Information:\n\n💰 **Zuice-12V-1KVA**: ₹25,000 - ₹30,000\n💰 **Zuice-24V-2KVA**: ₹35,000 - ₹42,000\n💰 **Zuice-48V-3KVA**: ₹45,000 - ₹55,000\n💰 **Zuice-48V-5KVA**: ₹65,000 - ₹75,000\n💰 **Monitoring Kit**: ₹8,000 - ₹12,000\n\nPrices include GST. Installation and accessories extra. Ready to get a detailed quote?"
+      keywords: ['price', 'cost', 'buy', 'purchase', 'rent', 'rental', 'quote', 'budget'],
+      response: "Zuice Rental Pricing Information:\n\n💰 **Zuice-12V-1KVA**: ₹2,500 - ₹3,000/month\n💰 **Zuice-24V-2KVA**: ₹3,500 - ₹4,200/month\n💰 **Zuice-48V-3KVA**: ₹4,500 - ₹5,500/month\n💰 **Zuice-48V-5KVA**: ₹6,500 - ₹7,500/month\n💰 **Monitoring Kit**: ₹800 - ₹1,200/month\n\nRental prices include maintenance and support. Installation included. Ready to get a detailed rental quote?"
     }
   }
 
@@ -105,7 +105,7 @@ const ChatBot = () => {
     // Default responses for common queries
     if (message.includes('hello') || message.includes('hi')) {
       return {
-        content: "Hello! I'm your Zuice Solar Assistant. I'm here to help with everything about our Zuice Solar solutions. What would you like to know?",
+        content: "Hello! I'm your Zuice Assistant. I'm here to help with everything about our Zuice solutions. What would you like to know?",
         timestamp: new Date(),
         quickReplies: [
           "Tell me about Zuice models",
@@ -142,7 +142,7 @@ const ChatBot = () => {
 
     // Generic helpful response
     return {
-      content: "I'd be happy to help with that! I specialize in Zuice Solar solutions - from technical specifications to installation guidance. Could you be more specific about what you'd like to know?",
+      content: "I'd be happy to help with that! I specialize in Zuice solutions - from technical specifications to installation guidance. Could you be more specific about what you'd like to know?",
       quickReplies: [
         "Zuice model comparison",
         "Installation process",
@@ -239,11 +239,11 @@ const ChatBot = () => {
       {
         id: 1,
         type: 'bot',
-        content: "Chat reset! I'm SolarBot from our passionate startup team, ready to help with your solar inverter questions. We're making clean energy accessible to everyone. What would you like to know?",
+        content: "Chat reset! I'm PowerBot from our passionate startup team, ready to help with your uninterrupted power supply questions. We're making reliable power accessible to everyone. What would you like to know?",
         timestamp: new Date(),
         suggestions: [
-          "What inverter do I need for my home?",
-          "Compare different inverter types",
+          "What UPS do I need for my home?",
+          "Compare different UPS types",
           "Installation requirements",
           "Maintenance tips"
         ]
@@ -264,7 +264,7 @@ const ChatBot = () => {
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
-            className="fixed bottom-6 right-6 z-50"
+            className="fixed bottom-6 left-6 z-50"
           >
             <motion.button
               onClick={() => setIsOpen(true)}
@@ -320,7 +320,7 @@ const ChatBot = () => {
             }}
             exit={{ opacity: 0, y: 100, scale: 0.8 }}
             className={cn(
-              "fixed bottom-6 right-6 z-50 w-96 bg-background border rounded-2xl shadow-2xl overflow-hidden",
+              "fixed bottom-6 left-6 z-50 w-96 bg-background border rounded-2xl shadow-2xl overflow-hidden",
               isMinimized && "h-auto"
             )}
           >
@@ -331,8 +331,8 @@ const ChatBot = () => {
                   <Bot className="h-4 w-4" />
                 </div>
                 <div>
-                  <h3 className="font-semibold">SolarBot AI</h3>
-                  <p className="text-xs opacity-90">Solar Inverter Expert</p>
+                  <h3 className="font-semibold">PowerBot AI</h3>
+                  <p className="text-xs opacity-90">UPS Expert</p>
                 </div>
               </div>
               <div className="flex items-center space-x-2">
@@ -482,7 +482,7 @@ const ChatBot = () => {
                       value={inputValue}
                       onChange={(e) => setInputValue(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                      placeholder="Ask about solar inverters..."
+                      placeholder="Ask about UPS systems..."
                       className="flex-1 px-3 py-2 border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm"
                     />
                     <Button
@@ -495,7 +495,7 @@ const ChatBot = () => {
                     </Button>
                   </div>
                   <p className="text-xs text-muted-foreground mt-2 text-center">
-                    Powered by AI • Solar inverter expertise
+                    Powered by AI • UPS expertise
                   </p>
                 </div>
               </>

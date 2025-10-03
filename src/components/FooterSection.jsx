@@ -110,8 +110,8 @@ const FooterSection = () => {
                     <Title level={3} className="logo-text text-gray-900 dark:text-gray-100">Zuice</Title>
                   </div>
                   <Paragraph className="company-description text-gray-700 dark:text-gray-300">
-                    Revolutionizing solar energy with cutting-edge inverter technology. 
-                    We're powering a sustainable future, one innovation at a time.
+                    Revolutionizing power backup with cutting-edge UPS technology. 
+                    We're powering a reliable future, one innovation at a time.
                   </Paragraph>
                   <div className="social-links">
                     <a href="#" className="social-link facebook">
@@ -150,7 +150,7 @@ const FooterSection = () => {
                 <div className="footer-column">
                   <Title level={4} className="footer-heading text-gray-900 dark:text-gray-100">Products</Title>
                   <ul className="footer-links">
-                    <li><a href="#inverters" className="text-gray-700 dark:text-gray-300 hover:text-primary">Solar Inverters</a></li>
+                    <li><a href="#ups-systems" className="text-gray-700 dark:text-gray-300 hover:text-primary">UPS Systems</a></li>
                     <li><a href="#batteries" className="text-gray-700 dark:text-gray-300 hover:text-primary">Energy Storage</a></li>
                     <li><a href="#monitoring" className="text-gray-700 dark:text-gray-300 hover:text-primary">Smart Monitoring</a></li>
                     <li><a href="#maintenance" className="text-gray-700 dark:text-gray-300 hover:text-primary">Maintenance</a></li>

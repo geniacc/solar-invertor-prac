@@ -1,21 +1,25 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { 
+  MessageSquare, 
   Phone, 
   Mail, 
   MapPin, 
   Clock, 
-  Send,
-  MessageCircle,
-  Headphones,
+  Send, 
+  CheckCircle, 
   Shield,
-  Zap,
-  CheckCircle,
-  User,
-  MessageSquare
+  Headphones,
+  Wrench,
+  CreditCard
 } from 'lucide-react'
-import { Button } from '../components/ui/Button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card'
+import { Button } from '../components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
+import { Badge } from '../components/ui/badge'
+import { Input } from '../components/ui/input'
+import { Textarea } from '../components/ui/textarea'
+import LoadingSpinner from '../components/ui/Loading'
+import { useResponsive } from '../hooks/useResponsive'
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -24,24 +28,35 @@ const ContactPage = () => {
     phone: '',
     subject: '',
     message: '',
-    productModel: 'Zuice MU1000',
+    productModel: 'Zuice μ1000',
     inquiryType: 'general'
-  })
+  });
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const { isMobile, isTablet } = useResponsive();
+
+  useEffect(() => {
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 600);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const contactMethods = [
     {
-      icon: <Phone className="h-8 w-8" />,
+      icon: <Phone className={isMobile ? "h-6 w-6" : "h-8 w-8"} />,
       title: "Phone Support",
-      description: "Speak directly with our Zuice MU1000 experts",
+      description: "Speak directly with our Zuice μ1000 experts",
       contact: "+91-9876543210",
       availability: "Mon-Sat, 9 AM - 7 PM",
       color: "from-green-500 to-emerald-500"
     },
     {
-      icon: <Mail className="h-8 w-8" />,
+      icon: <Mail className={isMobile ? "h-6 w-6" : "h-8 w-8"} />,
       title: "Email Support",
       description: "Get detailed technical assistance",
       contact: "support@zuicesolar.com",
@@ -49,22 +64,22 @@ const ContactPage = () => {
       color: "from-blue-500 to-indigo-500"
     },
     {
-      icon: <MessageCircle className="h-8 w-8" />,
+      icon: <MessageSquare className={isMobile ? "h-6 w-6" : "h-8 w-8"} />,
       title: "Live Chat",
-      description: "Instant help with Zuice MU1000 queries",
+      description: "Instant help with Zuice μ1000 queries",
       contact: "Chat Now",
       availability: "Online Now",
       color: "from-purple-500 to-purple-700"
     },
     {
-      icon: <Headphones className="h-8 w-8" />,
+      icon: <Headphones className={isMobile ? "h-6 w-6" : "h-8 w-8"} />,
       title: "Technical Support",
       description: "Expert help for installation & maintenance",
       contact: "+91-9876543211",
       availability: "24/7 Emergency",
       color: "from-orange-500 to-red-500"
     }
-  ]
+  ];
 
   const officeLocations = [
     {
@@ -89,11 +104,11 @@ const ContactPage = () => {
 
   const faqItems = [
     {
-      question: "How do I get technical support for my Zuice MU1000?",
+      question: "How do I get technical support for my Zuice μ1000?",
       answer: "Call our 24/7 technical support line at +91-9876543211 or use the live chat feature for immediate assistance."
     },
     {
-      question: "What's covered under Zuice MU1000 warranty?",
+      question: "What's covered under Zuice μ1000 warranty?",
       answer: "Our 2-year warranty covers all manufacturing defects, battery performance, and electronic components. Extended warranty options are available."
     },
     {
@@ -114,23 +129,29 @@ const ContactPage = () => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setIsSubmitting(true)
+    e.preventDefault();
+    setIsSubmitting(true);
     
     // Simulate form submission
     setTimeout(() => {
-      setIsSubmitting(false)
-      setIsSubmitted(true)
-    }, 2000)
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+    }, 2000);
+  };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-purple-900/20 via-background to-purple-900/10">
+      <section className={`relative bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900 text-white overflow-hidden ${
+        isMobile ? 'py-16' : 'py-20'
+      }`}>
         <div className="container mx-auto px-4">
           <motion.div 
-            className="text-center max-w-4xl mx-auto"
+            className={`text-center mx-auto ${isMobile ? 'max-w-2xl' : 'max-w-4xl'}`}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -139,20 +160,26 @@ const ContactPage = () => {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-700 rounded-full mb-8"
+              className={`inline-flex items-center justify-center bg-gradient-to-br from-purple-500 to-purple-700 rounded-full mb-8 ${
+                isMobile ? 'w-16 h-16' : 'w-20 h-20'
+              }`}
             >
-              <MessageSquare className="h-10 w-10 text-white" />
+              <MessageSquare className={`text-white ${isMobile ? 'h-8 w-8' : 'h-10 w-10'}`} />
             </motion.div>
             
-            <h1 className="text-4xl lg:text-6xl font-bold text-foreground mb-6">
+            <h1 className={`font-bold text-white mb-6 ${
+              isMobile ? 'text-3xl' : 'text-4xl lg:text-6xl'
+            }`}>
               Get in Touch
-              <span className="block bg-gradient-to-r from-purple-400 via-purple-500 to-pink-600 bg-clip-text text-transparent">
-                Zuice MU1000 Support
+              <span className="block bg-gradient-to-r from-purple-200 via-purple-300 to-pink-300 bg-clip-text text-transparent">
+                Zuice μ1000 Support
               </span>
             </h1>
             
-            <p className="text-xl text-muted-foreground leading-relaxed mb-8">
-              Need help with your Zuice MU1000 Solar Hybrid PCU? Our expert team is here to assist you 
+            <p className={`text-purple-100 leading-relaxed mb-8 ${
+              isMobile ? 'text-base' : 'text-xl'
+            }`}>
+              Need help with your Zuice μ1000 Hybrid PCU? Our expert team is here to assist you 
               with installation, maintenance, and technical support.
             </p>
           </motion.div>
@@ -160,7 +187,7 @@ const ContactPage = () => {
       </section>
 
       {/* Contact Methods */}
-      <section className="py-20">
+      <section className={isMobile ? 'py-16' : 'py-20'}>
         <div className="container mx-auto px-4">
           <motion.div
             className="text-center mb-16"
@@ -169,15 +196,21 @@ const ContactPage = () => {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
+            <h2 className={`font-bold text-foreground mb-4 ${
+              isMobile ? 'text-2xl' : 'text-3xl lg:text-4xl'
+            }`}>
               How Can We Help?
             </h2>
-            <p className="text-xl text-muted-foreground">
-              Choose the best way to reach our Zuice MU1000 experts
+            <p className={`text-muted-foreground ${
+              isMobile ? 'text-base' : 'text-xl'
+            }`}>
+              Choose the best way to reach our Zuice μ1000 experts
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className={`grid gap-6 ${
+            isMobile ? 'grid-cols-1' : isTablet ? 'grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-4'
+          }`}>
             {contactMethods.map((method, index) => (
               <motion.div
                 key={index}
@@ -187,17 +220,27 @@ const ContactPage = () => {
                 viewport={{ once: true }}
               >
                 <Card className="h-full hover:shadow-lg transition-shadow duration-300 border-purple-500/20">
-                  <CardContent className="p-6 text-center">
-                    <div className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r ${method.color} rounded-full mb-4`}>
+                  <CardContent className={isMobile ? 'p-4 text-center' : 'p-6 text-center'}>
+                    <div className={`inline-flex items-center justify-center bg-gradient-to-r ${method.color} rounded-full mb-4 ${
+                      isMobile ? 'w-12 h-12' : 'w-16 h-16'
+                    }`}>
                       <div className="text-white">
                         {method.icon}
                       </div>
                     </div>
-                    <h3 className="text-lg font-semibold mb-2">{method.title}</h3>
-                    <p className="text-muted-foreground text-sm mb-4">{method.description}</p>
+                    <h3 className={`font-semibold mb-2 ${
+                      isMobile ? 'text-base' : 'text-lg'
+                    }`}>{method.title}</h3>
+                    <p className={`text-muted-foreground mb-4 ${
+                      isMobile ? 'text-xs' : 'text-sm'
+                    }`}>{method.description}</p>
                     <div className="space-y-2">
-                      <div className="font-medium text-purple-500">{method.contact}</div>
-                      <div className="text-xs text-muted-foreground">{method.availability}</div>
+                      <div className={`font-medium text-purple-500 ${
+                        isMobile ? 'text-sm' : 'text-base'
+                      }`}>{method.contact}</div>
+                      <div className={`text-muted-foreground ${
+                        isMobile ? 'text-xs' : 'text-xs'
+                      }`}>{method.availability}</div>
                     </div>
                   </CardContent>
                 </Card>
@@ -208,9 +251,13 @@ const ContactPage = () => {
       </section>
 
       {/* Contact Form & Info */}
-      <section className="py-20 bg-gradient-to-br from-purple-900/10 via-background to-purple-900/5">
+      <section className={`bg-gradient-to-br from-purple-900/10 via-background to-purple-900/5 ${
+        isMobile ? 'py-16' : 'py-20'
+      }`}>
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className={`grid gap-12 ${
+            isMobile ? 'grid-cols-1' : 'lg:grid-cols-2'
+          }`}>
             {/* Contact Form */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -219,64 +266,82 @@ const ContactPage = () => {
               viewport={{ once: true }}
             >
               <Card>
-                <CardHeader>
-                  <CardTitle className="text-2xl">Send us a Message</CardTitle>
-                  <CardDescription>
+                <CardHeader className={isMobile ? 'p-4' : 'p-6'}>
+                  <CardTitle className={isMobile ? 'text-xl' : 'text-2xl'}>Send us a Message</CardTitle>
+                  <CardDescription className={isMobile ? 'text-sm' : 'text-base'}>
                     Fill out the form below and we'll get back to you within 24 hours
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className={isMobile ? 'p-4 pt-0' : 'p-6 pt-0'}>
                   {isSubmitted ? (
                     <div className="text-center py-8">
-                      <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-                      <h3 className="text-xl font-semibold mb-2">Message Sent!</h3>
-                      <p className="text-muted-foreground">
+                      <CheckCircle className={`text-green-500 mx-auto mb-4 ${
+                        isMobile ? 'h-12 w-12' : 'h-16 w-16'
+                      }`} />
+                      <h3 className={`font-semibold mb-2 ${
+                        isMobile ? 'text-lg' : 'text-xl'
+                      }`}>Message Sent!</h3>
+                      <p className={`text-muted-foreground ${
+                        isMobile ? 'text-sm' : 'text-base'
+                      }`}>
                         Thank you for contacting us. We'll respond within 24 hours.
                       </p>
                     </div>
                   ) : (
                     <form onSubmit={handleSubmit} className="space-y-4">
-                      <div className="grid md:grid-cols-2 gap-4">
+                      <div className={`grid gap-4 ${
+                        isMobile ? 'grid-cols-1' : 'md:grid-cols-2'
+                      }`}>
                         <div>
-                          <label className="block text-sm font-medium mb-2">Name *</label>
-                          <input
+                          <label className={`block font-medium mb-2 ${
+                            isMobile ? 'text-xs' : 'text-sm'
+                          }`}>Name *</label>
+                          <Input
                             type="text"
                             name="name"
                             value={formData.name}
                             onChange={handleInputChange}
                             required
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                             placeholder="Your full name"
+                            className="focus:ring-2 focus:ring-purple-500"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium mb-2">Email *</label>
-                          <input
+                          <label className={`block font-medium mb-2 ${
+                            isMobile ? 'text-xs' : 'text-sm'
+                          }`}>Email *</label>
+                          <Input
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleInputChange}
                             required
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                             placeholder="your@email.com"
+                            className="focus:ring-2 focus:ring-purple-500"
                           />
                         </div>
                       </div>
 
-                      <div className="grid md:grid-cols-2 gap-4">
+                      <div className={`grid gap-4 ${
+                        isMobile ? 'grid-cols-1' : 'md:grid-cols-2'
+                      }`}>
                         <div>
-                          <label className="block text-sm font-medium mb-2">Phone</label>
-                          <input
+                          <label className={`block font-medium mb-2 ${
+                            isMobile ? 'text-xs' : 'text-sm'
+                          }`}>Phone</label>
+                          <Input
                             type="tel"
                             name="phone"
                             value={formData.phone}
                             onChange={handleInputChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                             placeholder="+91-9876543210"
+                            className="focus:ring-2 focus:ring-purple-500"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium mb-2">Inquiry Type</label>
+                          <label className={`block font-medium mb-2 ${
+                            isMobile ? 'text-xs' : 'text-sm'
+                          }`}>Inquiry Type</label>
                           <select
                             name="inquiryType"
                             value={formData.inquiryType}
@@ -287,40 +352,45 @@ const ContactPage = () => {
                             <option value="technical">Technical Support</option>
                             <option value="installation">Installation Service</option>
                             <option value="warranty">Warranty Claim</option>
-                            <option value="sales">Sales Inquiry</option>
+                            <option value="rental">Rental Inquiry</option>
                           </select>
                         </div>
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium mb-2">Subject *</label>
-                        <input
+                        <label className={`block font-medium mb-2 ${
+                          isMobile ? 'text-xs' : 'text-sm'
+                        }`}>Subject *</label>
+                        <Input
                           type="text"
                           name="subject"
                           value={formData.subject}
                           onChange={handleInputChange}
                           required
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                           placeholder="Brief description of your inquiry"
+                          className="focus:ring-2 focus:ring-purple-500"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium mb-2">Message *</label>
-                        <textarea
+                        <label className={`block font-medium mb-2 ${
+                          isMobile ? 'text-xs' : 'text-sm'
+                        }`}>Message *</label>
+                        <Textarea
                           name="message"
                           value={formData.message}
                           onChange={handleInputChange}
                           required
-                          rows={5}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                          rows={isMobile ? 4 : 5}
                           placeholder="Please provide details about your inquiry..."
+                          className="focus:ring-2 focus:ring-purple-500"
                         />
                       </div>
 
                       <Button 
                         type="submit" 
                         disabled={isSubmitting}
+                        size={isMobile ? "default" : "lg"}
                         className="w-full bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800"
                       >
                         {isSubmitting ? (
@@ -351,18 +421,26 @@ const ContactPage = () => {
             >
               {/* Office Locations */}
               <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                <CardHeader className={isMobile ? 'p-4' : 'p-6'}>
+                  <CardTitle className={`flex items-center gap-2 ${
+                    isMobile ? 'text-lg' : 'text-xl'
+                  }`}>
                     <MapPin className="h-5 w-5" />
                     Our Locations
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className={`space-y-4 ${isMobile ? 'p-4 pt-0' : 'p-6 pt-0'}`}>
                   {officeLocations.map((location, index) => (
                     <div key={index} className="border-b border-gray-200 last:border-b-0 pb-4 last:pb-0">
-                      <h4 className="font-semibold text-purple-500 mb-1">{location.city}</h4>
-                      <p className="text-sm text-muted-foreground mb-2">{location.address}</p>
-                      <div className="flex flex-col gap-1 text-xs">
+                      <h4 className={`font-semibold text-purple-500 mb-1 ${
+                        isMobile ? 'text-sm' : 'text-base'
+                      }`}>{location.city}</h4>
+                      <p className={`text-muted-foreground mb-2 ${
+                        isMobile ? 'text-xs' : 'text-sm'
+                      }`}>{location.address}</p>
+                      <div className={`flex flex-col gap-1 ${
+                        isMobile ? 'text-xs' : 'text-xs'
+                      }`}>
                         <div className="flex items-center gap-2">
                           <Phone className="h-3 w-3" />
                           <span>{location.phone}</span>
@@ -379,14 +457,18 @@ const ContactPage = () => {
 
               {/* FAQ */}
               <Card>
-                <CardHeader>
-                  <CardTitle>Frequently Asked Questions</CardTitle>
+                <CardHeader className={isMobile ? 'p-4' : 'p-6'}>
+                  <CardTitle className={isMobile ? 'text-lg' : 'text-xl'}>Frequently Asked Questions</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className={`space-y-4 ${isMobile ? 'p-4 pt-0' : 'p-6 pt-0'}`}>
                   {faqItems.map((faq, index) => (
                     <div key={index} className="border-b border-gray-200 last:border-b-0 pb-4 last:pb-0">
-                      <h4 className="font-medium mb-2">{faq.question}</h4>
-                      <p className="text-sm text-muted-foreground">{faq.answer}</p>
+                      <h4 className={`font-medium mb-2 ${
+                        isMobile ? 'text-sm' : 'text-base'
+                      }`}>{faq.question}</h4>
+                      <p className={`text-muted-foreground ${
+                        isMobile ? 'text-xs' : 'text-sm'
+                      }`}>{faq.answer}</p>
                     </div>
                   ))}
                 </CardContent>
@@ -397,7 +479,9 @@ const ContactPage = () => {
       </section>
 
       {/* Emergency Support */}
-      <section className="py-20 bg-gradient-to-r from-red-500 to-orange-500">
+      <section className={`bg-gradient-to-r from-red-500 to-orange-500 ${
+        isMobile ? 'py-16' : 'py-20'
+      }`}>
         <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -405,20 +489,32 @@ const ContactPage = () => {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <Shield className="h-16 w-16 text-white mx-auto mb-4" />
-            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+            <Shield className={`text-white mx-auto mb-4 ${
+              isMobile ? 'h-12 w-12' : 'h-16 w-16'
+            }`} />
+            <h2 className={`font-bold text-white mb-4 ${
+              isMobile ? 'text-2xl' : 'text-3xl lg:text-4xl'
+            }`}>
               24/7 Emergency Support
             </h2>
-            <p className="text-xl text-red-100 mb-8 max-w-2xl mx-auto">
-              Experiencing issues with your Zuice MU1000? Our emergency support team is available round the clock
+            <p className={`text-red-100 mb-8 max-w-2xl mx-auto ${
+              isMobile ? 'text-base' : 'text-xl'
+            }`}>
+              Experiencing issues with your Zuice μ1000? Our emergency support team is available round the clock
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary">
+            <div className={`flex gap-4 justify-center ${
+              isMobile ? 'flex-col items-center' : 'flex-col sm:flex-row'
+            }`}>
+              <Button size={isMobile ? "default" : "lg"} variant="secondary">
                 <Phone className="mr-2 h-4 w-4" />
                 Emergency: +91-9876543211
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-red-600">
-                <MessageCircle className="mr-2 h-4 w-4" />
+              <Button 
+                size={isMobile ? "default" : "lg"} 
+                variant="outline" 
+                className="border-white text-white hover:bg-white hover:text-red-600"
+              >
+                <MessageSquare className="mr-2 h-4 w-4" />
                 Live Chat Support
               </Button>
             </div>

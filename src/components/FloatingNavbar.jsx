@@ -10,6 +10,7 @@ const FloatingNavbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
+      // Always show floating navbar after scrolling past 100px
       setIsVisible(scrollY > 100);
 
       // Determine active section based on scroll position

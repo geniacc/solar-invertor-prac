@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Play, Zap, Shield, Battery, Sun, Sparkles, Power } from 'lucide-react';
-
+import { ArrowRight, Play, Zap, Shield, Battery, Sun, Sparkles, Power, X } from 'lucide-react';
+import { Button } from './ui/Button';
 import DotGrid from './DotGrid';
 import solarBannerImage from '../assets/solar-banner-removebg-preview.png';
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [showVideoModal, setShowVideoModal] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const heroRef = useRef(null);
 
   useEffect(() => {
@@ -29,11 +31,35 @@ const HeroSection = () => {
     };
   }, []);
 
+  // Mouse tracking for interactive effects
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   return (
     <section 
       ref={heroRef} 
       className="hero-section relative min-h-screen flex items-center overflow-hidden bg-black"
     >
+      {/* Interactive Mouse Follower */}
+      <motion.div
+        className="fixed w-6 h-6 bg-blue-400/30 rounded-full pointer-events-none z-50 mix-blend-screen"
+        animate={{
+          x: mousePosition.x - 12,
+          y: mousePosition.y - 12,
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 500,
+          damping: 28,
+        }}
+      />
+
       {/* Animated Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900/30 to-black"></div>
       
@@ -139,7 +165,7 @@ const HeroSection = () => {
           >
             {/* Company Badge */}
             <motion.div
-              className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-blue-500/30 rounded-full px-4 py-2"
+              className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-blue-500/30 rounded-full px-4 py-2 cursor-pointer"
               animate={{
                 scale: [1, 1.05, 1],
                 borderColor: ['rgba(59, 130, 246, 0.3)', 'rgba(147, 51, 234, 0.3)', 'rgba(59, 130, 246, 0.3)'],
@@ -149,12 +175,15 @@ const HeroSection = () => {
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
             >
               <Power className="h-4 w-4 text-blue-400" />
               <span className="text-sm font-medium text-white">Zuice</span>
+              <Sparkles className="h-3 w-3 text-purple-400" />
             </motion.div>
 
-            {/* Main Heading - Focused on MU1000 */}
+            {/* Main Heading - Focused on μ1000 */}
             <motion.div
               className="space-y-4"
               initial={{ opacity: 0, y: 30 }}
@@ -176,10 +205,10 @@ const HeroSection = () => {
                     backgroundSize: '200% 200%',
                   }}
                 >
-                  Zuice MU1000
+                  Zuice μ1000
                 </motion.span>
                 <span className="block text-white/90 text-3xl lg:text-4xl font-light mt-2">
-                  Solar Hybrid PCU
+                  Uninterrupted Power Supply
                 </span>
               </h1>
               
@@ -189,8 +218,29 @@ const HeroSection = () => {
                 animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
                 transition={{ duration: 1, delay: 0.8 }}
               >
-                Advanced 1KVA-12V PWM technology for reliable solar energy management
+                Advanced 1KVA-12V PWM technology for reliable uninterrupted power supply and energy management
               </motion.p>
+
+              {/* Key Features Pills */}
+              <motion.div
+                className="flex flex-wrap gap-3 mt-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 1, delay: 1 }}
+              >
+                {['98% Efficiency', '25 Year Warranty', 'Smart Monitoring'].map((feature, index) => (
+                  <motion.span
+                    key={feature}
+                    className="px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-sm text-white"
+                    whileHover={{ scale: 1.05, backgroundColor: 'rgba(255, 255, 255, 0.15)' }}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={isVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
+                    transition={{ duration: 0.5, delay: 1.2 + index * 0.1 }}
+                  >
+                    {feature}
+                  </motion.span>
+                ))}
+              </motion.div>
             </motion.div>
 
             {/* Action Buttons */}
@@ -200,25 +250,28 @@ const HeroSection = () => {
               animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 1, delay: 1 }}
             >
-              <motion.button
-                className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full overflow-hidden"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100"
-                  transition={{ duration: 0.3 }}
-                />
-                <span className="relative flex items-center space-x-2">
-                  <span>Explore Zuice MU1000</span>
-                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </span>
-              </motion.button>
+              <Link to="/products">
+                <motion.button
+                  className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full overflow-hidden"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100"
+                    transition={{ duration: 0.3 }}
+                  />
+                  <span className="relative flex items-center space-x-2">
+                    <span>Explore Zuice μ1000</span>
+                    <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </motion.button>
+              </Link>
               
               <motion.button
                 className="group px-8 py-4 border-2 border-white/20 text-white font-semibold rounded-full hover:bg-white/10 transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => setShowVideoModal(true)}
               >
                 <span className="flex items-center space-x-2">
                   <Play className="h-5 w-5" />
@@ -237,7 +290,7 @@ const HeroSection = () => {
           >
             {/* Product Image with Enhanced Animation */}
             <motion.div
-              className="relative"
+              className="relative cursor-pointer"
               animate={{
                 y: [0, -20, 0],
                 rotateY: [0, 5, 0, -5, 0],
@@ -247,10 +300,12 @@ const HeroSection = () => {
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
+              whileHover={{ scale: 1.05 }}
+              onClick={() => setShowVideoModal(true)}
             >
               <motion.img
                 src={solarBannerImage}
-                alt="MU1000 Solar Hybrid PCU"
+                alt="μ1000 Hybrid PCU"
                 className="h-96 w-auto filter drop-shadow-2xl"
                 animate={{
                   filter: [
@@ -284,18 +339,30 @@ const HeroSection = () => {
                   borderColor: { duration: 4, repeat: Infinity, ease: "easeInOut" },
                 }}
               />
+
+              {/* Click to Play Indicator */}
+              <motion.div
+                className="absolute inset-0 flex items-center justify-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 1, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <div className="bg-white/20 backdrop-blur-sm rounded-full p-4">
+                  <Play className="h-8 w-8 text-white" />
+                </div>
+              </motion.div>
             </motion.div>
 
             {/* Floating Feature Icons */}
             {[
-              { icon: Zap, position: 'top-10 left-10', delay: 0 },
-              { icon: Shield, position: 'top-20 right-10', delay: 0.5 },
-              { icon: Battery, position: 'bottom-20 left-20', delay: 1 },
-              { icon: Sun, position: 'bottom-10 right-20', delay: 1.5 },
-            ].map(({ icon: Icon, position, delay }, index) => (
+              { icon: Zap, position: 'top-10 left-10', delay: 0, label: 'High Efficiency' },
+              { icon: Shield, position: 'top-20 right-10', delay: 0.5, label: 'Protection' },
+              { icon: Battery, position: 'bottom-20 left-20', delay: 1, label: 'Long Life' },
+              { icon: Sun, position: 'bottom-10 right-20', delay: 1.5, label: 'Solar Ready' },
+            ].map(({ icon: Icon, position, delay, label }, index) => (
               <motion.div
                 key={index}
-                className={`absolute ${position} p-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/20`}
+                className={`absolute ${position} group cursor-pointer`}
                 initial={{ opacity: 0, scale: 0 }}
                 animate={isVisible ? { 
                   opacity: 1, 
@@ -307,13 +374,55 @@ const HeroSection = () => {
                   scale: { duration: 0.5, delay: delay + 1.2 },
                   y: { duration: 2, repeat: Infinity, ease: "easeInOut", delay: delay },
                 }}
+                whileHover={{ scale: 1.2 }}
               >
-                <Icon className="h-6 w-6 text-blue-400" />
+                <div className="p-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 relative">
+                  <Icon className="h-6 w-6 text-blue-400" />
+                  {/* Tooltip */}
+                  <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    {label}
+                  </div>
+                </div>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </div>
+
+      {/* Video Modal */}
+      {showVideoModal && (
+        <motion.div
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setShowVideoModal(false)}
+        >
+          <motion.div
+            className="bg-white rounded-lg p-6 max-w-2xl w-full relative"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              onClick={() => setShowVideoModal(false)}
+            >
+              <X className="h-6 w-6" />
+            </button>
+            <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center">
+              <div className="text-center">
+                <Play className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                <p className="text-gray-600">Demo video would play here</p>
+                <p className="text-sm text-gray-500 mt-2">
+                  Experience the Zuice μ1000 in action
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
     </section>
   );
 };

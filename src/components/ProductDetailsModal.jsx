@@ -9,141 +9,153 @@ const ProductDetailsModal = ({ visible, onClose, product }) => {
 
   return (
     <Modal
-      title={product.title}
+      title={null}
       open={visible}
       onCancel={onClose}
       footer={null}
-      width={800}
+      width={900}
       className="product-details-modal"
       destroyOnClose={true}
+      centered
     >
       <motion.div 
         className="product-modal-content"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
         transition={{ 
           duration: 0.3,
           staggerChildren: 0.1
         }}
       >
-        <motion.div 
-          className="product-modal-image-container"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ 
-            type: "spring",
-            stiffness: 300,
-            damping: 25,
-            delay: 0.2
-          }}
-        >
-          <motion.img 
-            src={product.image} 
-            alt={product.title}
-            className="product-modal-image"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-          />
-        </motion.div>
-        
-        <motion.div 
-          className="product-modal-info"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ 
-            type: "spring",
-            stiffness: 300,
-            damping: 25,
-            delay: 0.3
-          }}
-        >
+        {/* Modal Header */}
+        <div className="modal-header">
+          <div className="product-category">
+            {product.category || 'Solar Equipment'}
+          </div>
+          <h2 className="product-title">
+            {product.title || product.name}
+          </h2>
+        </div>
+
+        {/* Modal Body */}
+        <div className="modal-body">
+          {/* Product Image */}
           <motion.div 
-            className="product-modal-specs"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
+            className="product-image-container"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
           >
-            <h3>Product Specifications</h3>
-            <div className="specs-grid">
-              <motion.div 
-                className="spec-item"
-                whileHover={{ scale: 1.05 }}
-              >
-                <ThunderboltOutlined className="spec-icon" />
-                <div>
-                  <h4>Power Output</h4>
-                  <p>{product.powerOutput || '5000W'}</p>
-                </div>
-              </motion.div>
-              <motion.div 
-                className="spec-item"
-                whileHover={{ scale: 1.05 }}
-              >
-                <SettingOutlined className="spec-icon" />
-                <div>
-                  <h4>Efficiency</h4>
-                  <Progress 
-                    percent={product.efficiency || 98} 
-                    status="active" 
-                    strokeColor={{
-                      '0%': '#108ee9',
-                      '100%': '#87d068',
-                    }}
-                  />
-                </div>
-              </motion.div>
-              <motion.div 
-                className="spec-item"
-                whileHover={{ scale: 1.05 }}
-              >
-                <SafetyOutlined className="spec-icon" />
-                <div>
-                  <h4>Warranty</h4>
-                  <p>{product.warranty || '10 Years'}</p>
-                </div>
-              </motion.div>
+            <img 
+              src={product.image || product.images?.[0]} 
+              alt={product.title || product.name}
+              className="product-image"
+            />
+          </motion.div>
+
+          {/* Product Information */}
+          <motion.div 
+            className="product-info"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            {/* Key Specifications */}
+            <div className="specifications-section">
+              <h3 className="section-title">Key Specifications</h3>
+              <div className="specifications-grid">
+                <motion.div 
+                  className="spec-item"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <ThunderboltOutlined className="spec-icon power" />
+                  <div className="spec-content">
+                    <div className="spec-value">{product.powerOutput || product.power || '5000W'}</div>
+                    <div className="spec-label">Power Output</div>
+                  </div>
+                </motion.div>
+                <motion.div 
+                  className="spec-item"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <SettingOutlined className="spec-icon efficiency" />
+                  <div className="spec-content">
+                    <div className="spec-value">{product.efficiency || '98%'}</div>
+                    <div className="spec-label">Efficiency</div>
+                  </div>
+                </motion.div>
+                <motion.div 
+                  className="spec-item"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <SafetyOutlined className="spec-icon warranty" />
+                  <div className="spec-content">
+                    <div className="spec-value">{product.warranty || '10 Years'}</div>
+                    <div className="spec-label">Warranty</div>
+                  </div>
+                </motion.div>
+              </div>
             </div>
+
+            {/* Product Description */}
+            <motion.div 
+              className="description-section"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <h3 className="section-title">Description</h3>
+              <p className="description-text">
+                {product.desc || product.description || 'This advanced solar inverter offers industry-leading efficiency and reliability. Designed for both residential and commercial applications, it features smart monitoring capabilities and robust protection systems.'}
+              </p>
+            </motion.div>
+
+            {/* Key Features */}
+            <motion.div 
+              className="features-section"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <h3 className="section-title">Key Features</h3>
+              <div className="features-list">
+                {(product.tags || product.features || ['Smart Monitoring', 'High Efficiency', 'Compact Design']).slice(0, 6).map((feature, index) => (
+                  <Tag key={index} color="blue" className="feature-tag">
+                    {feature}
+                  </Tag>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Action Buttons */}
+            <motion.div 
+              className="action-buttons"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+            >
+              <Button 
+                type="primary" 
+                size="large" 
+                className="action-button primary"
+                block
+              >
+                Request Quote
+              </Button>
+              <Button 
+                size="large" 
+                className="action-button secondary"
+                block
+              >
+                Download Specifications
+              </Button>
+            </motion.div>
           </motion.div>
-          
-          <motion.div 
-            className="product-modal-description"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-          >
-            <h3>Description</h3>
-            <p>{product.desc || 'This advanced solar inverter offers industry-leading efficiency and reliability. Designed for both residential and commercial applications, it features smart monitoring capabilities and robust protection systems.'}</p>
-          </motion.div>
-          
-          <motion.div 
-            className="product-modal-features"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-          >
-            <h3>Key Features</h3>
-            <div className="feature-tags">
-              {(product.tags || ['Smart Monitoring', 'High Efficiency', 'Compact Design']).map((tag, index) => (
-                <Tag key={index} color="blue">{tag}</Tag>
-              ))}
-            </div>
-          </motion.div>
-          
-          <motion.div 
-            className="product-modal-actions"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-          >
-            <Button type="primary" size="large">
-              Request Quote
-            </Button>
-            <Button size="large">
-              Download Specs
-            </Button>
-          </motion.div>
-        </motion.div>
+        </div>
       </motion.div>
     </Modal>
   );

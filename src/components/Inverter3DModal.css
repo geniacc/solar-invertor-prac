@@ -423,6 +423,125 @@
   }
 }
 
+/* === WALL-MOUNTED INVERTER 3D STYLES === */
+
+/* Enhanced 3D Perspective */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.transform-gpu {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Gradient Radial Background */
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+/* Wall Mount Shadow Effects */
+.wall-mount-shadow {
+  filter: blur(20px);
+  opacity: 0.4;
+  transform: translateY(10px) translateX(5px) scale(1.1);
+}
+
+/* LED Glow Effects */
+.led-glow-green {
+  box-shadow: 
+    0 0 10px rgba(34, 197, 94, 0.6),
+    0 0 20px rgba(34, 197, 94, 0.4),
+    0 0 30px rgba(34, 197, 94, 0.2);
+}
+
+.led-glow-blue {
+  box-shadow: 
+    0 0 10px rgba(59, 130, 246, 0.6),
+    0 0 20px rgba(59, 130, 246, 0.4),
+    0 0 30px rgba(59, 130, 246, 0.2);
+}
+
+.led-glow-yellow {
+  box-shadow: 
+    0 0 10px rgba(251, 191, 36, 0.6),
+    0 0 20px rgba(251, 191, 36, 0.4),
+    0 0 30px rgba(251, 191, 36, 0.2);
+}
+
+/* Digital Display Effects */
+.digital-display {
+  background: linear-gradient(135deg, #000000, #1a1a1a);
+  border: 2px solid #333;
+  box-shadow: 
+    inset 0 2px 4px rgba(0,0,0,0.6),
+    0 0 10px rgba(34, 197, 94, 0.3);
+}
+
+.digital-text {
+  text-shadow: 0 0 10px currentColor;
+  font-family: 'Courier New', monospace;
+}
+
+/* Mounting Bracket Effects */
+.mounting-bracket {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  box-shadow: 
+    0 2px 4px rgba(0,0,0,0.3),
+    inset 0 1px 2px rgba(255,255,255,0.2);
+}
+
+/* Connection Port Effects */
+.connection-port {
+  background: linear-gradient(135deg, #374151, #1f2937);
+  box-shadow: 
+    inset 0 2px 4px rgba(0,0,0,0.6),
+    0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Brand Logo Effects */
+.brand-logo {
+  background: linear-gradient(135deg, #a855f7, #8b5cf6);
+  box-shadow: 
+    0 2px 8px rgba(168, 85, 247, 0.3),
+    inset 0 1px 2px rgba(255,255,255,0.2);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Floating Energy Particle Animations */
+@keyframes float-energy {
+  0%, 100% {
+    transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translateY(-10px) translateX(5px) rotate(90deg) scale(1.1);
+  }
+  50% {
+    transform: translateY(-5px) translateX(10px) rotate(180deg) scale(0.9);
+  }
+  75% {
+    transform: translateY(5px) translateX(5px) rotate(270deg) scale(1.05);
+  }
+}
+
+.energy-particle {
+  animation: float-energy 4s ease-in-out infinite;
+}
+
+.energy-particle:nth-child(2) {
+  animation-delay: 1s;
+  animation-duration: 5s;
+}
+
+.energy-particle:nth-child(3) {
+  animation-delay: 2s;
+  animation-duration: 3s;
+}
+
 @media (max-width: 480px) {
   .modal-overlay {
     padding: 10px;

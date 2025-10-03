@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { 
   Eye, 
   EyeOff, 
@@ -14,8 +14,11 @@ import {
 import { Button } from '../components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card'
 import { cn } from '../lib/utils'
+import { useUserStore } from '../store/useStore'
 
 export default function LoginPage() {
+  const navigate = useNavigate()
+  const { login } = useUserStore()
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
     email: '',
@@ -66,9 +69,27 @@ export default function LoginPage() {
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false)
-      // Handle successful login here
-      console.log('Login successful:', formData)
-    }, 2000)
+      
+      // Create user object with mock data
+      const userData = {
+        id: 1,
+        name: 'John Doe',
+        email: formData.email,
+        avatar: null,
+        role: 'user',
+        joinDate: new Date().toISOString(),
+        preferences: {
+          theme: 'dark',
+          notifications: true
+        }
+      }
+      
+      // Log the user in
+      login(userData)
+      
+      // Redirect to device dashboard
+      navigate('/device-dashboard')
+    }, 1500)
   }
 
   const benefits = [

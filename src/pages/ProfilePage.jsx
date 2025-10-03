@@ -414,7 +414,7 @@ export default function ProfilePage() {
         <CardHeader>
           <CardTitle>Wishlist</CardTitle>
           <CardDescription>
-            Your saved solar products for future purchase
+            Your saved solar products for future rental
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -434,7 +434,7 @@ export default function ProfilePage() {
                 </div>
                 <div className="flex space-x-2">
                   <Button size="sm" className="flex-1" disabled={!item.inStock}>
-                    Add to Cart
+                    Add to Rental Cart
                   </Button>
                   <Button size="sm" variant="outline">
                     <Trash2 className="h-3 w-3" />

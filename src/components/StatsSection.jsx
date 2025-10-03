@@ -15,16 +15,16 @@ import image8 from "../assets/image8.JPG";
 import './StatsSection.css';
 
 const stats = [
-  { img: image1, value: 2500, label: "Inverters Installed", color: "#3b82f6", textColor: "#ffffff", icon: <ThunderboltOutlined /> },
+  { img: image1, value: 2500, label: "UPS Systems Installed", color: "#3b82f6", textColor: "#ffffff", icon: <ThunderboltOutlined /> },
   { img: image2, value: 4.9, label: "Customer Rating", color: "#fbbf24", textColor: "#000000", icon: <SettingOutlined /> },
-  { img: image3, value: 99.8, label: "Inverter Uptime", color: "#10b981", textColor: "#ffffff", icon: <WifiOutlined /> }
+  { img: image3, value: 99.8, label: "UPS Uptime", color: "#10b981", textColor: "#ffffff", icon: <WifiOutlined /> }
 ];
 
 // Customer testimonials focused on inverter experience
 const testimonials = [
   {
     quote:
-      "The ZUICE smart inverter has revolutionized our energy management. The efficiency and monitoring capabilities are outstanding.",
+      "The ZUICE smart UPS has revolutionized our power management. The efficiency and monitoring capabilities are outstanding.",
     name: "Rajesh Kumar",
     designation: "Homeowner, Mumbai",
     location: "Mumbai, Maharashtra",
@@ -34,7 +34,7 @@ const testimonials = [
   },
   {
     quote:
-      "Installation was professional and the inverter performance exceeded expectations. The mobile app monitoring is fantastic.",
+      "Installation was professional and the UPS performance exceeded expectations. The mobile app monitoring is fantastic.",
     name: "Priya Sharma",
     designation: "Business Owner, Delhi",
     location: "Delhi, NCR",
@@ -44,7 +44,7 @@ const testimonials = [
   },
   {
     quote:
-      "The smart inverter technology has made our solar system incredibly efficient. The predictive maintenance alerts are a game-changer.",
+      "The smart UPS technology has made our power system incredibly efficient. The predictive maintenance alerts are a game-changer.",
     name: "Amit Patel",
     designation: "Engineer, Bangalore",
     location: "Bangalore, Karnataka",
@@ -54,7 +54,7 @@ const testimonials = [
   },
   {
     quote:
-      "Outstanding inverter performance and excellent customer support. The IoT monitoring features are exactly what we needed.",
+      "Outstanding UPS performance and excellent customer support. The IoT monitoring features are exactly what we needed.",
     name: "Sunita Reddy",
     designation: "Factory Owner, Chennai",
     location: "Chennai, Tamil Nadu",
@@ -64,7 +64,7 @@ const testimonials = [
   },
   {
     quote:
-      "The ZUICE inverter has been running flawlessly for 2 years. The efficiency and reliability are unmatched in the market.",
+      "The ZUICE UPS has been running flawlessly for 2 years. The efficiency and reliability are unmatched in the market.",
     name: "Vikram Singh",
     designation: "Residential Customer, Pune",
     location: "Pune, Maharashtra",

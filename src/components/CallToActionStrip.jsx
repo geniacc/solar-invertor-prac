@@ -16,8 +16,8 @@ const CallToActionStrip = () => {
   return (
     <section className={`cta-strip ${highlight ? 'highlight' : ''}`}>
       <strong className="cta-text">Ready to switch to solar?</strong>
-      <button className="cta-btn" aria-label="Contact Sales">
-        <PhoneOutlined className="phone-icon" /> &nbsp;Contact Sales
+      <button className="cta-btn" aria-label="Contact Rental Team">
+        <PhoneOutlined className="phone-icon" /> &nbsp;Contact Rental Team
       </button>
     </section>
   );

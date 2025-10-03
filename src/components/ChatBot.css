@@ -427,3 +427,76 @@
     font-size: 13px;
   }
 }
+
+/* === MOBILE RESPONSIVE STYLES === */
+.chatbot-window.mobile {
+  position: fixed !important;
+  top: 10px !important;
+  right: 10px !important;
+  left: 10px !important;
+  width: calc(100vw - 20px) !important;
+  max-height: calc(100vh - 20px) !important;
+  transform: none !important;
+  border-radius: 15px;
+}
+
+.chatbot-window.mobile .chatbot-header {
+  padding: 12px 16px;
+}
+
+.chatbot-window.mobile .chatbot-body {
+  padding: 12px;
+  max-height: calc(100vh - 140px);
+}
+
+.chatbot-window.mobile .chatbot-input-form {
+  padding: 12px;
+}
+
+.chatbot-window.mobile .chatbot-input {
+  padding: 12px;
+  font-size: 16px; /* Prevents zoom on iOS */
+}
+
+/* === TABLET RESPONSIVE STYLES === */
+.chatbot-window.tablet {
+  width: 350px !important;
+  max-height: 550px;
+}
+
+/* === TYPING INDICATOR STYLES === */
+.chatbot-message.typing {
+  opacity: 0.9;
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  border: 1px solid #e2e8f0;
+}
+
+.dark .chatbot-message.typing {
+  background: linear-gradient(135deg, #1e293b, #334155);
+  border: 1px solid #334155;
+}
+
+/* === ENHANCED ANIMATIONS === */
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%) translateY(-50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0) translateY(-50%);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  @keyframes slideInFromRight {
+    from {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}

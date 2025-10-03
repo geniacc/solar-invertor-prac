@@ -18,9 +18,13 @@ import {
   Smartphone,
   Cloud,
   Settings,
-  BarChart3
+  BarChart3,
+  Eye,
+  Camera
 } from 'lucide-react';
 import './FeaturesSection.css';
+import LithiumInverter3DModal from './LithiumInverter3DModal';
+import ARCameraView from './ARCameraView';
 
 const FeaturesSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -28,7 +32,44 @@ const FeaturesSection = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [expandedDetails, setExpandedDetails] = useState(null);
+  const [show3DModal, setShow3DModal] = useState(false);
+  const [showARModal, setShowARModal] = useState(false);
   const sectionRef = useRef(null);
+
+  // TechPro Enterprise Series product data for 3D modal
+  const techProProduct = {
+    id: 'techpro-enterprise',
+    name: 'TechPro Enterprise Series',
+    model: 'Zuice-48V-5KVA',
+    price: '₹65,000',
+    originalPrice: '₹75,000',
+    rating: 4.9,
+    reviews: 142,
+    efficiency: '98.5%',
+    warranty: '25 years',
+    power: '5KVA',
+    voltage: '48V',
+    features: [
+      'Advanced MPPT Technology',
+      'Pure Sine Wave Output',
+      'LCD Display Monitoring',
+      'Multiple Protection Systems',
+      'Hybrid Functionality',
+      'Smart Load Management',
+      'WiFi Monitoring',
+      'Commercial Grade Build'
+    ],
+    specifications: {
+      'Input Voltage': '48V DC',
+      'Output Power': '5000VA / 4000W',
+      'Efficiency': '98.5%',
+      'Waveform': 'Pure Sine Wave',
+      'Protection Rating': 'IP65',
+      'Operating Temperature': '-10°C to +50°C',
+      'Dimensions': '450 × 350 × 150 mm',
+      'Weight': '25 kg'
+    }
+  };
 
   const features = [
     {
@@ -59,15 +100,15 @@ const FeaturesSection = () => {
       icon: Gauge,
       title: "LCD Display Monitoring",
       description: "Real-time system status with comprehensive parameter display",
-      details: "Advanced LCD display shows PV voltage/current, battery voltage, load current, inverter status, charging status, and fault diagnostics in real-time.",
+      details: "Advanced LCD display shows PV voltage/current, battery voltage, load current, UPS status, charging status, and fault diagnostics in real-time.",
       color: "from-blue-400 to-indigo-500",
       progress: 100
     },
     {
       icon: Sun,
       title: "Hybrid Functionality",
-      description: "Solar + Grid + Battery integration with intelligent switching",
-      details: "Seamless integration of solar panels, grid power, and battery backup with automatic switching and priority management for optimal energy utilization.",
+      description: "Multi-source + Grid + Battery integration with intelligent switching",
+      details: "Seamless integration of renewable sources, grid power, and battery backup with automatic switching and priority management for optimal energy utilization.",
       color: "from-orange-400 to-red-500",
       progress: 98
     },
@@ -227,7 +268,7 @@ const FeaturesSection = () => {
               </div>
               
               <button className="cta-button primary">
-                Add to Cart
+                Add to Rental Cart
                 <ArrowRight size={20} />
               </button>
             </div>
@@ -265,7 +306,12 @@ const FeaturesSection = () => {
         className="featured-showcase"
       >
         <div className="showcase-3d">
-          <div className="product-3d">
+          <motion.div 
+            className="product-3d clickable-3d"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setShow3DModal(true)}
+          >
             <div className="product-model">
               <div className="inverter-body">
                 <div className="led-indicator active"></div>
@@ -279,7 +325,11 @@ const FeaturesSection = () => {
                 </div>
               </div>
             </div>
-          </div>
+            <div className="view-3d-overlay">
+              <Eye className="view-3d-icon" />
+              <span>View 3D Model</span>
+            </div>
+          </motion.div>
           
           <div className="showcase-info">
             <h3>TechPro Enterprise Series</h3>
@@ -297,6 +347,27 @@ const FeaturesSection = () => {
                 <span className="stat-value">IP65</span>
                 <span className="stat-label">Protection</span>
               </div>
+            </div>
+            <div className="showcase-buttons">
+              <motion.button
+                className="view-3d-button"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setShow3DModal(true)}
+              >
+                <Eye className="mr-2 h-5 w-5" />
+                View 3D Model
+              </motion.button>
+              
+              <motion.button
+                className="view-ar-button"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setShowARModal(true)}
+              >
+                <Camera className="mr-2 h-5 w-5" />
+                Try AR View
+              </motion.button>
             </div>
           </div>
         </div>
@@ -464,7 +535,7 @@ const FeaturesSection = () => {
         className="action-buttons"
       >
         <button className="cta-button primary">
-          Shop Now
+          Browse Rentals
           <ArrowRight size={20} />
         </button>
         <button className="cta-button secondary">
@@ -482,6 +553,20 @@ const FeaturesSection = () => {
           }}
         />
       )}
+
+      {/* 3D Lithium Inverter Modal */}
+      <LithiumInverter3DModal
+        isOpen={show3DModal}
+        onClose={() => setShow3DModal(false)}
+        product={techProProduct}
+      />
+
+      {/* AR Camera Modal */}
+      <ARCameraView
+        isVisible={showARModal}
+        onClose={() => setShowARModal(false)}
+        product={techProProduct}
+      />
     </section>
   );
 };
