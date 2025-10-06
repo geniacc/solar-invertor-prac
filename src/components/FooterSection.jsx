@@ -42,7 +42,7 @@ const FooterSection = () => {
 
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
-    console.log('Newsletter subscription:', email);
+    // TODO: Implement newsletter subscription
     setEmail('');
   };
 

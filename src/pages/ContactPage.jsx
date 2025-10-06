@@ -13,9 +13,9 @@ import {
   Wrench,
   CreditCard
 } from 'lucide-react'
-import { Button } from '../components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
-import { Badge } from '../components/ui/badge'
+import { Button } from '../components/ui/Button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card'
+import { Badge } from '../components/ui/Badge'
 import { Input } from '../components/ui/input'
 import { Textarea } from '../components/ui/textarea'
 import LoadingSpinner from '../components/ui/Loading'

@@ -126,7 +126,7 @@ const FeaturesSection = () => {
     {
       id: 1,
       name: "Zuice-12V-1KVA",
-      image: "/src/assets/solar-banner-removebg-preview.png",
+      image: "/images/solar-banner-removebg-preview.png",
       price: "₹25,000",
       originalPrice: "₹30,000",
       rating: 4.8,
@@ -138,7 +138,7 @@ const FeaturesSection = () => {
     {
       id: 2,
       name: "Zuice-24V-2KVA",
-      image: "/src/assets/solar-banner-removebg-preview.png",
+      image: "/images/solar-banner-removebg-preview.png",
       price: "₹35,000",
       originalPrice: "₹42,000",
       rating: 4.9,
@@ -150,7 +150,7 @@ const FeaturesSection = () => {
     {
       id: 3,
       name: "Zuice-48V-3KVA",
-      image: "/src/assets/solar-banner-removebg-preview.png",
+      image: "/images/solar-banner-removebg-preview.png",
       price: "₹45,000",
       originalPrice: "₹55,000",
       rating: 4.9,
@@ -162,7 +162,7 @@ const FeaturesSection = () => {
     {
       id: 4,
       name: "Zuice-48V-5KVA",
-      image: "/src/assets/solar-banner-removebg-preview.png",
+      image: "/images/solar-banner-removebg-preview.png",
       price: "₹65,000",
       originalPrice: "₹75,000",
       rating: 4.9,

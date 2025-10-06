@@ -2,7 +2,7 @@ export const products = [
   {
     id: 1,
     name: "Zuice μ1000 Hybrid PCU - 50Ah",
-    category: "Solar Hybrid PCU",
+    category: "Power Hybrid PCU",
     power: "1KVA",
     efficiency: "90%",
     price: 45000,
@@ -34,17 +34,17 @@ export const products = [
       "Warranty": "2 Years PCU + 3 Years Battery"
     },
     images: [
-      "/src/assets/image1.JPG",
-      "/src/assets/image2.JPG",
-      "/src/assets/image3.JPG",
-      "/src/assets/image4.JPG"
+      "/images/image1.JPG",
+      "/images/image2.JPG",
+      "/images/image3.JPG",
+      "/images/image4.JPG"
     ],
     description: "The Zuice μ1000 Hybrid PCU with 50Ah LiFePo4 battery is perfect for small homes and offices. It combines renewable charging, battery backup, and grid power in one compact unit."
   },
   {
     id: 2,
     name: "Zuice μ1000 Pro - 86Ah Battery",
-    category: "Solar Hybrid PCU",
+    category: "Power Hybrid PCU",
     power: "1KVA",
     efficiency: "90%",
     price: 65000,
@@ -76,17 +76,17 @@ export const products = [
       "Warranty": "2 Years PCU + 3 Years Battery"
     },
     images: [
-      "/src/assets/image5.JPG",
-      "/src/assets/image6.JPG",
-      "/src/assets/image7.JPG",
-      "/src/assets/image8.JPG"
+      "/images/image5.JPG",
+      "/images/image6.JPG",
+      "/images/image7.JPG",
+      "/images/image8.JPG"
     ],
     description: "The Zuice μ1000 Pro with 86Ah battery offers extended backup time for medium-sized homes and small businesses with higher power requirements."
   },
   {
     id: 3,
     name: "Zuice μ1000 Max - 100Ah Battery",
-    category: "Solar Hybrid PCU",
+    category: "Power Hybrid PCU",
     power: "1KVA",
     efficiency: "90%",
     price: 75000,
@@ -118,10 +118,10 @@ export const products = [
       "Warranty": "2 Years PCU + 3 Years Battery"
     },
     images: [
-      "/src/assets/image1.JPG",
-      "/src/assets/image3.JPG",
-      "/src/assets/image5.JPG",
-      "/src/assets/image7.JPG"
+      "/images/image1.JPG",
+      "/images/image3.JPG",
+      "/images/image5.JPG",
+      "/images/image7.JPG"
     ],
     description: "The Zuice μ1000 Max with 100Ah battery provides maximum backup time for larger homes and commercial applications requiring extended power backup."
   },
@@ -160,10 +160,10 @@ export const products = [
       "Warranty": "1 Year"
     },
     images: [
-      "/src/assets/image2.JPG",
-      "/src/assets/image4.JPG",
-      "/src/assets/image6.JPG",
-      "/src/assets/image8.JPG"
+      "/images/image2.JPG",
+      "/images/image4.JPG",
+      "/images/image6.JPG",
+      "/images/image8.JPG"
     ],
     description: "Advanced monitoring kit for Zuice μ1000 systems with mobile app integration and real-time performance tracking."
   }

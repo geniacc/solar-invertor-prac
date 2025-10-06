@@ -37,6 +37,9 @@ const VoiceProductAssistant = () => {
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [recommendation, setRecommendation] = useState(null);
+  const [pendingConfirmation, setPendingConfirmation] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
+  const [lastUserInput, setLastUserInput] = useState('');
   
   const { isMobile, isTablet } = useResponsive();
   
@@ -48,14 +51,8 @@ const VoiceProductAssistant = () => {
   // Conversation flow steps
   const conversationSteps = [
     {
-      id: 'greeting',
-      question: "Hi! I'm your solar assistant. I'll help you find the perfect solar solution for your needs. What's your name?",
-      type: 'text',
-      key: 'name'
-    },
-    {
       id: 'property_type',
-      question: "Nice to meet you, {name}! What type of property are you looking to power?",
+      question: "Hi! I'm your inverter assistant. I'll help you find the perfect power solution for your needs. Let's start by understanding what type of property you're looking to power.",
       type: 'choice',
       key: 'propertyType',
       options: [
@@ -78,7 +75,7 @@ const VoiceProductAssistant = () => {
     },
     {
       id: 'budget',
-      question: "What's your budget range for this solar solution?",
+      question: "What's your budget range for this power solution?",
       type: 'choice',
       key: 'budget',
       options: [
@@ -100,12 +97,12 @@ const VoiceProductAssistant = () => {
     },
     {
       id: 'monitoring',
-      question: "Would you like real-time monitoring and mobile app control for your solar system?",
+      question: "Would you like real-time monitoring and mobile app control for your power system?",
       type: 'choice',
       key: 'monitoring',
       options: [
         { value: 'yes', label: 'Yes, I want monitoring', description: 'Track performance & get alerts' },
-        { value: 'no', label: 'No, basic system is fine', description: 'Just the solar unit' }
+        { value: 'no', label: 'No, basic system is fine', description: 'Just the power unit' }
       ]
     }
   ];
@@ -115,22 +112,117 @@ const VoiceProductAssistant = () => {
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       recognitionRef.current = new SpeechRecognition();
+      
+      // Enhanced recognition settings
       recognitionRef.current.continuous = false;
-      recognitionRef.current.interimResults = false;
+      recognitionRef.current.interimResults = true; // Enable interim results for better UX
       recognitionRef.current.lang = 'en-US';
-
+      recognitionRef.current.maxAlternatives = 3; // Get multiple alternatives
+      
+      // Enhanced result handling with confidence scoring
       recognitionRef.current.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        handleVoiceInput(transcript);
+        const results = event.results;
+        const lastResult = results[results.length - 1];
+        
+        if (lastResult.isFinal) {
+          const transcript = lastResult[0].transcript;
+          const confidence = lastResult[0].confidence;
+          
+          console.log('🎙️ Voice input:', transcript, 'Confidence:', confidence);
+          
+          // Only process if confidence is reasonable
+          if (confidence > 0.3) {
+            handleVoiceInput(transcript, confidence);
+          } else {
+            console.log('⚠️ Low confidence, asking for repeat');
+            speakText("I didn't catch that clearly. Could you please repeat?");
+            setTimeout(() => {
+              startListening();
+            }, 2000);
+          }
+        } else {
+          // Show interim results for better UX
+          const interimTranscript = lastResult[0].transcript;
+          setInputText(interimTranscript);
+        }
       };
 
+      // Enhanced error handling
+      recognitionRef.current.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        setIsListening(false);
+        
+        let errorMessage = '';
+        switch (event.error) {
+          case 'no-speech':
+            errorMessage = "I didn't hear anything. Please try speaking again.";
+            break;
+          case 'audio-capture':
+            errorMessage = "Microphone access is needed. Please check your microphone settings.";
+            break;
+          case 'not-allowed':
+            errorMessage = "Microphone permission is required for voice input.";
+            break;
+          case 'network':
+            errorMessage = "Network error occurred. Please check your connection.";
+            break;
+          case 'aborted':
+            // Don't show error for intentional stops
+            return;
+          default:
+            errorMessage = "Voice recognition error. Please try typing your response instead.";
+        }
+        
+        if (errorMessage) {
+          speakText(errorMessage);
+          // Auto-retry for certain errors
+          if (['no-speech', 'network'].includes(event.error)) {
+            setTimeout(() => {
+              if (!isListening) {
+                startListening();
+              }
+            }, 3000);
+          }
+        }
+      };
+
+      // Enhanced end handling
       recognitionRef.current.onend = () => {
         setIsListening(false);
+        setInputText(''); // Clear interim text
+        console.log('🔇 Voice recognition ended');
+      };
+
+      // Start event
+      recognitionRef.current.onstart = () => {
+        console.log('🎙️ Voice recognition started');
+        setInputText(''); // Clear any previous text
+      };
+
+      // Audio start/end events for better feedback
+      recognitionRef.current.onaudiostart = () => {
+        console.log('🔊 Audio capture started');
+      };
+
+      recognitionRef.current.onaudioend = () => {
+        console.log('🔇 Audio capture ended');
       };
     }
 
     if ('speechSynthesis' in window) {
       synthRef.current = window.speechSynthesis;
+      
+      // Load voices when they become available
+      const loadVoices = () => {
+        const voices = synthRef.current.getVoices();
+        if (voices.length > 0) {
+          console.log('🎵 Available voices:', voices.length);
+        }
+      };
+      
+      // Voices might load asynchronously
+      synthRef.current.onvoiceschanged = loadVoices;
+      loadVoices(); // Try loading immediately
     }
 
     // Initial greeting when opened
@@ -151,16 +243,111 @@ const VoiceProductAssistant = () => {
       // Cancel any ongoing speech
       synthRef.current.cancel();
       
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.9;
-      utterance.pitch = 1;
-      utterance.volume = 0.8;
+      // Clean and enhance text for better speech
+      const enhancedText = enhanceTextForSpeech(text);
       
-      utterance.onstart = () => setIsSpeaking(true);
-      utterance.onend = () => setIsSpeaking(false);
+      const utterance = new SpeechSynthesisUtterance(enhancedText);
+      
+      // Get available voices and select the best one
+      const voices = synthRef.current.getVoices();
+      const preferredVoice = selectBestVoice(voices);
+      
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
+      }
+      
+      // Enhanced voice settings for more natural speech
+      utterance.rate = 0.9; // Optimal speed for clarity and naturalness
+      utterance.pitch = 1.0; // Natural pitch for professional tone
+      utterance.volume = 0.95; // Clear volume for better understanding
+      
+      // Add natural pauses and emphasis
+      utterance.onstart = () => {
+        setIsSpeaking(true);
+        console.log('🎤 Speaking:', enhancedText);
+      };
+      
+      utterance.onend = () => {
+        setIsSpeaking(false);
+        console.log('🔇 Speech ended');
+      };
+      
+      utterance.onerror = (event) => {
+        console.error('Speech synthesis error:', event);
+        setIsSpeaking(false);
+      };
       
       synthRef.current.speak(utterance);
     }
+  };
+
+  // Enhanced text processing for more natural speech
+  const enhanceTextForSpeech = (text) => {
+    return text
+      // Add natural pauses for better flow
+      .replace(/\./g, '. ')
+      .replace(/\?/g, '? ')
+      .replace(/!/g, '! ')
+      .replace(/,/g, ', ')
+      .replace(/:/g, ': ')
+      .replace(/;/g, '; ')
+      // Improve pronunciation of technical terms
+      .replace(/₹/g, 'rupees ')
+      .replace(/kW/g, 'kilowatt ')
+      .replace(/Ah/g, 'ampere hour ')
+      .replace(/PCU/g, 'power control unit ')
+      .replace(/3D/g, 'three D ')
+      .replace(/AI/g, 'A I ')
+      .replace(/inverter/gi, 'inverter')
+      .replace(/invertor/gi, 'inverter')
+      // Add natural emphasis and flow
+      .replace(/Let's start/gi, 'Let\'s start')
+      .replace(/What's/gi, 'What is')
+      .replace(/you're/gi, 'you are')
+      .replace(/I'm/gi, 'I am')
+      .replace(/I'll/gi, 'I will')
+      .replace(/you'll/gi, 'you will')
+      // Improve number pronunciation
+      .replace(/1-3/g, 'one to three')
+      .replace(/3-5/g, 'three to five')
+      .replace(/5\+/g, 'five or more')
+      .replace(/6\+/g, 'six or more')
+      .replace(/2-3/g, 'two to three')
+      .replace(/4-6/g, 'four to six')
+      // Clean up extra spaces and normalize
+      .replace(/\s+/g, ' ')
+      .trim();
+  };
+
+  // Select the best available voice for speech synthesis
+  const selectBestVoice = (voices) => {
+    if (!voices || voices.length === 0) return null;
+    
+    // Preferred voice characteristics
+    const preferences = [
+      // English voices with good quality
+      (voice) => voice.lang.startsWith('en') && voice.name.includes('Google'),
+      (voice) => voice.lang.startsWith('en') && voice.name.includes('Microsoft'),
+      (voice) => voice.lang.startsWith('en') && voice.name.includes('Natural'),
+      (voice) => voice.lang.startsWith('en') && voice.name.includes('Premium'),
+      (voice) => voice.lang.startsWith('en') && voice.gender === 'female',
+      (voice) => voice.lang.startsWith('en') && voice.localService === false,
+      (voice) => voice.lang.startsWith('en'),
+      (voice) => voice.default
+    ];
+    
+    // Try each preference in order
+    for (const preference of preferences) {
+      const voice = voices.find(preference);
+      if (voice) {
+        console.log('🎵 Selected voice:', voice.name, voice.lang);
+        return voice;
+      }
+    }
+    
+    // Fallback to first available voice
+    console.log('🎵 Using fallback voice:', voices[0].name);
+    return voices[0];
   };
 
   const stopSpeaking = () => {
@@ -171,16 +358,82 @@ const VoiceProductAssistant = () => {
   };
 
   const startListening = () => {
-    if (recognitionRef.current && !isListening) {
-      setIsListening(true);
-      recognitionRef.current.start();
+    if (recognitionRef.current && !isListening && !isSpeaking) {
+      // Don't start listening while speaking
+      if (isSpeaking) {
+        console.log('⏸️ Waiting for speech to finish before listening...');
+        setTimeout(() => {
+          if (!isSpeaking) {
+            startListening();
+          }
+        }, 1000);
+        return;
+      }
+
+      try {
+        setIsListening(true);
+        console.log('🎙️ Starting voice recognition...');
+        
+        // Provide audio feedback
+        speakText("I'm listening...");
+        
+        // Start recognition after a brief delay to avoid capturing the feedback
+        setTimeout(() => {
+          if (recognitionRef.current && isListening) {
+            recognitionRef.current.start();
+          }
+        }, 1500);
+        
+        // Auto-stop after 10 seconds to prevent hanging
+        setTimeout(() => {
+          if (isListening) {
+            console.log('⏰ Auto-stopping voice recognition after timeout');
+            stopListening();
+            speakText("I didn't hear anything. Please try again or type your response.");
+          }
+        }, 10000);
+        
+      } catch (error) {
+        console.error('Error starting voice recognition:', error);
+        setIsListening(false);
+        speakText("Voice recognition is not available. Please type your response.");
+      }
     }
   };
 
   const stopListening = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
-      setIsListening(false);
+    if (recognitionRef.current && isListening) {
+      try {
+        recognitionRef.current.stop();
+        setIsListening(false);
+        console.log('🔇 Voice recognition stopped');
+      } catch (error) {
+        console.error('Error stopping voice recognition:', error);
+        setIsListening(false);
+      }
+    }
+  };
+
+  // Enhanced listening with noise detection
+  const startSmartListening = () => {
+    if (!recognitionRef.current) {
+      speakText("Voice recognition is not supported in your browser. Please type your response.");
+      return;
+    }
+
+    // Check if microphone permission is available
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(() => {
+          console.log('🎤 Microphone access granted');
+          startListening();
+        })
+        .catch((error) => {
+          console.error('Microphone access denied:', error);
+          speakText("Microphone access is required for voice input. Please enable it or type your response.");
+        });
+    } else {
+      startListening(); // Fallback to basic listening
     }
   };
 
@@ -210,17 +463,256 @@ const VoiceProductAssistant = () => {
       question = question.replace(`{${key}}`, userResponses[key]);
     });
 
+    // Add dynamic contextual variations
+    const enhancedQuestion = addContextualVariations(question, step, userResponses, stepIndex);
+
     setIsTyping(true);
     setTimeout(() => {
       setIsTyping(false);
-      addMessage(question, 'assistant', step.type, step.options);
-      speakText(question);
+      addMessage(enhancedQuestion, 'assistant', step.type, step.options);
+      speakText(enhancedQuestion);
     }, 1000);
   };
 
-  const handleVoiceInput = (transcript) => {
+  // Add contextual variations to make responses more natural and personalized
+  const addContextualVariations = (question, step, responses, stepIndex) => {
+    const timeOfDay = new Date().getHours();
+    const greeting = timeOfDay < 12 ? 'Good morning' : timeOfDay < 17 ? 'Good afternoon' : 'Good evening';
+    
+    // Add contextual prefixes based on conversation progress
+    let contextualPrefix = '';
+    
+    if (stepIndex === 0) {
+      const greetings = [
+        `${greeting}! `,
+        'Welcome! ',
+        'Hello! ',
+        'Great to have you here! ',
+        'Let\'s get started! '
+      ];
+      contextualPrefix = greetings[Math.floor(Math.random() * greetings.length)];
+    } else if (stepIndex > 0) {
+      const continuations = [
+        'Excellent choice! ',
+        'Perfect! ',
+        'Great! ',
+        'Wonderful! ',
+        'That helps a lot! ',
+        'Good to know! '
+      ];
+      
+      // Add contextual responses based on previous answers
+      if (responses.propertyType === 'large_home') {
+        continuations.push('A large home needs robust power backup! ');
+      } else if (responses.propertyType === 'small_home') {
+        continuations.push('Smart choice for efficient power management! ');
+      }
+      
+      if (responses.powerUsage === 'high') {
+        continuations.push('High power usage requires careful planning! ');
+      }
+      
+      contextualPrefix = continuations[Math.floor(Math.random() * continuations.length)];
+    }
+    
+    // Add contextual suffixes based on step type
+    let contextualSuffix = '';
+    
+    if (step.type === 'choice') {
+      const choicePrompts = [
+        ' What would work best for you?',
+        ' Which option suits your needs?',
+        ' What do you think?',
+        ' Which one feels right?',
+        ' What\'s your preference?'
+      ];
+      contextualSuffix = choicePrompts[Math.floor(Math.random() * choicePrompts.length)];
+    } else if (step.type === 'text') {
+      const textPrompts = [
+        ' Please let me know!',
+        ' I\'d love to hear from you!',
+        ' What would you like to share?',
+        ' Please tell me!',
+        ' I\'m here to help!'
+      ];
+      contextualSuffix = textPrompts[Math.floor(Math.random() * textPrompts.length)];
+    }
+    
+    // Combine with smart spacing
+    return (contextualPrefix + question + contextualSuffix).replace(/\s+/g, ' ').trim();
+  };
+
+  // Enhanced recommendation generation with personalized speech
+  const generatePersonalizedRecommendation = (recommendation) => {
+    const { propertyType, powerUsage, budget } = userResponses;
+    
+    let personalizedIntro = '';
+    const intros = [
+      'Based on our conversation, ',
+      'Perfect! After analyzing your needs, ',
+      'Great news! ',
+      'I\'ve found the ideal solution for you! ',
+      'Here\'s what I recommend based on your requirements: '
+    ];
+    personalizedIntro = intros[Math.floor(Math.random() * intros.length)];
+    
+    let contextualReason = '';
+    if (propertyType && powerUsage) {
+      if (propertyType === 'large_home' && powerUsage === 'high') {
+        contextualReason = 'For your large home with high power needs, ';
+      } else if (propertyType === 'small_home' && powerUsage === 'low') {
+        contextualReason = 'For your compact home with efficient power usage, ';
+      } else {
+        contextualReason = `For your ${propertyType.replace('_', ' ')} with ${powerUsage} power usage, `;
+      }
+    }
+    
+    return personalizedIntro + contextualReason + 'this is my top recommendation for you.';
+  };
+
+  // Voice confirmation and retry mechanisms
+  const requestConfirmation = (transcript, confidence, stepData) => {
+    setLastUserInput(transcript);
+    setPendingConfirmation({
+      transcript,
+      confidence,
+      stepData,
+      originalStep: currentStep
+    });
+    
+    const confirmationMessages = [
+      `I heard "${transcript}". Is that correct?`,
+      `Did you say "${transcript}"?`,
+      `Just to confirm, you said "${transcript}". Is that right?`,
+      `I want to make sure I got that right. You said "${transcript}". Correct?`
+    ];
+    
+    const confirmationMessage = confirmationMessages[Math.floor(Math.random() * confirmationMessages.length)];
+    addMessage(confirmationMessage, 'assistant', 'confirmation');
+    speakText(confirmationMessage);
+  };
+
+  const handleConfirmationResponse = (response) => {
+    const lowerResponse = response.toLowerCase();
+    const isPositive = lowerResponse.includes('yes') || lowerResponse.includes('correct') || 
+                      lowerResponse.includes('right') || lowerResponse.includes('yeah') ||
+                      lowerResponse.includes('yep') || lowerResponse.includes('sure');
+    const isNegative = lowerResponse.includes('no') || lowerResponse.includes('wrong') || 
+                      lowerResponse.includes('incorrect') || lowerResponse.includes('nope');
+    
+    if (isPositive && pendingConfirmation) {
+      // User confirmed, proceed with the original input
+      const { transcript, stepData } = pendingConfirmation;
+      setPendingConfirmation(null);
+      setRetryCount(0);
+      
+      const acknowledgments = [
+        'Perfect! Thank you for confirming.',
+        'Great! Got it.',
+        'Excellent! Moving forward.',
+        'Thank you for the confirmation!'
+      ];
+      
+      const ack = acknowledgments[Math.floor(Math.random() * acknowledgments.length)];
+      speakText(ack);
+      
+      setTimeout(() => {
+        handleUserResponse(transcript, 1.0); // Treat confirmed input as high confidence
+      }, 1500);
+      
+    } else if (isNegative) {
+      // User said no, ask them to repeat
+      setPendingConfirmation(null);
+      setRetryCount(prev => prev + 1);
+      
+      if (retryCount < 2) {
+        const retryMessages = [
+          'No problem! Please try saying that again.',
+          'I understand. Could you repeat that for me?',
+          'Got it. Let me listen again. Please repeat your answer.',
+          'Okay, let\'s try again. Please say your answer once more.'
+        ];
+        
+        const retryMessage = retryMessages[Math.floor(Math.random() * retryMessages.length)];
+        addMessage(retryMessage, 'assistant');
+        speakText(retryMessage);
+        
+        setTimeout(() => {
+          startSmartListening();
+        }, 2000);
+      } else {
+        // Too many retries, offer alternative
+        const fallbackMessage = 'I\'m having trouble understanding. Would you like to type your answer instead, or should we move to the next question?';
+        addMessage(fallbackMessage, 'assistant');
+        speakText(fallbackMessage);
+        setRetryCount(0);
+      }
+    } else {
+      // Unclear response to confirmation
+      const clarificationMessage = 'I didn\'t catch that. Please say "yes" if I got it right, or "no" if I need to listen again.';
+      addMessage(clarificationMessage, 'assistant');
+      speakText(clarificationMessage);
+    }
+  };
+
+  const handleRetryMechanism = (transcript, confidence, stepData) => {
+    if (confidence < 0.5 && retryCount < 2) {
+      setRetryCount(prev => prev + 1);
+      
+      const retryMessages = [
+        'I didn\'t catch that clearly. Could you please repeat?',
+        'Sorry, I missed that. Please say it again.',
+        'I\'m having trouble hearing you. Could you try once more?',
+        'Let me listen more carefully. Please repeat your answer.'
+      ];
+      
+      const retryMessage = retryMessages[Math.floor(Math.random() * retryMessages.length)];
+      addMessage(retryMessage, 'assistant');
+      speakText(retryMessage);
+      
+      setTimeout(() => {
+        startSmartListening();
+      }, 2000);
+      
+      return true; // Indicates retry was triggered
+    } else if (retryCount >= 2) {
+      // Reset retry count and offer alternatives
+      setRetryCount(0);
+      const fallbackMessage = 'I\'m still having trouble understanding. You can type your answer, or I can move to the next question. What would you prefer?';
+      addMessage(fallbackMessage, 'assistant');
+      speakText(fallbackMessage);
+      return true;
+    }
+    
+    return false; // No retry needed
+  };
+
+  const handleVoiceInput = (transcript, confidence = 1.0) => {
     setInputText(transcript);
-    handleUserResponse(transcript);
+    
+    // Handle pending confirmation first
+    if (pendingConfirmation) {
+      handleConfirmationResponse(transcript);
+      return;
+    }
+    
+    const currentStepData = conversationSteps[currentStep];
+    
+    // Check if retry mechanism should be triggered
+    if (handleRetryMechanism(transcript, confidence, currentStepData)) {
+      return; // Retry was triggered, don't proceed
+    }
+    
+    // Request confirmation for medium confidence inputs
+    if (confidence >= 0.5 && confidence < 0.8) {
+      console.log('⚠️ Medium confidence input, requesting confirmation...');
+      requestConfirmation(transcript, confidence, currentStepData);
+      return;
+    }
+    
+    // High confidence or confirmed input - proceed normally
+    setRetryCount(0); // Reset retry count on successful input
+    handleUserResponse(transcript, confidence);
   };
 
   const parseTextResponse = (response, stepData) => {
@@ -266,7 +758,7 @@ const VoiceProductAssistant = () => {
     return response; // Return original if no match found
   };
 
-  const handleUserResponse = (response) => {
+  const handleUserResponse = (response, confidence = 1.0) => {
     const currentStepData = conversationSteps[currentStep];
     
     addMessage(response, 'user');
@@ -274,12 +766,26 @@ const VoiceProductAssistant = () => {
     // Parse the response to get the correct value for logic processing
     const parsedValue = parseTextResponse(response, currentStepData);
     
-    // Store the parsed response
+    // Store the parsed response with confidence info
     const newResponses = {
       ...userResponses,
-      [currentStepData.key]: parsedValue
+      [currentStepData.key]: parsedValue,
+      [`${currentStepData.key}_confidence`]: confidence
     };
     setUserResponses(newResponses);
+    
+    // Provide acknowledgment for voice inputs
+    if (confidence < 1.0) {
+      const acknowledgments = [
+        "Got it!",
+        "Perfect!",
+        "Understood!",
+        "Great choice!",
+        "Excellent!"
+      ];
+      const randomAck = acknowledgments[Math.floor(Math.random() * acknowledgments.length)];
+      speakText(randomAck);
+    }
     
     // Move to next step
     setTimeout(() => {
@@ -301,11 +807,22 @@ const VoiceProductAssistant = () => {
     };
     setUserResponses(newResponses);
     
-    // Move to next step
+    // Provide acknowledgment for option selection
+    const acknowledgments = [
+      "Got it!",
+      "Perfect!",
+      "Understood!",
+      "Great choice!",
+      "Excellent!"
+    ];
+    const randomAck = acknowledgments[Math.floor(Math.random() * acknowledgments.length)];
+    speakText(randomAck);
+    
+    // Move to next step with a slight delay to allow acknowledgment to play
     setTimeout(() => {
       setCurrentStep(prev => prev + 1);
       askQuestion(currentStep + 1);
-    }, 1000);
+    }, 1500);
   };
 
   const generateRecommendation = () => {
@@ -353,12 +870,10 @@ const VoiceProductAssistant = () => {
   const getProductRecommendation = (responses) => {
     const { propertyType, powerUsage, budget, backupPriority, monitoring } = responses;
     
-    // Debug logging to verify responses are being processed correctly
-    console.log('🔍 Processing user responses:', responses);
-    console.log('📊 Extracted values:', { propertyType, powerUsage, budget, backupPriority, monitoring });
+    // Process user responses for product recommendation
     
     // Score each product based on user preferences
-    const scoredProducts = products.filter(p => p.category === 'Solar Hybrid PCU').map(product => {
+    const scoredProducts = products.filter(p => p.category.includes('Hybrid PCU')).map(product => {
       let score = 0;
       let reasons = [];
       
@@ -507,7 +1022,7 @@ const VoiceProductAssistant = () => {
       >
         <motion.div
           className={`relative bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white rounded-2xl shadow-2xl backdrop-blur-sm border border-white/20 transition-all duration-500 ${
-            isOpen ? 'px-4 py-2' : 'px-6 py-4'
+            isOpen ? 'px-3 py-1.5' : 'px-5 py-3'
           }`}
           whileHover={{ 
             scale: 1.02,
@@ -531,7 +1046,7 @@ const VoiceProductAssistant = () => {
             }}
             transition={{ duration: 2, repeat: Infinity }}
           />
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2">
             {/* Voice Assistant Icon */}
             <motion.div
               className="relative flex items-center justify-center"
@@ -576,11 +1091,11 @@ const VoiceProductAssistant = () => {
               
               {/* Icon container */}
               <motion.div
-                className="relative z-10 p-2 rounded-full bg-white/10 backdrop-blur-sm"
+                className="relative z-10 p-1.5 rounded-full bg-white/10 backdrop-blur-sm"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Mic className="h-5 w-5 drop-shadow-sm" />
+                <Mic className="h-4 w-4 drop-shadow-sm" />
               </motion.div>
             </motion.div>
 
@@ -592,7 +1107,7 @@ const VoiceProductAssistant = () => {
               transition={{ delay: 0.2, duration: 0.4 }}
             >
               <motion.div 
-                className="text-sm font-semibold truncate tracking-wide"
+                className="text-xs font-semibold truncate tracking-wide"
                 animate={{
                   color: isListening 
                     ? '#ffffff' 
@@ -611,11 +1126,11 @@ const VoiceProductAssistant = () => {
               </motion.div>
               {!isOpen && (
                 <motion.div 
-                  className="text-xs opacity-80 truncate font-medium"
+                  className="text-[10px] opacity-80 truncate font-medium"
                   animate={{ opacity: [0.6, 1, 0.6] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
-                  Get FREE solar advice!
+                  Get necessary advice!
                 </motion.div>
               )}
             </motion.div>
@@ -630,7 +1145,7 @@ const VoiceProductAssistant = () => {
                 {!isOpen && (
                   <motion.button
                     onClick={() => setIsOpen(true)}
-                    className="p-2.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 group"
+                    className="p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 group"
                     whileHover={{ 
                       scale: 1.05,
                       backgroundColor: "rgba(255, 255, 255, 0.25)"
@@ -647,7 +1162,7 @@ const VoiceProductAssistant = () => {
                     {/* Volume Control */}
                     <motion.button
                       onClick={isSpeaking ? stopSpeaking : () => {}}
-                      className={`p-2.5 rounded-xl backdrop-blur-sm border border-white/20 transition-all duration-300 group ${
+                      className={`p-2 rounded-xl backdrop-blur-sm border border-white/20 transition-all duration-300 group ${
                         isSpeaking 
                           ? 'bg-red-500/80 hover:bg-red-500 border-red-400/30' 
                           : 'bg-white/10 hover:bg-white/20'
@@ -674,7 +1189,7 @@ const VoiceProductAssistant = () => {
                     {/* Clear/Reset Button */}
                     <motion.button
                       onClick={resetAssistant}
-                      className="p-2.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 group"
+                      className="p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 group"
                       whileHover={{ 
                         scale: 1.05,
                         backgroundColor: "rgba(255, 255, 255, 0.25)"
@@ -692,8 +1207,8 @@ const VoiceProductAssistant = () => {
                     
                     {/* Close Button */}
                     <motion.button
-                      onClick={() => setIsOpen(false)}
-                      className="p-2.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-red-500/30 transition-all duration-300 group"
+                      onClick={closeAssistant}
+                      className="p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-red-500/30 transition-all duration-300 group"
                       whileHover={{ 
                         scale: 1.05,
                         backgroundColor: "rgba(239, 68, 68, 0.3)"
@@ -798,15 +1313,15 @@ const VoiceProductAssistant = () => {
                   
                   <div className="flex-1">
                     <motion.h3 
-                      className="text-xl font-bold tracking-wide drop-shadow-sm"
+                      className="text-lg font-bold tracking-wide drop-shadow-sm"
                       initial={{ x: -10, opacity: 0 }}
                       animate={{ x: 0, opacity: 1 }}
                       transition={{ delay: 0.2, duration: 0.4 }}
                     >
-                      🤖 AI Solar Assistant
+                      🤖 AI Invertor Assistant
                     </motion.h3>
                     <motion.p 
-                      className="text-sm opacity-90 font-medium"
+                      className="text-xs opacity-90 font-medium"
                       initial={{ x: -10, opacity: 0 }}
                       animate={{ x: 0, opacity: 1 }}
                       transition={{ delay: 0.3, duration: 0.4 }}
@@ -817,7 +1332,7 @@ const VoiceProductAssistant = () => {
                         ? '🗣️ Speaking your recommendation...'
                         : isTyping
                         ? '🤔 Processing your request...'
-                        : '✨ Ready to find your perfect solar solution'}
+                        : '✨ Ready to find your perfect power solution'}
                     </motion.p>
                   </div>
                 </div>
@@ -875,7 +1390,7 @@ const VoiceProductAssistant = () => {
 
                   {/* Close Button */}
                   <motion.button
-                    onClick={() => setIsOpen(false)}
+                    onClick={closeAssistant}
                     className="p-2.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-red-500/30 transition-all duration-300 group"
                     whileHover={{ 
                       scale: 1.05,
@@ -953,7 +1468,7 @@ const VoiceProductAssistant = () => {
                           <div className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shadow-sm">
                             <Bot size={14} className="text-white" />
                           </div>
-                          <span className="text-xs font-medium text-gray-600 dark:text-gray-400">AI Assistant</span>
+                          <span className="text-[10px] font-medium text-gray-600 dark:text-gray-400">AI Assistant</span>
                           <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
                         </motion.div>
                         <div className="bg-white dark:bg-gray-800 rounded-2xl rounded-bl-md p-4 shadow-sm border border-gray-100 dark:border-gray-700">
@@ -1039,9 +1554,11 @@ const MessageBubble = ({ message, onOptionSelect, onProductSelect }) => {
         )}
         
         <motion.div
-          className={`relative p-4 rounded-2xl shadow-sm backdrop-blur-sm border ${
+          className={`relative p-3 rounded-2xl shadow-sm backdrop-blur-sm border ${
             isAssistant
-              ? 'bg-gradient-to-br from-white via-gray-50 to-white dark:from-gray-700 dark:via-gray-750 dark:to-gray-700 text-gray-800 dark:text-gray-200 border-gray-200/50 dark:border-gray-600/50'
+              ? message.type === 'choice' 
+                ? 'bg-gradient-to-br from-emerald-50 via-cyan-50 to-blue-50 dark:from-emerald-900/30 dark:via-cyan-900/30 dark:to-blue-900/30 text-gray-800 dark:text-gray-200 border-emerald-200/70 dark:border-emerald-600/50 ring-2 ring-emerald-200/30 dark:ring-emerald-500/20'
+                : 'bg-gradient-to-br from-white via-gray-50 to-white dark:from-gray-700 dark:via-gray-750 dark:to-gray-700 text-gray-800 dark:text-gray-200 border-gray-200/50 dark:border-gray-600/50'
               : 'bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 text-white border-blue-400/30 shadow-blue-500/20'
           }`}
           whileHover={{ 
@@ -1056,9 +1573,30 @@ const MessageBubble = ({ message, onOptionSelect, onProductSelect }) => {
               : "0 4px 15px -3px rgba(59, 130, 246, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1)"
           }}
         >
+          {/* Question indicator for choice questions */}
+          {isAssistant && message.type === 'choice' && (
+            <motion.div 
+              className="flex items-center space-x-2 mb-3 pb-2 border-b border-emerald-200/50 dark:border-emerald-600/30"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <div className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center shadow-sm">
+                <MessageCircle size={12} className="text-white" />
+              </div>
+              <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300 uppercase tracking-wide">
+                Question
+              </span>
+            </motion.div>
+          )}
+
           {/* Message content */}
           <motion.p 
-            className="text-sm leading-relaxed"
+            className={`text-xs leading-relaxed ${
+              isAssistant && message.type === 'choice' 
+                ? 'font-medium text-gray-800 dark:text-gray-200' 
+                : ''
+            }`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
@@ -1078,7 +1616,7 @@ const MessageBubble = ({ message, onOptionSelect, onProductSelect }) => {
                 <motion.button
                   key={index}
                   onClick={() => onOptionSelect(option)}
-                  className="w-full p-3 text-left bg-white/80 dark:bg-gray-600/80 backdrop-blur-sm rounded-xl hover:bg-white dark:hover:bg-gray-500 transition-all duration-300 border border-gray-200/50 dark:border-gray-500/50 group/option"
+                  className="w-full p-2.5 text-left bg-white/80 dark:bg-gray-600/80 backdrop-blur-sm rounded-xl hover:bg-white dark:hover:bg-gray-500 transition-all duration-300 border border-gray-200/50 dark:border-gray-500/50 group/option"
                   whileHover={{ 
                     scale: 1.02,
                     boxShadow: "0 8px 25px -8px rgba(0, 0, 0, 0.15)"
@@ -1090,7 +1628,7 @@ const MessageBubble = ({ message, onOptionSelect, onProductSelect }) => {
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <div className="font-medium text-sm text-gray-800 dark:text-gray-200 group-hover/option:text-emerald-600 dark:group-hover/option:text-emerald-400 transition-colors">
+                      <div className="font-medium text-xs text-gray-800 dark:text-gray-200 group-hover/option:text-emerald-600 dark:group-hover/option:text-emerald-400 transition-colors">
                         {option.label}
                       </div>
                       {option.description && (
@@ -1161,7 +1699,7 @@ const MessageBubble = ({ message, onOptionSelect, onProductSelect }) => {
               {/* Alternative Recommendations */}
               {message.options.alternatives && message.options.alternatives.length > 0 && (
                 <div className="space-y-2">
-                  <h5 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <h5 className="text-xs font-medium text-gray-700 dark:text-gray-300">
                     Alternative Options:
                   </h5>
                   {message.options.alternatives.map((product, index) => (
@@ -1170,7 +1708,7 @@ const MessageBubble = ({ message, onOptionSelect, onProductSelect }) => {
                         <Battery className="text-blue-500 mt-1" size={16} />
                         <div className="flex-1">
                           <div className="flex items-center justify-between">
-                            <h6 className="font-medium text-sm text-gray-800 dark:text-gray-200">
+                            <h6 className="font-medium text-xs text-gray-800 dark:text-gray-200">
                               {product.name}
                             </h6>
                             <span className="text-xs text-gray-500">
@@ -1200,13 +1738,13 @@ const MessageBubble = ({ message, onOptionSelect, onProductSelect }) => {
               {/* Additional Products */}
               {message.options.additional && message.options.additional.length > 0 && (
                 <div className="bg-blue-50 dark:bg-blue-900 rounded-lg p-3 border border-blue-200 dark:border-blue-700">
-                  <h5 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
+                  <h5 className="text-xs font-medium text-blue-800 dark:text-blue-200 mb-2">
                     Recommended Add-on:
                   </h5>
                   {message.options.additional.map((product) => (
                     <div key={product.id} className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-blue-700 dark:text-blue-300">{product.name}</span>
+                        <span className="text-xs font-medium text-blue-700 dark:text-blue-300">{product.name}</span>
                         <Button
                           onClick={() => onProductSelect(product.id)}
                           size="sm"

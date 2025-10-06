@@ -123,7 +123,7 @@ export default function LoginPage() {
             <div className="space-y-4">
               <h1 className="text-4xl lg:text-5xl font-bold font-display">
                 Welcome Back to{' '}
-                <span className="solar-gradient-text">SolarPro</span>
+                <span className="solar-gradient-text">Zuice</span>
               </h1>
               <p className="text-xl text-muted-foreground">
                 Sign in to access your account and continue your solar journey.

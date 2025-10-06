@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Play, Zap, Shield, Battery, Sun, Sparkles, Power, X } from 'lucide-react';
 import { Button } from './ui/Button';
 import DotGrid from './DotGrid';
-import solarBannerImage from '../assets/solar-banner-removebg-preview.png';
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -67,7 +66,7 @@ const HeroSection = () => {
       <motion.div 
         className="absolute inset-0 opacity-20 bg-center bg-no-repeat bg-contain"
         style={{
-          backgroundImage: `url(${solarBannerImage})`,
+          backgroundImage: `url(/images/solar-banner-removebg-preview.png)`,
         }}
         animate={{
           scale: isVisible ? [1, 1.05, 1] : 1,
@@ -304,7 +303,7 @@ const HeroSection = () => {
               onClick={() => setShowVideoModal(true)}
             >
               <motion.img
-                src={solarBannerImage}
+                src="/images/solar-banner-removebg-preview.png"
                 alt="μ1000 Hybrid PCU"
                 className="h-96 w-auto filter drop-shadow-2xl"
                 animate={{

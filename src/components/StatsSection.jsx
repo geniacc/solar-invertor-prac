@@ -4,20 +4,12 @@ import { LeftOutlined, RightOutlined, ThunderboltOutlined, SettingOutlined, Wifi
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import CountUp from "react-countup";
-import image1 from "../assets/image1.JPG";
-import image2 from "../assets/image2.JPG";
-import image3 from "../assets/image3.JPG";
-import image4 from "../assets/image4.JPG";
-import image5 from "../assets/image5.JPG";
-import image6 from "../assets/image6.JPG";
-import image7 from "../assets/image7.JPG";
-import image8 from "../assets/image8.JPG";
 import './StatsSection.css';
 
 const stats = [
-  { img: image1, value: 2500, label: "UPS Systems Installed", color: "#3b82f6", textColor: "#ffffff", icon: <ThunderboltOutlined /> },
-  { img: image2, value: 4.9, label: "Customer Rating", color: "#fbbf24", textColor: "#000000", icon: <SettingOutlined /> },
-  { img: image3, value: 99.8, label: "UPS Uptime", color: "#10b981", textColor: "#ffffff", icon: <WifiOutlined /> }
+  { img: "/images/image1.JPG", value: 2500, label: "UPS Systems Installed", color: "#3b82f6", textColor: "#ffffff", icon: <ThunderboltOutlined /> },
+  { img: "/images/image2.JPG", value: 4.9, label: "Customer Rating", color: "#fbbf24", textColor: "#000000", icon: <SettingOutlined /> },
+  { img: "/images/image3.JPG", value: 99.8, label: "UPS Uptime", color: "#10b981", textColor: "#ffffff", icon: <WifiOutlined /> }
 ];
 
 // Customer testimonials focused on inverter experience
@@ -30,7 +22,7 @@ const testimonials = [
     location: "Mumbai, Maharashtra",
     rating: 5,
     savings: "₹2,500/month saved",
-    src: image4,
+    src: "/images/image4.JPG",
   },
   {
     quote:
@@ -40,7 +32,7 @@ const testimonials = [
     location: "Delhi, NCR",
     rating: 5,
     savings: "₹4,200/month saved",
-    src: image5,
+    src: "/images/image5.JPG",
   },
   {
     quote:
@@ -50,7 +42,7 @@ const testimonials = [
     location: "Bangalore, Karnataka",
     rating: 5,
     savings: "₹3,800/month saved",
-    src: image6,
+    src: "/images/image6.JPG",
   },
   {
     quote:
@@ -60,7 +52,7 @@ const testimonials = [
     location: "Chennai, Tamil Nadu",
     rating: 5,
     savings: "₹6,500/month saved",
-    src: image7,
+    src: "/images/image7.JPG",
   },
   {
     quote:
@@ -70,7 +62,7 @@ const testimonials = [
     location: "Pune, Maharashtra",
     rating: 5,
     savings: "₹2,800/month saved",
-    src: image8,
+    src: "/images/image8.JPG",
   },
 ];
 

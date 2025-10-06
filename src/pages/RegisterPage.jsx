@@ -100,8 +100,7 @@ export default function RegisterPage() {
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false)
-      // Handle successful registration here
-      console.log('Registration successful:', formData)
+      // TODO: Handle successful registration here
     }, 2000)
   }
 
