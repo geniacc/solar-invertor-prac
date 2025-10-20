@@ -66,7 +66,8 @@ const testimonials = [
     company: 'TechCorp Solutions',
     content: 'The enterprise solution has exceeded my expectations. Our operational efficiency improved by 80%!',
     rating: 5,
-    image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face'
+    initials: 'SJ',
+    bgColor: 'from-purple-500 to-pink-500'
   },
   {
     name: 'Mike Chen',
@@ -74,7 +75,8 @@ const testimonials = [
     company: 'Green Energy Co.',
     content: 'Reliable, efficient, and great customer support. Highly recommend Zuice.',
     rating: 5,
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face'
+    initials: 'MC',
+    bgColor: 'from-blue-500 to-cyan-500'
   },
   {
     name: 'Emma Davis',
@@ -82,7 +84,8 @@ const testimonials = [
     company: 'Sustainable Systems',
     content: 'Finally, a company that truly delivers on innovation and quality.',
     rating: 5,
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face'
+    initials: 'ED',
+    bgColor: 'from-green-500 to-emerald-500'
   }
 ]
 
@@ -225,11 +228,9 @@ export default function HomePage() {
                   </div>
                   <CardHeader className="pb-4">
                     <div className="flex items-center space-x-4 mb-4">
-                      <img
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        className="w-12 h-12 rounded-full object-cover"
-                      />
+                      <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${testimonial.bgColor} flex items-center justify-center text-white font-semibold text-sm shadow-lg`}>
+                        {testimonial.initials}
+                      </div>
                       <div>
                         <div className="font-semibold">{testimonial.name}</div>
                         <div className="text-sm text-muted-foreground">{testimonial.role}</div>

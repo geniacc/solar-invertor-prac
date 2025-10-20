@@ -1,0 +1,548 @@
+{
+  "images": [
+    {
+      "pageNumber": 2,
+      "width": 5973,
+      "height": 3348,
+      "name": "img_p1_6",
+      "kind": 2,
+      "path": "/images/brochure/page-2-img-1.png"
+    },
+    {
+      "pageNumber": 3,
+      "width": 901,
+      "height": 630,
+      "name": "img_p2_9",
+      "kind": 2,
+      "path": "/images/brochure/page-3-img-1.png"
+    },
+    {
+      "pageNumber": 3,
+      "width": 832,
+      "height": 594,
+      "name": "img_p2_10",
+      "kind": 2,
+      "path": "/images/brochure/page-3-img-2.png"
+    },
+    {
+      "pageNumber": 3,
+      "width": 1792,
+      "height": 432,
+      "name": "img_p2_11",
+      "kind": 2,
+      "path": "/images/brochure/page-3-img-3.png"
+    },
+    {
+      "pageNumber": 3,
+      "width": 87,
+      "height": 41,
+      "name": "img_p2_12",
+      "kind": 3,
+      "path": "/images/brochure/page-3-img-4.png"
+    },
+    {
+      "pageNumber": 4,
+      "width": 957,
+      "height": 629,
+      "name": "img_p3_57",
+      "kind": 2,
+      "path": "/images/brochure/page-4-img-1.png"
+    },
+    {
+      "pageNumber": 4,
+      "width": 266,
+      "height": 213,
+      "name": "img_p3_58",
+      "kind": 3,
+      "path": "/images/brochure/page-4-img-2.png"
+    },
+    {
+      "pageNumber": 4,
+      "width": 44,
+      "height": 53,
+      "name": "img_p3_59",
+      "kind": 3,
+      "path": "/images/brochure/page-4-img-3.png"
+    },
+    {
+      "pageNumber": 4,
+      "width": 54,
+      "height": 47,
+      "name": "img_p3_60",
+      "kind": 3,
+      "path": "/images/brochure/page-4-img-4.png"
+    },
+    {
+      "pageNumber": 4,
+      "width": 60,
+      "height": 60,
+      "name": "img_p3_61",
+      "kind": 3,
+      "path": "/images/brochure/page-4-img-5.png"
+    },
+    {
+      "pageNumber": 4,
+      "width": 43,
+      "height": 79,
+      "name": "img_p3_62",
+      "kind": 3,
+      "path": "/images/brochure/page-4-img-6.png"
+    },
+    {
+      "pageNumber": 4,
+      "width": 43,
+      "height": 79,
+      "name": "img_p3_63",
+      "kind": 3,
+      "path": "/images/brochure/page-4-img-7.png"
+    },
+    {
+      "pageNumber": 4,
+      "width": 43,
+      "height": 79,
+      "name": "img_p3_64",
+      "kind": 3,
+      "path": "/images/brochure/page-4-img-8.png"
+    },
+    {
+      "pageNumber": 4,
+      "width": 50,
+      "height": 76,
+      "name": "img_p3_65",
+      "kind": 3,
+      "path": "/images/brochure/page-4-img-9.png"
+    },
+    {
+      "pageNumber": 4,
+      "width": 62,
+      "height": 55,
+      "name": "img_p3_66",
+      "kind": 3,
+      "path": "/images/brochure/page-4-img-10.png"
+    },
+    {
+      "pageNumber": 4,
+      "width": 63,
+      "height": 63,
+      "name": "img_p3_67",
+      "kind": 3,
+      "path": "/images/brochure/page-4-img-11.png"
+    },
+    {
+      "pageNumber": 4,
+      "width": 28,
+      "height": 60,
+      "name": "img_p3_68",
+      "kind": 2,
+      "path": "/images/brochure/page-4-img-12.png"
+    },
+    {
+      "pageNumber": 4,
+      "width": 219,
+      "height": 329,
+      "name": "img_p3_81",
+      "kind": 3,
+      "path": "/images/brochure/page-4-img-13.png"
+    },
+    {
+      "pageNumber": 4,
+      "width": 230,
+      "height": 292,
+      "name": "img_p3_82",
+      "kind": 3,
+      "path": "/images/brochure/page-4-img-14.png"
+    },
+    {
+      "pageNumber": 4,
+      "width": 57,
+      "height": 30,
+      "name": "img_p3_83",
+      "kind": 3,
+      "path": "/images/brochure/page-4-img-15.png"
+    },
+    {
+      "pageNumber": 4,
+      "width": 57,
+      "height": 30,
+      "name": "img_p3_84",
+      "kind": 3,
+      "path": "/images/brochure/page-4-img-16.png"
+    },
+    {
+      "pageNumber": 6,
+      "width": 1587,
+      "height": 1889,
+      "name": "img_p5_9",
+      "kind": 2,
+      "path": "/images/brochure/page-6-img-1.png"
+    },
+    {
+      "pageNumber": 6,
+      "width": 592,
+      "height": 831,
+      "name": "img_p5_11",
+      "kind": 3,
+      "path": "/images/brochure/page-6-img-2.png"
+    },
+    {
+      "pageNumber": 6,
+      "width": 1106,
+      "height": 737,
+      "name": "img_p5_12",
+      "kind": 3,
+      "path": "/images/brochure/page-6-img-3.png"
+    },
+    {
+      "pageNumber": 7,
+      "width": 688,
+      "height": 750,
+      "name": "img_p6_7",
+      "kind": 2,
+      "path": "/images/brochure/page-7-img-1.png"
+    },
+    {
+      "pageNumber": 7,
+      "width": 832,
+      "height": 1248,
+      "name": "img_p6_8",
+      "kind": 2,
+      "path": "/images/brochure/page-7-img-2.png"
+    },
+    {
+      "pageNumber": 7,
+      "width": 621,
+      "height": 714,
+      "name": "img_p6_9",
+      "kind": 2,
+      "path": "/images/brochure/page-7-img-3.png"
+    },
+    {
+      "pageNumber": 9,
+      "width": 1022,
+      "height": 806,
+      "name": "img_p8_5",
+      "kind": 2,
+      "path": "/images/brochure/page-9-img-1.png"
+    },
+    {
+      "pageNumber": 9,
+      "width": 544,
+      "height": 689,
+      "name": "img_p8_6",
+      "kind": 3,
+      "path": "/images/brochure/page-9-img-2.png"
+    },
+    {
+      "pageNumber": 10,
+      "width": 994,
+      "height": 786,
+      "name": "img_p9_5",
+      "kind": 2,
+      "path": "/images/brochure/page-10-img-1.png"
+    },
+    {
+      "pageNumber": 10,
+      "width": 1280,
+      "height": 853,
+      "name": "img_p9_6",
+      "kind": 3,
+      "path": "/images/brochure/page-10-img-2.png"
+    },
+    {
+      "pageNumber": 11,
+      "width": 1054,
+      "height": 832,
+      "name": "img_p10_5",
+      "kind": 2,
+      "path": "/images/brochure/page-11-img-1.png"
+    },
+    {
+      "pageNumber": 11,
+      "width": 1280,
+      "height": 510,
+      "name": "img_p10_6",
+      "kind": 3,
+      "path": "/images/brochure/page-11-img-2.png"
+    },
+    {
+      "pageNumber": 12,
+      "width": 2483,
+      "height": 1960,
+      "name": "img_p11_5",
+      "kind": 2,
+      "path": "/images/brochure/page-12-img-1.png"
+    },
+    {
+      "pageNumber": 12,
+      "width": 853,
+      "height": 1280,
+      "name": "img_p11_6",
+      "kind": 3,
+      "path": "/images/brochure/page-12-img-2.png"
+    },
+    {
+      "pageNumber": 13,
+      "width": 576,
+      "height": 455,
+      "name": "img_p12_5",
+      "kind": 2,
+      "path": "/images/brochure/page-13-img-1.png"
+    },
+    {
+      "pageNumber": 13,
+      "width": 1090,
+      "height": 864,
+      "name": "img_p12_6",
+      "kind": 3,
+      "path": "/images/brochure/page-13-img-2.png"
+    },
+    {
+      "pageNumber": 14,
+      "width": 2483,
+      "height": 1961,
+      "name": "img_p13_7",
+      "kind": 2,
+      "path": "/images/brochure/page-14-img-1.png"
+    },
+    {
+      "pageNumber": 14,
+      "width": 1248,
+      "height": 832,
+      "name": "img_p13_9",
+      "kind": 3,
+      "path": "/images/brochure/page-14-img-2.png"
+    },
+    {
+      "pageNumber": 15,
+      "width": 2483,
+      "height": 1961,
+      "name": "img_p14_7",
+      "kind": 2,
+      "path": "/images/brochure/page-15-img-1.png"
+    },
+    {
+      "pageNumber": 15,
+      "width": 1280,
+      "height": 853,
+      "name": "img_p14_9",
+      "kind": 3,
+      "path": "/images/brochure/page-15-img-2.png"
+    },
+    {
+      "pageNumber": 16,
+      "width": 1218,
+      "height": 937,
+      "name": "img_p15_7",
+      "kind": 2,
+      "path": "/images/brochure/page-16-img-1.png"
+    },
+    {
+      "pageNumber": 16,
+      "width": 415,
+      "height": 840,
+      "name": "img_p15_9",
+      "kind": 3,
+      "path": "/images/brochure/page-16-img-2.png"
+    },
+    {
+      "pageNumber": 17,
+      "width": 1210,
+      "height": 957,
+      "name": "img_p16_8",
+      "kind": 2,
+      "path": "/images/brochure/page-17-img-1.png"
+    },
+    {
+      "pageNumber": 17,
+      "width": 1128,
+      "height": 1692,
+      "name": "img_p16_9",
+      "kind": 3,
+      "path": "/images/brochure/page-17-img-2.png"
+    },
+    {
+      "pageNumber": 18,
+      "width": 2483,
+      "height": 1961,
+      "name": "img_p17_8",
+      "kind": 2,
+      "path": "/images/brochure/page-18-img-1.png"
+    },
+    {
+      "pageNumber": 18,
+      "width": 727,
+      "height": 1585,
+      "name": "img_p17_9",
+      "kind": 3,
+      "path": "/images/brochure/page-18-img-2.png"
+    },
+    {
+      "pageNumber": 19,
+      "width": 1350,
+      "height": 1063,
+      "name": "img_p18_7",
+      "kind": 2,
+      "path": "/images/brochure/page-19-img-1.png"
+    },
+    {
+      "pageNumber": 19,
+      "width": 350,
+      "height": 505,
+      "name": "img_p18_9",
+      "kind": 3,
+      "path": "/images/brochure/page-19-img-2.png"
+    },
+    {
+      "pageNumber": 20,
+      "width": 2482,
+      "height": 1960,
+      "name": "img_p19_5",
+      "kind": 2,
+      "path": "/images/brochure/page-20-img-1.png"
+    },
+    {
+      "pageNumber": 20,
+      "width": 651,
+      "height": 789,
+      "name": "img_p19_6",
+      "kind": 2,
+      "path": "/images/brochure/page-20-img-2.png"
+    },
+    {
+      "pageNumber": 21,
+      "width": 4678,
+      "height": 2423,
+      "name": "img_p20_4",
+      "kind": 2,
+      "path": "/images/brochure/page-21-img-1.png"
+    },
+    {
+      "pageNumber": 21,
+      "width": 4790,
+      "height": 2639,
+      "name": "img_p20_6",
+      "kind": 2,
+      "path": "/images/brochure/page-21-img-2.png"
+    },
+    {
+      "pageNumber": 22,
+      "width": 4354,
+      "height": 3078,
+      "name": "img_p21_30",
+      "kind": 2,
+      "path": "/images/brochure/page-22-img-1.png"
+    },
+    {
+      "pageNumber": 22,
+      "width": 272,
+      "height": 271,
+      "name": "img_p21_31",
+      "kind": 3,
+      "path": "/images/brochure/page-22-img-2.png"
+    },
+    {
+      "pageNumber": 22,
+      "width": 271,
+      "height": 271,
+      "name": "img_p21_33",
+      "kind": 3,
+      "path": "/images/brochure/page-22-img-3.png"
+    },
+    {
+      "pageNumber": 22,
+      "width": 427,
+      "height": 427,
+      "name": "img_p21_35",
+      "kind": 3,
+      "path": "/images/brochure/page-22-img-4.png"
+    },
+    {
+      "pageNumber": 22,
+      "width": 1244,
+      "height": 727,
+      "name": "img_p21_36",
+      "kind": 3,
+      "path": "/images/brochure/page-22-img-5.png"
+    },
+    {
+      "pageNumber": 22,
+      "width": 1244,
+      "height": 727,
+      "name": "img_p21_39",
+      "kind": 3,
+      "path": "/images/brochure/page-22-img-6.png"
+    },
+    {
+      "pageNumber": 22,
+      "width": 1244,
+      "height": 727,
+      "name": "img_p21_42",
+      "kind": 3,
+      "path": "/images/brochure/page-22-img-7.png"
+    },
+    {
+      "pageNumber": 22,
+      "width": 272,
+      "height": 271,
+      "name": "img_p21_45",
+      "kind": 3,
+      "path": "/images/brochure/page-22-img-8.png"
+    },
+    {
+      "pageNumber": 22,
+      "width": 427,
+      "height": 427,
+      "name": "img_p21_47",
+      "kind": 3,
+      "path": "/images/brochure/page-22-img-9.png"
+    },
+    {
+      "pageNumber": 22,
+      "width": 272,
+      "height": 271,
+      "name": "img_p21_48",
+      "kind": 3,
+      "path": "/images/brochure/page-22-img-10.png"
+    },
+    {
+      "pageNumber": 22,
+      "width": 1244,
+      "height": 727,
+      "name": "img_p21_50",
+      "kind": 3,
+      "path": "/images/brochure/page-22-img-11.png"
+    },
+    {
+      "pageNumber": 22,
+      "width": 427,
+      "height": 427,
+      "name": "img_p21_53",
+      "kind": 3,
+      "path": "/images/brochure/page-22-img-12.png"
+    },
+    {
+      "pageNumber": 22,
+      "width": 272,
+      "height": 271,
+      "name": "img_p21_54",
+      "kind": 3,
+      "path": "/images/brochure/page-22-img-13.png"
+    },
+    {
+      "pageNumber": 22,
+      "width": 427,
+      "height": 427,
+      "name": "img_p21_56",
+      "kind": 3,
+      "path": "/images/brochure/page-22-img-14.png"
+    },
+    {
+      "pageNumber": 22,
+      "width": 272,
+      "height": 271,
+      "name": "img_p21_57",
+      "kind": 3,
+      "path": "/images/brochure/page-22-img-15.png"
+    }
+  ]
+}

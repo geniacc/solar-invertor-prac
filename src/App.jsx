@@ -6,7 +6,7 @@ import CartDrawer from './components/Cart/CartDrawer'
 import ChatBot from './components/ChatBot/ChatBot'
 import HomePage from './pages/HomePage'
 import ProductsPage from './pages/ProductsPage'
-import ProductDetailPage from './pages/ProductDetailPage'
+import ProductDetailsPage from './pages/ProductDetailsPage'
 import CartPage from './pages/CartPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
@@ -27,7 +27,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/products" element={<ProductsPage />} />
-              <Route path="/products/:id" element={<ProductDetailPage />} />
+              <Route path="/products/:id" element={<ProductDetailsPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/device-dashboard" element={<DeviceDashboardPage />} />
