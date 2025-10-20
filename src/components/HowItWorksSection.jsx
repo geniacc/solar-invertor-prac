@@ -17,29 +17,29 @@ const steps = [
   {
     id: 1,
     icon: <ApiOutlined />,
-    title: 'Multi-Source Input',
-    desc: 'Advanced UPS accepts DC from renewable sources, AC from grid, and battery power simultaneously',
+    title: 'Energy Storage & Management',
+    desc: 'Advanced LiFePO4 battery systems store energy from solar, grid, and other renewable sources with intelligent BMS protection',
     color: '#0ea5e9',
     delay: 0,
-    efficiency: 99.2
+    efficiency: 96.5
   },
   {
     id: 2,
     icon: <ThunderboltOutlined />,
-    title: 'Smart Power Conversion',
-    desc: 'ZUICE UPS technology converts DC to AC with 98.7% efficiency and intelligent power management',
+    title: 'Smart Power Distribution',
+    desc: 'ESS technology delivers stored energy with >95% efficiency and seamless load management for homes and businesses',
     color: '#10b981',
     delay: 1000,
-    efficiency: 98.7
+    efficiency: 95.8
   },
   {
     id: 3,
     icon: <MonitorOutlined />,
-    title: 'IoT Monitoring & Control',
-    desc: 'Real-time monitoring, predictive maintenance, and remote control via mobile app',
+    title: 'Remote Monitoring & Control',
+    desc: 'Real-time monitoring via app, WiFi, and 4G connectivity with predictive maintenance and smart energy optimization',
     color: '#8b5cf6',
     delay: 2000,
-    efficiency: 99.5
+    efficiency: 99.2
   }
 ];
 
@@ -101,8 +101,8 @@ const HowItWorksSection = () => {
       className="how-section"
     >
       <motion.div variants={itemVariants} className="section-header">
-        <h2 className="how-title">How ZUICE Smart UPS Systems Work</h2>
-        <p className="how-subtitle">Advanced UPS technology in 3 intelligent steps</p>
+        <h2 className="how-title">How Our Smart ESS Systems Work</h2>
+        <p className="how-subtitle">Advanced Energy Storage technology in 3 intelligent steps</p>
       </motion.div>
 
       {/* Animated Flow Diagram */}
@@ -259,7 +259,7 @@ const HowItWorksSection = () => {
           <div className="stat-value">
             <CountUp end={98.7} duration={2} suffix="%" />
           </div>
-          <div className="stat-label">UPS Efficiency</div>
+          <div className="stat-label">ESS Efficiency</div>
         </motion.div>
         <motion.div 
           className="stat-item"

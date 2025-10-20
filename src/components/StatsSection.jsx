@@ -7,61 +7,61 @@ import CountUp from "react-countup";
 import './StatsSection.css';
 
 const stats = [
-  { img: "/images/image1.JPG", value: 2500, label: "UPS Systems Installed", color: "#3b82f6", textColor: "#ffffff", icon: <ThunderboltOutlined /> },
-  { img: "/images/image2.JPG", value: 4.9, label: "Customer Rating", color: "#fbbf24", textColor: "#000000", icon: <SettingOutlined /> },
-  { img: "/images/image3.JPG", value: 99.8, label: "UPS Uptime", color: "#10b981", textColor: "#ffffff", icon: <WifiOutlined /> }
+  { img: "/images/image1.JPG", value: 1800, label: "ESS Systems Installed", color: "#3b82f6", textColor: "#ffffff", icon: <ThunderboltOutlined /> },
+  { img: "/images/image2.JPG", value: 4.8, label: "Customer Rating", color: "#fbbf24", textColor: "#000000", icon: <SettingOutlined /> },
+  { img: "/images/image3.JPG", value: 95.5, label: "Energy Efficiency", color: "#10b981", textColor: "#ffffff", icon: <WifiOutlined /> }
 ];
 
-// Customer testimonials focused on inverter experience
+// Customer testimonials focused on ESS experience
 const testimonials = [
   {
     quote:
-      "The ZUICE smart UPS has revolutionized our power management. The efficiency and monitoring capabilities are outstanding.",
+      "Our ESS system has transformed our energy independence. The battery management and solar integration are exceptional.",
     name: "Rajesh Kumar",
     designation: "Homeowner, Mumbai",
     location: "Mumbai, Maharashtra",
     rating: 5,
-    savings: "₹2,500/month saved",
+    savings: "₹3,200/month saved",
     src: "/images/image4.JPG",
   },
   {
     quote:
-      "Installation was professional and the UPS performance exceeded expectations. The mobile app monitoring is fantastic.",
+      "The ESS installation was seamless and the energy storage capacity exceeded our expectations. Perfect for our business needs.",
     name: "Priya Sharma",
     designation: "Business Owner, Delhi",
     location: "Delhi, NCR",
     rating: 5,
-    savings: "₹4,200/month saved",
+    savings: "₹5,800/month saved",
     src: "/images/image5.JPG",
   },
   {
     quote:
-      "The smart UPS technology has made our power system incredibly efficient. The predictive maintenance alerts are a game-changer.",
+      "Smart energy storage with LiFePO4 technology has made our home completely grid-independent. The cycle life is incredible.",
     name: "Amit Patel",
     designation: "Engineer, Bangalore",
     location: "Bangalore, Karnataka",
     rating: 5,
-    savings: "₹3,800/month saved",
+    savings: "₹4,500/month saved",
     src: "/images/image6.JPG",
   },
   {
     quote:
-      "Outstanding UPS performance and excellent customer support. The IoT monitoring features are exactly what we needed.",
+      "Outstanding ESS performance with advanced BMS. The energy efficiency and safety features are exactly what we needed.",
     name: "Sunita Reddy",
     designation: "Factory Owner, Chennai",
     location: "Chennai, Tamil Nadu",
     rating: 5,
-    savings: "₹6,500/month saved",
+    savings: "₹8,200/month saved",
     src: "/images/image7.JPG",
   },
   {
     quote:
-      "The ZUICE UPS has been running flawlessly for 2 years. The efficiency and reliability are unmatched in the market.",
+      "Our ESS has been delivering consistent performance for 3 years. The 8000+ cycle life and warranty give us peace of mind.",
     name: "Vikram Singh",
     designation: "Residential Customer, Pune",
     location: "Pune, Maharashtra",
     rating: 5,
-    savings: "₹2,800/month saved",
+    savings: "₹3,600/month saved",
     src: "/images/image8.JPG",
   },
 ];

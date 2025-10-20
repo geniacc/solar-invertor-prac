@@ -43,8 +43,8 @@ const LithiumInverter3DModal = ({ isOpen, onClose }) => {
               ⚡
             </div>
             <div>
-              <h2 className="lithium-modal-title">Zuice Lithium Inverter</h2>
-            <p className="lithium-modal-subtitle">Interactive 3D model of Zuice premium lithium inverter</p>
+              <h2 className="lithium-modal-title">ESS Lithium Energy Storage</h2>
+            <p className="lithium-modal-subtitle">Interactive 3D model of ESS premium energy storage system</p>
             </div>
           </div>
           <button className="lithium-close-btn-3d" onClick={onClose}>
@@ -125,7 +125,7 @@ const LithiumInverter3DModal = ({ isOpen, onClose }) => {
           {/* Product Info */}
           <div className="lithium-product-info">
             <div className="lithium-info-item">
-              <div className="lithium-info-value">Zuice-5K</div>
+              <div className="lithium-info-value">ESS-48V-5K</div>
               <div className="lithium-info-label">Model</div>
             </div>
             <div className="lithium-info-item">

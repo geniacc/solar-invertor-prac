@@ -5,16 +5,16 @@ import { useResponsive } from './ui/Responsive';
 import './ChatBot.css';
 
 const faqData = [
-  { question: "Is the UPS compatible with existing power sources?", answer: "Yes, it's compatible with most power sources including grid, battery, and renewable energy inputs." },
-  { question: "Can I monitor performance on my phone?", answer: "Absolutely! Our mobile app provides real-time performance tracking." },
-  { question: "What about weather resistance?", answer: "Our uninterrupted power supply units are fully dustproof and weather-sealed to IP65 standard." },
-  { question: "How long is the warranty period?", answer: "Our UPS systems come with a 5-year comprehensive warranty." },
-  { question: "What is the typical lifespan of the UPS?", answer: "The typical lifespan is around 10-15 years with regular maintenance." },
-  { question: "Does the UPS support battery storage?", answer: "Yes, compatible with popular battery storage systems for backup power." },
-  { question: "Can the UPS be installed indoors and outdoors?", answer: "Our uninterrupted power supply units support both indoor and outdoor installations with proper protection." },
-  { question: "What is the installation process like?", answer: "Installation is quick and done by certified technicians, usually within a day." },
-  { question: "Is there a mobile app for remote monitoring?", answer: "Yes, our mobile app allows remote monitoring and performance alerts." },
-  { question: "How do I maintain or clean the UPS?", answer: "Simply wipe with a dry cloth and schedule a periodic check-up for optimal performance." }
+  { question: "Is the ESS compatible with existing power sources?", answer: "Yes, our ESS systems are compatible with grid power, solar panels, and other renewable energy sources." },
+  { question: "Can I monitor performance on my phone?", answer: "Absolutely! Our mobile app provides real-time monitoring of battery status, energy flow, and system performance." },
+  { question: "What about weather resistance?", answer: "Our ESS systems are designed with IP65 protection rating for outdoor installations and weather resistance." },
+  { question: "How long is the warranty period?", answer: "Our ESS systems come with a comprehensive 5-year warranty, with battery warranty up to 10 years." },
+  { question: "What is the typical lifespan of the ESS?", answer: "Our lithium-ion ESS systems typically last 10-15 years with 6000+ charge cycles." },
+  { question: "What battery capacity options are available?", answer: "We offer various capacity options from 12.8V 100Ah to 576V 100Ah for different energy storage needs." },
+  { question: "Can the ESS be installed indoors and outdoors?", answer: "Yes, our ESS systems support both indoor and outdoor installations with proper ventilation and protection." },
+  { question: "What is the installation process like?", answer: "Installation is performed by certified technicians and typically completed within a day, including system commissioning." },
+  { question: "Is there a mobile app for remote monitoring?", answer: "Yes, our mobile app provides remote monitoring, performance alerts, and energy management features." },
+  { question: "How do I maintain the ESS system?", answer: "ESS systems require minimal maintenance - regular visual inspections and periodic professional check-ups for optimal performance." }
 ];
 
 const fuseOptions = {
@@ -23,7 +23,7 @@ const fuseOptions = {
 };
 
 const ChatBot = () => {
-  const [chat, setChat] = useState([{ from: "bot", message: "👨‍🔧 Technical Support Chat\n\nI'm here to help with technical questions, troubleshooting, and FAQ about your Zuice μ1000 system. For product recommendations, please use our Voice Assistant!" }]);
+  const [chat, setChat] = useState([{ from: "bot", message: "👨‍🔧 Technical Support Chat\n\nI'm here to help with technical questions, troubleshooting, and FAQ about your ESS system. For product recommendations, please use our Voice Assistant!" }]);
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false); // Start closed, show icon only
   const [isMinimized, setIsMinimized] = useState(false); // For minimize functionality
@@ -52,7 +52,7 @@ const ChatBot = () => {
     if (results.length > 0) {
       return `🔧 ${results[0].item.answer}`;
     }
-    return "🤔 I don't have that technical information. Please contact our support team at support@zuice.com or try our Voice Assistant for general product questions.";
+    return "🤔 I don't have that technical information. Please contact our Zuice support team or try our Voice Assistant for general product questions.";
   };
 
   const sendMessage = async () => {
@@ -159,7 +159,7 @@ const ChatBot = () => {
                 <input
                   type="text"
                   aria-label="Type your technical question"
-                  placeholder="Ask about UPS systems, troubleshooting..."
+                  placeholder="Ask about ESS systems, troubleshooting..."
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   className="chatbot-input"

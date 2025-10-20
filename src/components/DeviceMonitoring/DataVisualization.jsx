@@ -42,6 +42,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Button } from '../ui/Button'
 import { Badge } from '../ui/Badge'
 
+const chartColors = {
+  power: '#3b82f6',
+  battery: '#10b981',
+  temperature: '#f59e0b',
+  efficiency: '#8b5cf6',
+  voltage: '#ef4444',
+  current: '#06b6d4',
+  solarInput: '#f97316',
+  consumption: '#84cc16'
+};
+
 const DataVisualization = ({ device, timeRange = '24h' }) => {
   const [selectedMetric, setSelectedMetric] = useState('power');
   const [chartType, setChartType] = useState('line');
@@ -109,17 +120,6 @@ const DataVisualization = ({ device, timeRange = '24h' }) => {
       setIsLoading(false);
     }, 1000);
   }, [timeRange, device]);
-
-  const chartColors = {
-    power: '#3b82f6',
-    battery: '#10b981',
-    temperature: '#f59e0b',
-    efficiency: '#8b5cf6',
-    voltage: '#ef4444',
-    current: '#06b6d4',
-    solarInput: '#f97316',
-    consumption: '#84cc16'
-  };
 
   const metricConfig = {
     power: { label: 'Power Output', unit: 'W', icon: Zap, color: chartColors.power },

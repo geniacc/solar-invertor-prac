@@ -19,13 +19,14 @@ const HeroSection = () => {
       { threshold: 0.1 }
     );
 
-    if (heroRef.current) {
-      observer.observe(heroRef.current);
+    const currentRef = heroRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (heroRef.current) {
-        observer.unobserve(heroRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, []);
@@ -204,10 +205,10 @@ const HeroSection = () => {
                     backgroundSize: '200% 200%',
                   }}
                 >
-                  Zuice μ1000
+                  12.8V 100AH
                 </motion.span>
                 <span className="block text-white/90 text-3xl lg:text-4xl font-light mt-2">
-                  Uninterrupted Power Supply
+                  Home Energy Storage System
                 </span>
               </h1>
               
@@ -217,7 +218,7 @@ const HeroSection = () => {
                 animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
                 transition={{ duration: 1, delay: 0.8 }}
               >
-                Advanced 1KVA-12V PWM technology for reliable uninterrupted power supply and energy management
+                Advanced lithium-ion technology with smart BMS for reliable home energy storage and backup power solutions
               </motion.p>
 
               {/* Key Features Pills */}
@@ -227,7 +228,7 @@ const HeroSection = () => {
                 animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 1, delay: 1 }}
               >
-                {['98% Efficiency', '25 Year Warranty', 'Smart Monitoring'].map((feature, index) => (
+                {['Long Cycle Life', 'Smart BMS Protection', 'Zero Maintenance'].map((feature, index) => (
                   <motion.span
                     key={feature}
                     className="px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-sm text-white"
@@ -260,7 +261,7 @@ const HeroSection = () => {
                     transition={{ duration: 0.3 }}
                   />
                   <span className="relative flex items-center space-x-2">
-                    <span>Explore Zuice μ1000</span>
+                    <span>Explore Zuice Solutions</span>
                     <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                   </span>
                 </motion.button>
@@ -304,7 +305,7 @@ const HeroSection = () => {
             >
               <motion.img
                 src="/images/solar-banner-removebg-preview.png"
-                alt="μ1000 Hybrid PCU"
+                alt="12.8V 100AH Home ESS"
                 className="h-96 w-auto filter drop-shadow-2xl"
                 animate={{
                   filter: [
@@ -354,10 +355,10 @@ const HeroSection = () => {
 
             {/* Floating Feature Icons */}
             {[
-              { icon: Zap, position: 'top-10 left-10', delay: 0, label: 'High Efficiency' },
-              { icon: Shield, position: 'top-20 right-10', delay: 0.5, label: 'Protection' },
-              { icon: Battery, position: 'bottom-20 left-20', delay: 1, label: 'Long Life' },
-              { icon: Sun, position: 'bottom-10 right-20', delay: 1.5, label: 'Solar Ready' },
+              { icon: Zap, position: 'top-10 left-10', delay: 0, label: 'Fast Charging' },
+              { icon: Shield, position: 'top-20 right-10', delay: 0.5, label: 'BMS Protection' },
+              { icon: Battery, position: 'bottom-20 left-20', delay: 1, label: 'Long Cycle Life' },
+              { icon: Sun, position: 'bottom-10 right-20', delay: 1.5, label: 'Eco-Friendly' },
             ].map(({ icon: Icon, position, delay, label }, index) => (
               <motion.div
                 key={index}
@@ -415,7 +416,7 @@ const HeroSection = () => {
                 <Play className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                 <p className="text-gray-600">Demo video would play here</p>
                 <p className="text-sm text-gray-500 mt-2">
-                  Experience the Zuice μ1000 in action
+                  Experience the 12.8V 100AH Home ESS in action
                 </p>
               </div>
             </div>

@@ -81,7 +81,7 @@ const AboutPage = () => {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600"> Smart Energy</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Zuice is revolutionizing home and office energy solutions with our advanced solar inverter technology, 
+            Zuice is revolutionizing home and office energy solutions with our advanced energy storage technology, 
             making clean, reliable power accessible to everyone.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -125,14 +125,14 @@ const AboutPage = () => {
               </h2>
               <p className="text-lg text-gray-600 mb-6">
                 At Zuice, we believe that everyone deserves access to reliable, clean energy. Our mission is to make 
-                solar power solutions affordable, efficient, and easy to use for homes and businesses of all sizes.
+                energy storage solutions affordable, efficient, and easy to use for homes and businesses of all sizes.
               </p>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-green-500 mt-1 flex-shrink-0" />
                   <div>
                     <h4 className="font-semibold text-gray-900">Sustainable Innovation</h4>
-                    <p className="text-gray-600">Developing cutting-edge solar inverter technology for a greener future</p>
+                    <p className="text-gray-600">Developing cutting-edge energy storage technology for a greener future</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -157,7 +157,7 @@ const AboutPage = () => {
                 <Sun className="w-16 h-16 mb-6 text-yellow-300" />
                 <h3 className="text-2xl font-bold mb-4">Our Vision</h3>
                 <p className="text-lg opacity-90 mb-6">
-                  To become the leading provider of intelligent solar energy solutions, powering millions of homes 
+                  To become the leading provider of intelligent energy storage solutions, powering millions of homes 
                   and businesses with clean, reliable energy while contributing to a sustainable planet.
                 </p>
                 <div className="grid grid-cols-2 gap-4 text-center">
@@ -259,9 +259,9 @@ const AboutPage = () => {
               <Battery className="w-4 h-4" />
               Our Flagship Product
             </div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Zuice μ1000 Solar Inverter</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">12.8V 100AH Home ESS</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Our revolutionary 1KVA-12V PWM Hybrid PCU with advanced LiFePo4 battery technology
+              Our flagship lithium-ion energy storage system with advanced BMS technology for reliable home backup power
             </p>
           </motion.div>
 
@@ -279,23 +279,23 @@ const AboutPage = () => {
                     <Zap className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold text-gray-900">Zuice μ1000</h3>
-                    <p className="text-gray-600">1KVA-12V PWM Hybrid PCU</p>
+                    <h3 className="text-2xl font-bold text-gray-900">12.8V 100AH Home ESS</h3>
+                    <p className="text-gray-600">Lithium-ion Energy Storage System</p>
                   </div>
                 </div>
                 
                 <div className="space-y-4 mb-6">
                   <div className="flex items-center gap-3">
                     <Battery className="w-5 h-5 text-green-500" />
-                    <span className="text-gray-700">Advanced LiFePo4 Battery Technology</span>
+                    <span className="text-gray-700">Advanced Lithium-ion Battery Technology</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Sun className="w-5 h-5 text-yellow-500" />
-                    <span className="text-gray-700">Intelligent Solar Charging System</span>
+                    <span className="text-gray-700">Smart BMS Protection System</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Shield className="w-5 h-5 text-blue-500" />
-                    <span className="text-gray-700">Built-in Protection Circuits</span>
+                    <span className="text-gray-700">Built-in Safety Features</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Wrench className="w-5 h-5 text-purple-500" />
@@ -308,7 +308,7 @@ const AboutPage = () => {
                   onClick={() => navigate('/products')}
                 >
                   <ArrowRight className="w-5 h-5 mr-2" />
-                  Learn More About μ1000
+                  Learn More About ESS
                 </Button>
               </div>
             </motion.div>
@@ -320,8 +320,8 @@ const AboutPage = () => {
                   <h4 className="text-lg font-semibold text-gray-900">Industry Leading Performance</h4>
                 </div>
                 <p className="text-gray-600">
-                  The Zuice μ1000 delivers exceptional efficiency and reliability, setting new standards 
-                  in the solar inverter industry with its advanced PWM technology.
+                  Our Zuice solutions deliver exceptional efficiency and reliability, setting new standards 
+                  in the energy storage industry with advanced lithium-ion technology.
                 </p>
               </div>
 
@@ -342,7 +342,7 @@ const AboutPage = () => {
                   <h4 className="text-lg font-semibold text-gray-900">Future Ready</h4>
                 </div>
                 <p className="text-gray-600">
-                  Designed with scalability in mind, the μ1000 can grow with your energy needs 
+                  Designed with scalability in mind, our Zuice solutions can grow with your energy needs 
                   and integrate seamlessly with future smart home technologies.
                 </p>
               </div>

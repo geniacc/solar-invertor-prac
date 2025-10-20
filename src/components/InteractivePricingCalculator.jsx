@@ -35,7 +35,7 @@ const InteractivePricingCalculator = () => {
     setIsCalculating(true);
     
     setTimeout(() => {
-      const basePrice = systemSize * 25000; // ₹25,000 per kW for UPS
+      const basePrice = systemSize * 25000; // ₹25,000 per kW for ESS
       const upsMultiplier = inverterTypeMultiplier[inverterType];
       const monitoringMultiplierValue = monitoringMultiplier[monitoringType];
       const installationMultiplierValue = installationMultiplier[installationType];
@@ -115,16 +115,16 @@ const InteractivePricingCalculator = () => {
             <div>
               <label className="block text-sm font-medium mb-2 text-gray-900 dark:text-white">
                 <Zap className="w-4 h-4 inline mr-1" />
-                UPS Type
+                ESS Type
               </label>
               <select
                 value={inverterType}
                 onChange={(e) => setInverterType(e.target.value)}
                 className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
               >
-                <option value="basic">Basic UPS</option>
-                <option value="smart">Smart UPS (+20%)</option>
-                <option value="premium">Premium UPS (+50%)</option>
+                <option value="basic">Basic ESS</option>
+                <option value="smart">Smart ESS (+20%)</option>
+                <option value="premium">Premium ESS (+50%)</option>
               </select>
             </div>
 

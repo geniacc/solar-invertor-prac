@@ -122,6 +122,7 @@ const ARCameraView = ({ isVisible, onClose, product }) => {
     }
 
     return () => stopCamera();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isVisible]);
 
   const initializeCamera = async () => {

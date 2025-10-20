@@ -3,6 +3,15 @@ import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Zap, Users, Leaf, Award, TrendingUp, Globe } from 'lucide-react';
 
+const finalValues = {
+  installations: 15000,
+  customers: 8500,
+  energySaved: 2.4, // in GWh
+  co2Reduced: 1200, // in tons
+  countries: 25,
+  awards: 12
+};
+
 const AnimatedStats = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, threshold: 0.3 });
@@ -14,15 +23,6 @@ const AnimatedStats = () => {
     countries: 0,
     awards: 0
   });
-
-  const finalValues = {
-    installations: 15000,
-    customers: 8500,
-    energySaved: 2.4, // in GWh
-    co2Reduced: 1200, // in tons
-    countries: 25,
-    awards: 12
-  };
 
   const stats = [
     {

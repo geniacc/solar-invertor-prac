@@ -253,14 +253,14 @@ const DeviceStatus = ({ device, onRefresh, onSettings }) => {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Model</span>
                 <span className="text-sm font-medium">
-                  {device?.model || 'Zuice μ1000'}
+                  {device?.model || 'ESS μ1000'}
                 </span>
               </div>
               
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Serial Number</span>
                 <span className="text-sm font-medium font-mono">
-                  {device?.serialNumber || 'ZU1000-001'}
+                  {device?.serialNumber || 'ESS1000-001'}
                 </span>
               </div>
             </CardContent>

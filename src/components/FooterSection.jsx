@@ -106,7 +106,12 @@ const FooterSection = () => {
               <Col xs={24} sm={12} lg={6}>
                 <div className="footer-column">
                   <div className="footer-logo">
-                    <BulbOutlined className="logo-icon" />
+                    <img 
+                      src="/images/solar-banner-removebg-preview.png" 
+                      alt="Zuice Logo" 
+                      className="logo-icon"
+                      style={{ height: '40px', width: 'auto', objectFit: 'contain' }}
+                    />
                     <Title level={3} className="logo-text text-gray-900 dark:text-gray-100">Zuice</Title>
                   </div>
                   <Paragraph className="company-description text-gray-700 dark:text-gray-300">

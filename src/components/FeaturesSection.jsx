@@ -25,6 +25,7 @@ import {
 import './FeaturesSection.css';
 import LithiumInverter3DModal from './LithiumInverter3DModal';
 import ARCameraView from './ARCameraView';
+import { essProducts } from '../data/essProducts';
 
 const FeaturesSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -36,148 +37,110 @@ const FeaturesSection = () => {
   const [showARModal, setShowARModal] = useState(false);
   const sectionRef = useRef(null);
 
-  // TechPro Enterprise Series product data for 3D modal
+  // Get featured product from essProducts (using the 48V 100AH as featured)
+  const featuredProduct = essProducts.find(product => product.id === "home-ess-48v") || essProducts[2];
+  
+  // TechPro Enterprise Series product data for 3D modal (using real product data)
   const techProProduct = {
-    id: 'techpro-enterprise',
-    name: 'TechPro Enterprise Series',
-    model: 'Zuice-48V-5KVA',
-    price: '₹65,000',
-    originalPrice: '₹75,000',
-    rating: 4.9,
-    reviews: 142,
-    efficiency: '98.5%',
-    warranty: '25 years',
-    power: '5KVA',
-    voltage: '48V',
-    features: [
-      'Advanced MPPT Technology',
-      'Pure Sine Wave Output',
-      'LCD Display Monitoring',
-      'Multiple Protection Systems',
-      'Hybrid Functionality',
-      'Smart Load Management',
-      'WiFi Monitoring',
-      'Commercial Grade Build'
+    id: featuredProduct.id,
+    name: featuredProduct.name,
+    model: featuredProduct.id.toUpperCase(),
+    price: `₹${featuredProduct.price.toLocaleString()}`,
+    originalPrice: `₹${featuredProduct.originalPrice.toLocaleString()}`,
+    rating: featuredProduct.rating,
+    reviews: featuredProduct.reviews,
+    efficiency: featuredProduct.specifications?.Efficiency || '>95%',
+    warranty: featuredProduct.specifications?.Warranty || '60 months',
+    power: featuredProduct.specifications?.Energy || '4.8 kWh',
+    voltage: featuredProduct.specifications?.['Voltage Range'] || '48V',
+    features: featuredProduct.features || [
+      'Advanced BMS Protection',
+      'High Energy Density',
+      'Long Cycle Life',
+      'Fast & Efficient Charging',
+      'Smart Monitoring'
     ],
-    specifications: {
-      'Input Voltage': '48V DC',
-      'Output Power': '5000VA / 4000W',
-      'Efficiency': '98.5%',
-      'Waveform': 'Pure Sine Wave',
-      'Protection Rating': 'IP65',
-      'Operating Temperature': '-10°C to +50°C',
-      'Dimensions': '450 × 350 × 150 mm',
-      'Weight': '25 kg'
-    }
+    specifications: featuredProduct.specifications || {}
   };
 
   const features = [
     {
-      icon: Zap,
-      title: "MPPT Solar Charge Controller",
-      description: "99.5% MPPT efficiency with advanced microcontroller design",
-      details: "Zuice's MPPT controller maximizes solar energy harvest with intelligent tracking algorithms and real-time optimization for maximum power point tracking. Ensures up to 30% more energy capture compared to traditional controllers.",
-      color: "from-yellow-400 to-orange-500",
-      progress: 99
-    },
-    {
-      icon: Shield,
-      title: "Multiple Protection Systems",
-      description: "10+ safety features including overload, short circuit, and thermal protection",
-      details: "Comprehensive protection with overload, deep discharge, overcharge, short circuit, PV reverse, over-temperature, battery reverse, and surge protection.",
-      color: "from-purple-400 to-purple-500",
-      progress: 100
-    },
-    {
       icon: Battery,
-      title: "Pure Sine Wave Output",
-      description: "Clean, stable power output for sensitive electronic equipment",
-      details: "Pure sine wave inverter technology provides clean, stable power identical to grid electricity, perfect for all types of appliances and sensitive electronics.",
+      title: "Advanced BMS Protection",
+      description: "Smart Battery Management System with comprehensive safety features",
+      details: "Intelligent BMS provides overcharge protection, over-discharge protection, short circuit protection, temperature monitoring, and cell balancing for optimal performance and safety.",
       color: "from-green-400 to-emerald-500",
       progress: 100
     },
     {
-      icon: Gauge,
-      title: "LCD Display Monitoring",
-      description: "Real-time system status with comprehensive parameter display",
-      details: "Advanced LCD display shows PV voltage/current, battery voltage, load current, UPS status, charging status, and fault diagnostics in real-time.",
+      icon: Zap,
+      title: "High Energy Density",
+      description: "Compact design with powerful energy storage capacity",
+      details: "LiFePO4 technology delivers superior energy density, allowing more power storage in a smaller footprint compared to traditional lead-acid batteries.",
+      color: "from-yellow-400 to-orange-500",
+      progress: 98
+    },
+    {
+      icon: TrendingUp,
+      title: "Long Cycle Life",
+      description: "8000+ charge-discharge cycles for extended lifespan",
+      details: "Premium lithium-ion cells engineered for longevity, providing over 8000 cycles at 80% depth of discharge, ensuring years of reliable operation.",
       color: "from-blue-400 to-indigo-500",
       progress: 100
     },
     {
-      icon: Sun,
-      title: "Hybrid Functionality",
-      description: "Multi-source + Grid + Battery integration with intelligent switching",
-      details: "Seamless integration of renewable sources, grid power, and battery backup with automatic switching and priority management for optimal energy utilization.",
-      color: "from-orange-400 to-red-500",
-      progress: 98
+      icon: Gauge,
+      title: "High Efficiency",
+      description: "Over 95% efficiency for maximum energy utilization",
+      details: "Advanced power electronics and intelligent control systems ensure minimal energy loss during charging and discharging operations.",
+      color: "from-purple-400 to-purple-500",
+      progress: 95
     },
     {
-      icon: Settings,
-      title: "Smart Load Management",
-      description: "Intelligent power distribution and energy optimization",
-      details: "Advanced load management with priority switching, energy optimization algorithms, and automatic load shedding for maximum efficiency and battery life.",
-      color: "from-purple-400 to-pink-500",
-      progress: 95
+      icon: Wifi,
+      title: "Smart Monitoring",
+      description: "RS485/CAN communication for real-time monitoring",
+      details: "Integrated communication protocols enable remote monitoring, diagnostics, and system optimization through compatible energy management systems.",
+      color: "from-cyan-400 to-blue-500",
+      progress: 100
+    },
+    {
+      icon: Shield,
+      title: "Safety Certified",
+      description: "IP54/IP65 protection rating with multiple safety certifications",
+      details: "Engineered to meet international safety standards with robust enclosure design, thermal protection, and fail-safe mechanisms for reliable operation.",
+      color: "from-red-400 to-pink-500",
+      progress: 100
     }
   ];
 
-  const products = [
-    {
-      id: 1,
-      name: "Zuice-12V-1KVA",
-      image: "/images/solar-banner-removebg-preview.png",
-      price: "₹25,000",
-      originalPrice: "₹30,000",
-      rating: 4.8,
-      reviews: 156,
-      efficiency: "99.5%",
-      warranty: "2 years",
-      features: ["12V System", "1KVA Output", "MPPT Controller", "Pure Sine Wave"]
-    },
-    {
-      id: 2,
-      name: "Zuice-24V-2KVA",
-      image: "/images/solar-banner-removebg-preview.png",
-      price: "₹35,000",
-      originalPrice: "₹42,000",
-      rating: 4.9,
-      reviews: 203,
-      efficiency: "99.5%",
-      warranty: "2 years",
-      features: ["24V System", "2KVA Output", "Hybrid Mode", "LCD Display"]
-    },
-    {
-      id: 3,
-      name: "Zuice-48V-3KVA",
-      image: "/images/solar-banner-removebg-preview.png",
-      price: "₹45,000",
-      originalPrice: "₹55,000",
-      rating: 4.9,
-      reviews: 178,
-      efficiency: "99.5%",
-      warranty: "2 years",
-      features: ["48V System", "3KVA Output", "Smart Management", "Multiple Protection"]
-    },
-    {
-      id: 4,
-      name: "Zuice-48V-5KVA",
-      image: "/images/solar-banner-removebg-preview.png",
-      price: "₹65,000",
-      originalPrice: "₹75,000",
-      rating: 4.9,
-      reviews: 142,
-      efficiency: "99.5%",
-      warranty: "2 years",
-      features: ["48V System", "5KVA Output", "Commercial Grade", "Advanced Monitoring"]
-    }
-  ];
+  // Get featured products from essProducts (home ESS products)
+  const products = essProducts
+    .filter(product => product.category === 'home-ess')
+    .slice(0, 4)
+    .map(product => ({
+      id: product.id,
+      name: product.name,
+      image: product.image,
+      price: `₹${product.price.toLocaleString()}`,
+      originalPrice: `₹${product.originalPrice.toLocaleString()}`,
+      rating: product.rating,
+      reviews: product.reviews,
+      efficiency: product.specifications?.Efficiency || '>95%',
+      warranty: product.specifications?.Warranty || '60 months',
+      features: [
+        product.specifications?.Energy || product.specifications?.Capacity,
+        `${product.specifications?.['Cycle Life']} cycles`,
+        product.specifications?.['Cell Type'] || 'LiFePO4',
+        product.specifications?.Communication || 'Smart BMS'
+      ].filter(Boolean)
+    }));
 
   const rotatingFeatures = [
-    { icon: Battery, text: "Pure Sine Wave" },
-    { icon: Sun, text: "MPPT Technology" },
-    { icon: Gauge, text: "LCD Monitoring" },
-    { icon: Shield, text: "10+ Protections" }
+    { icon: Battery, text: "LiFePO4 Technology" },
+    { icon: Shield, text: "Advanced BMS" },
+    { icon: TrendingUp, text: "8000+ Cycles" },
+    { icon: Wifi, text: "Smart Monitoring" }
   ];
 
   useEffect(() => {
@@ -201,7 +164,7 @@ const FeaturesSection = () => {
     }, 4000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [features.length]);
 
   const ProductDetailsModal = ({ product, onClose }) => (
     <AnimatePresence>

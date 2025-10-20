@@ -43,19 +43,19 @@ const Footer = () => {
     {
       title: 'Products',
       links: [
-        { label: 'Zuice μ1000 Hybrid PCU', href: '/products/mu1000', icon: <Zap className="w-4 h-4" /> },
-        { label: 'Smart Inverters', href: '/products/inverters', icon: <Shield className="w-4 h-4" /> },
-        { label: 'Solar Panels', href: '/products/panels', icon: <Globe className="w-4 h-4" /> },
-        { label: 'Battery Systems', href: '/products/batteries', icon: <Award className="w-4 h-4" /> },
+        { label: '12.8V 100AH Home ESS', href: '/products/home-ess', icon: <Zap className="w-4 h-4" /> },
+        { label: 'Lithium-ion Batteries', href: '/products/batteries', icon: <Shield className="w-4 h-4" /> },
+        { label: 'BMS Systems', href: '/products/bms', icon: <Globe className="w-4 h-4" /> },
+        { label: 'Energy Storage Solutions', href: '/products/storage', icon: <Award className="w-4 h-4" /> },
         { label: 'Monitoring Systems', href: '/products/monitoring', icon: <Clock className="w-4 h-4" /> }
       ]
     },
     {
       title: 'Solutions',
       links: [
-        { label: 'Residential Solar', href: '/solutions/residential', icon: <Users className="w-4 h-4" /> },
-        { label: 'Commercial Solar', href: '/solutions/commercial', icon: <Shield className="w-4 h-4" /> },
-        { label: 'Industrial Solutions', href: '/solutions/industrial', icon: <Globe className="w-4 h-4" /> },
+        { label: 'Residential ESS', href: '/solutions/residential', icon: <Users className="w-4 h-4" /> },
+        { label: 'Commercial ESS', href: '/solutions/commercial', icon: <Shield className="w-4 h-4" /> },
+        { label: 'Industrial ESS', href: '/solutions/industrial', icon: <Globe className="w-4 h-4" /> },
         { label: 'Energy Storage', href: '/solutions/storage', icon: <Award className="w-4 h-4" /> },
         { label: 'Grid Integration', href: '/solutions/grid', icon: <Zap className="w-4 h-4" /> }
       ]
@@ -83,8 +83,8 @@ const Footer = () => {
     {
       icon: <Mail className="w-5 h-5" />,
       label: 'Email',
-      value: 'info@zuice.com',
-      href: 'mailto:info@zuice.com',
+      value: 'info@ess-solutions.com',
+      href: 'mailto:info@ess-solutions.com',
       description: 'Quick Response Guaranteed'
     },
     {
@@ -97,12 +97,12 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { icon: <Facebook className="w-5 h-5" />, href: 'https://facebook.com/zuice', label: 'Facebook', color: '#1877F2' },
-    { icon: <Twitter className="w-5 h-5" />, href: 'https://twitter.com/zuice', label: 'Twitter', color: '#1DA1F2' },
-    { icon: <Instagram className="w-5 h-5" />, href: 'https://instagram.com/zuice', label: 'Instagram', color: '#E4405F' },
-    { icon: <Linkedin className="w-5 h-5" />, href: 'https://linkedin.com/company/zuice', label: 'LinkedIn', color: '#0A66C2' },
-    { icon: <Youtube className="w-5 h-5" />, href: 'https://youtube.com/zuice', label: 'YouTube', color: '#FF0000' },
-    { icon: <Github className="w-5 h-5" />, href: 'https://github.com/zuice', label: 'GitHub', color: '#333' }
+    { icon: <Facebook className="w-5 h-5" />, href: 'https://facebook.com/ess-solutions', label: 'Facebook', color: '#1877F2' },
+    { icon: <Twitter className="w-5 h-5" />, href: 'https://twitter.com/ess-solutions', label: 'Twitter', color: '#1DA1F2' },
+    { icon: <Instagram className="w-5 h-5" />, href: 'https://instagram.com/ess-solutions', label: 'Instagram', color: '#E4405F' },
+    { icon: <Linkedin className="w-5 h-5" />, href: 'https://linkedin.com/company/ess-solutions', label: 'LinkedIn', color: '#0A66C2' },
+    { icon: <Youtube className="w-5 h-5" />, href: 'https://youtube.com/ess-solutions', label: 'YouTube', color: '#FF0000' },
+    { icon: <Github className="w-5 h-5" />, href: 'https://github.com/ess-solutions', label: 'GitHub', color: '#333' }
   ];
 
   const certifications = [
@@ -181,7 +181,7 @@ const Footer = () => {
             <div className="newsletter-content">
               <div className="newsletter-text">
                 <h3>Stay Powered Up with Zuice</h3>
-                <p>Get the latest updates on solar technology, energy solutions, and exclusive offers delivered to your inbox</p>
+                <p>Get the latest updates on energy storage technology, Zuice solutions, and exclusive offers delivered to your inbox</p>
                 <div className="newsletter-benefits">
                   <div className="benefit">
                     <CheckCircle className="w-4 h-4" />
@@ -246,15 +246,20 @@ const Footer = () => {
               >
                 <div className="footer-logo">
                   <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    <Zap className="logo-icon" />
+                    <img 
+                      src="/images/solar-banner-removebg-preview.png" 
+                      alt="Zuice Logo" 
+                      className="logo-icon"
+                      style={{ height: '40px', width: 'auto', objectFit: 'contain' }}
+                    />
                   </motion.div>
                   <h3 className="logo-text">Zuice</h3>
                 </div>
                 <p className="company-description">
-                  Leading the future of renewable energy with innovative solar solutions. Our Zuice μ1000 Hybrid PCU and intelligent energy systems are transforming how the world powers itself.
+                  Leading the future of renewable energy with innovative energy storage solutions. Our ESS systems and intelligent energy storage technologies are transforming how the world stores and manages power.
                 </p>
                 <div className="company-highlights">
                   <div className="highlight">
@@ -412,7 +417,7 @@ const Footer = () => {
           <div className="container">
             <div className="footer-bottom-content">
               <div className="copyright">
-                <p>© {currentYear} Zuice Energy Solutions. All rights reserved.</p>
+                <p>© {currentYear} ESS Energy Solutions. All rights reserved.</p>
                 <div className="legal-links">
                   <a href="/privacy">Privacy Policy</a>
                   <a href="/terms">Terms of Service</a>

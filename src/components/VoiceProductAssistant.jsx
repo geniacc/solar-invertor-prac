@@ -52,7 +52,7 @@ const VoiceProductAssistant = () => {
   const conversationSteps = [
     {
       id: 'property_type',
-      question: "Hi! I'm your inverter assistant. I'll help you find the perfect power solution for your needs. Let's start by understanding what type of property you're looking to power.",
+      question: "Hi! I'm your Zuice power assistant. I'll help you find the perfect Zuice μ1000 Hybrid PCU solution for your needs. Let's start by understanding what type of property you're looking to power.",
       type: 'choice',
       key: 'propertyType',
       options: [
@@ -75,13 +75,13 @@ const VoiceProductAssistant = () => {
     },
     {
       id: 'budget',
-      question: "What's your budget range for this power solution?",
+      question: "What's your budget range for this Zuice μ1000 Hybrid PCU solution?",
       type: 'choice',
       key: 'budget',
       options: [
-        { value: 'budget', label: '₹40,000 - ₹50,000', description: 'Basic solution', icon: DollarSign },
-        { value: 'mid', label: '₹50,000 - ₹70,000', description: 'Balanced performance', icon: DollarSign },
-        { value: 'premium', label: '₹70,000+', description: 'Maximum backup & features', icon: DollarSign }
+        { value: 'budget', label: '₹40,000 - ₹50,000', description: 'Zuice μ1000 - 50Ah', icon: DollarSign },
+        { value: 'mid', label: '₹50,000 - ₹70,000', description: 'Zuice μ1000 Pro - 86Ah', icon: DollarSign },
+        { value: 'premium', label: '₹70,000+', description: 'Zuice μ1000 Max - 100Ah', icon: DollarSign }
       ]
     },
     {
@@ -97,7 +97,7 @@ const VoiceProductAssistant = () => {
     },
     {
       id: 'monitoring',
-      question: "Would you like real-time monitoring and mobile app control for your power system?",
+      question: "Would you like the Zuice μ1000 Monitoring Kit for real-time monitoring and mobile app control?",
       type: 'choice',
       key: 'monitoring',
       options: [
@@ -231,6 +231,7 @@ const VoiceProductAssistant = () => {
         askQuestion(0);
       }, 500);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   // Auto-scroll to bottom
@@ -1318,7 +1319,7 @@ const VoiceProductAssistant = () => {
                       animate={{ x: 0, opacity: 1 }}
                       transition={{ delay: 0.2, duration: 0.4 }}
                     >
-                      🤖 AI Invertor Assistant
+                      🤖 Zuice AI Assistant
                     </motion.h3>
                     <motion.p 
                       className="text-xs opacity-90 font-medium"

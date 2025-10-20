@@ -5,8 +5,8 @@ import './FAQSection.css';
 
 const faqs = [
   { 
-    question: "Is the UPS compatible with existing power sources?",
-    answer: "Yes, our uninterrupted power supply systems are compatible with most power sources available in the Indian market. We support grid power, battery systems, and renewable energy inputs from major manufacturers. Our technical team can assess your existing setup and recommend the best configuration.",
+    question: "Is the ESS compatible with existing power sources?",
+    answer: "Yes, our Energy Storage Systems are compatible with most power sources available in the Indian market. We support grid power, battery systems, and renewable energy inputs from major manufacturers. Our technical team can assess your existing setup and recommend the best configuration.",
     category: "Technical",
     popular: true
   },
@@ -18,13 +18,13 @@ const faqs = [
   },
   { 
     question: "What about weather resistance?", 
-    answer: "Our uninterrupted power supply units are fully dustproof and weather-sealed to IP65 standard, making them suitable for harsh Indian weather conditions. They can operate in temperatures ranging from -25°C to +60°C and are designed to withstand heavy rain, dust storms, and extreme humidity.",
+    answer: "Our Energy Storage Systems are fully dustproof and weather-sealed to IP65 standard, making them suitable for harsh Indian weather conditions. They can operate in temperatures ranging from -25°C to +60°C and are designed to withstand heavy rain, dust storms, and extreme humidity.",
     category: "Technical",
     popular: false
   },
   { 
     question: "How long is the warranty period?", 
-    answer: "We offer a comprehensive 10-year warranty on our UPS systems, covering both parts and labor. The warranty includes free maintenance for the first 2 years and priority support throughout the warranty period. Extended warranty options are also available.",
+    answer: "We offer a comprehensive 10-year warranty on our ESS systems, covering both parts and labor. The warranty includes free maintenance for the first 2 years and priority support throughout the warranty period. Extended warranty options are also available.",
     category: "Warranty",
     popular: true
   },

@@ -45,20 +45,20 @@ const ServicesPage = () => {
 
       return () => clearInterval(interval);
     }
-  }, [isLoading]);
+  }, [isLoading, services.length]);
 
   const services = [
     {
       id: 1,
       icon: <Wrench className={isMobile ? "h-8 w-8" : "h-12 w-12"} />,
-      title: "Zuice μ1000 Installation",
-      description: "Professional installation of your Zuice μ1000 Hybrid PCU with complete setup and testing",
+      title: "ESS Installation",
+      description: "Professional installation of your 12.8V 100AH Home ESS with complete setup and testing",
       features: [
         "Site assessment and planning",
         "Professional mounting and wiring",
-        "Solar panel array configuration (up to 660Wp)",
-        "Battery system integration",
-        "LCD display setup and calibration",
+        "Battery management system configuration",
+        "Power system integration",
+        "Display setup and calibration",
         "System testing and commissioning"
       ],
       price: "₹5,000",
@@ -69,7 +69,7 @@ const ServicesPage = () => {
       id: 2,
       icon: <Shield className={isMobile ? "h-8 w-8" : "h-12 w-12"} />,
       title: "Extended Warranty",
-      description: "Comprehensive warranty extension for your Zuice μ1000 with priority support",
+      description: "Comprehensive warranty extension for your ESS system with priority support",
       features: [
         "Extended 5-year warranty coverage",
         "Free annual maintenance visits",
@@ -86,11 +86,11 @@ const ServicesPage = () => {
       id: 3,
       icon: <Settings className={isMobile ? "h-8 w-8" : "h-12 w-12"} />,
       title: "Maintenance & Support",
-      description: "Regular maintenance and technical support to keep your Zuice μ1000 running optimally",
+      description: "Regular maintenance and technical support to keep your ESS system running optimally",
       features: [
         "Quarterly system health checks",
         "Battery performance optimization",
-        "Solar panel cleaning and inspection",
+        "BMS system inspection and calibration",
         "Firmware updates and upgrades",
         "Performance report generation",
         "Remote monitoring setup"
@@ -103,10 +103,10 @@ const ServicesPage = () => {
       id: 4,
       icon: <Zap className={isMobile ? "h-8 w-8" : "h-12 w-12"} />,
       title: "System Upgrades",
-      description: "Upgrade your existing Zuice μ1000 system with additional capacity or features",
+      description: "Upgrade your existing ESS system with additional capacity or features",
       features: [
-        "Battery capacity upgrades (50Ah to 100Ah)",
-        "Additional solar panel integration",
+        "Battery capacity upgrades (100Ah to 200Ah)",
+        "Additional battery module integration",
         "Smart monitoring system installation",
         "Load management optimization",
         "Parallel system configuration",
@@ -123,21 +123,21 @@ const ServicesPage = () => {
       name: "Rajesh Kumar",
       location: "Mumbai",
       rating: 5,
-      comment: "Excellent installation service! The team was professional and the Zuice μ1000 has been working flawlessly for 6 months.",
+      comment: "Excellent installation service! The team was professional and the ESS system has been working flawlessly for 6 months.",
       service: "Installation"
     },
     {
       name: "Priya Sharma",
       location: "Delhi",
       rating: 5,
-      comment: "The maintenance service is top-notch. They keep my Zuice μ1000 running at peak efficiency.",
+      comment: "The maintenance service is top-notch. They keep my ESS system running at peak efficiency.",
       service: "Maintenance"
     },
     {
       name: "Amit Patel",
       location: "Bangalore",
       rating: 5,
-      comment: "Upgraded from 50Ah to 100Ah battery. The process was smooth and now I get extended backup time.",
+      comment: "Upgraded from 100Ah to 200Ah battery. The process was smooth and now I get extended backup time.",
       service: "Upgrade"
     }
   ];
@@ -180,7 +180,7 @@ const ServicesPage = () => {
             <h1 className={`font-bold text-foreground mb-6 ${
               isMobile ? 'text-3xl' : isTablet ? 'text-4xl' : 'text-4xl lg:text-6xl'
             }`}>
-              Zuice μ1000 
+              Zuice 
               <span className="block bg-gradient-to-r from-purple-400 via-purple-500 to-pink-600 bg-clip-text text-transparent">
                 Services & Support
               </span>
@@ -189,7 +189,7 @@ const ServicesPage = () => {
             <p className={`text-muted-foreground leading-relaxed mb-8 ${
               isMobile ? 'text-lg' : 'text-xl'
             }`}>
-              Comprehensive services for your Zuice μ1000 Hybrid PCU - from professional installation 
+              Comprehensive services for your ESS system - from professional installation 
               to ongoing maintenance and technical support.
             </p>
 
@@ -260,7 +260,7 @@ const ServicesPage = () => {
             <p className={`text-muted-foreground max-w-2xl mx-auto ${
               isMobile ? 'text-base' : 'text-xl'
             }`}>
-              Professional services designed specifically for your Zuice μ1000 Hybrid PCU
+              Professional services designed specifically for your ESS system
             </p>
           </motion.div>
 
@@ -346,10 +346,10 @@ const ServicesPage = () => {
             }`}>
               What Our Customers Say
             </h2>
-            <p className={`text-muted-foreground ${
+            <p className={`text-muted-foreground max-w-2xl mx-auto ${
               isMobile ? 'text-base' : 'text-xl'
             }`}>
-              Real experiences from Zuice μ1000 users
+              Real experiences from ESS system users
             </p>
           </motion.div>
 
@@ -418,7 +418,7 @@ const ServicesPage = () => {
             <p className={`text-purple-100 mb-8 max-w-2xl mx-auto ${
               isMobile ? 'text-base' : 'text-xl'
             }`}>
-              Contact our expert team for professional Zuice μ1000 services and support
+              Contact our expert team for professional ESS system services and support
             </p>
             <div className={`flex gap-4 justify-center ${
               isMobile ? 'flex-col items-center' : 'flex-col sm:flex-row'

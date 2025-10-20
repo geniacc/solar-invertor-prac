@@ -19,6 +19,7 @@ import DeviceList from '../components/DeviceMonitoring/DeviceList';
 import RealTimeMetrics from '../components/DeviceMonitoring/RealTimeMetrics';
 import DeviceStatus from '../components/DeviceMonitoring/DeviceStatus';
 import DataVisualization from '../components/DeviceMonitoring/DataVisualization';
+import { essProducts } from '../data/essProducts';
 
 const DeviceMonitoringPage = () => {
   const [devices, setDevices] = useState([]);
@@ -28,70 +29,54 @@ const DeviceMonitoringPage = () => {
   const [showAddDevice, setShowAddDevice] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState('connected');
 
-  // Mock device data
+  // Mock device data based on real ESS products
   useEffect(() => {
-    const mockDevices = [
-      {
-        id: '1',
-        name: 'Zuice μ1000 - Living Room',
-        model: 'Zuice μ1000',
-        status: 'online',
-        batteryLevel: 85,
-        powerOutput: 750,
-        location: 'Living Room',
-        lastSeen: new Date(),
-        macAddress: 'AA:BB:CC:DD:EE:01',
-        firmwareVersion: 'v2.1.3',
-        serialNumber: 'ZU1000-001',
+    const locations = ['Living Room', 'Kitchen', 'Garage', 'Office', 'Basement'];
+    const statuses = ['online', 'warning', 'offline'];
+    
+    const mockDevices = essProducts.slice(0, 5).map((product, index) => {
+      const status = statuses[index % 3];
+      const isOnline = status === 'online';
+      const isWarning = status === 'warning';
+      
+      // Extract voltage and capacity from specifications
+      const voltage = product.specifications?.['Voltage Range'] || '48V';
+      const capacity = product.specifications?.Capacity || '100Ah';
+      const energy = product.specifications?.Energy || '4.8kWh';
+      
+      return {
+        id: product.id,
+        name: `${product.name} - ${locations[index]}`,
+        model: product.name,
+        status: status,
+        batteryLevel: isOnline ? Math.floor(Math.random() * 40) + 60 : 
+                     isWarning ? Math.floor(Math.random() * 30) + 30 : 0,
+        powerOutput: isOnline ? Math.floor(Math.random() * 2000) + 500 : 
+                    isWarning ? Math.floor(Math.random() * 500) + 100 : 0,
+        location: locations[index],
+        lastSeen: isOnline ? new Date() : 
+                 isWarning ? new Date(Date.now() - 300000) : 
+                 new Date(Date.now() - 3600000),
+        macAddress: `AA:BB:CC:DD:EE:${(index + 1).toString().padStart(2, '0')}`,
+        firmwareVersion: 'v3.2.1',
+        serialNumber: `${product.id.toUpperCase()}-${(index + 1).toString().padStart(3, '0')}`,
         installDate: '2024-01-15',
         connectionType: 'bluetooth',
-        signalStrength: 85,
-        efficiency: 92,
-        temperature: 35,
-        voltage: 12.4,
-        current: 60.5
-      },
-      {
-        id: '2',
-        name: 'Zuice μ1000 - Kitchen',
-        model: 'Zuice μ1000',
-        status: 'warning',
-        batteryLevel: 45,
-        powerOutput: 320,
-        location: 'Kitchen',
-        lastSeen: new Date(Date.now() - 300000),
-        macAddress: 'AA:BB:CC:DD:EE:02',
-        firmwareVersion: 'v2.1.2',
-        serialNumber: 'ZU1000-002',
-        installDate: '2024-02-01',
-        connectionType: 'bluetooth',
-        signalStrength: 65,
-        efficiency: 78,
-        temperature: 42,
-        voltage: 11.8,
-        current: 27.1
-      },
-      {
-        id: '3',
-        name: 'Zuice μ1000 - Garage',
-        model: 'Zuice μ1000',
-        status: 'offline',
-        batteryLevel: 0,
-        powerOutput: 0,
-        location: 'Garage',
-        lastSeen: new Date(Date.now() - 3600000),
-        macAddress: 'AA:BB:CC:DD:EE:03',
-        firmwareVersion: 'v2.1.1',
-        serialNumber: 'ZU1000-003',
-        installDate: '2024-01-20',
-        connectionType: 'bluetooth',
-        signalStrength: 0,
-        efficiency: 0,
-        temperature: 25,
-        voltage: 0,
-        current: 0
-      }
-    ];
+        signalStrength: isOnline ? Math.floor(Math.random() * 30) + 70 : 
+                       isWarning ? Math.floor(Math.random() * 40) + 40 : 0,
+        efficiency: isOnline ? Math.floor(Math.random() * 10) + 90 : 
+                   isWarning ? Math.floor(Math.random() * 20) + 70 : 0,
+        temperature: Math.floor(Math.random() * 20) + 25,
+        voltage: parseFloat(voltage.replace('V', '').split('-')[0] || '48'),
+        current: isOnline ? (Math.random() * 50 + 10).toFixed(1) : 
+                isWarning ? (Math.random() * 20 + 5).toFixed(1) : 0,
+        capacity: capacity,
+        energy: energy,
+        cycleLife: product.specifications?.['Cycle Life'] || '8000+ cycles',
+        warranty: product.specifications?.Warranty || '60 months',
+        cellType: product.specifications?.['Cell Type'] || 'LiFePO4'
+      };
+    });
 
     setDevices(mockDevices);
     if (mockDevices.length > 0) {
@@ -104,26 +89,36 @@ const DeviceMonitoringPage = () => {
     
     // Simulate scanning process
     setTimeout(() => {
-      // Simulate finding new devices
+      // Simulate finding new devices based on real ESS products
+      const randomProduct = essProducts[Math.floor(Math.random() * essProducts.length)];
+      const voltage = randomProduct.specifications?.['Voltage Range'] || '48V';
+      const capacity = randomProduct.specifications?.Capacity || '100Ah';
+      const energy = randomProduct.specifications?.Energy || '4.8kWh';
+      
       const newDevice = {
-        id: Date.now().toString(),
-        name: `Zuice μ1000 - New Device`,
-        model: 'Zuice μ1000',
+        id: `${randomProduct.id}-${Date.now()}`,
+        name: `${randomProduct.name} - New Device`,
+        model: randomProduct.name,
         status: 'discovered',
         batteryLevel: Math.floor(Math.random() * 100),
-        powerOutput: Math.floor(Math.random() * 1000),
+        powerOutput: Math.floor(Math.random() * 2000) + 200,
         location: 'Unknown',
         lastSeen: new Date(),
         macAddress: `AA:BB:CC:DD:EE:${Math.floor(Math.random() * 99).toString().padStart(2, '0')}`,
-        firmwareVersion: 'v2.1.3',
-        serialNumber: `ZU1000-${Math.floor(Math.random() * 999).toString().padStart(3, '0')}`,
+        firmwareVersion: 'v3.2.1',
+        serialNumber: `${randomProduct.id.toUpperCase()}-${Math.floor(Math.random() * 999).toString().padStart(3, '0')}`,
         installDate: new Date().toISOString().split('T')[0],
         connectionType: 'bluetooth',
         signalStrength: Math.floor(Math.random() * 100),
-        efficiency: Math.floor(Math.random() * 100),
-        temperature: Math.floor(Math.random() * 50) + 20,
-        voltage: (Math.random() * 5 + 10).toFixed(1),
-        current: (Math.random() * 100).toFixed(1)
+        efficiency: Math.floor(Math.random() * 20) + 80,
+        temperature: Math.floor(Math.random() * 30) + 20,
+        voltage: parseFloat(voltage.replace('V', '').split('-')[0] || '48'),
+        current: (Math.random() * 50 + 10).toFixed(1),
+        capacity: capacity,
+        energy: energy,
+        cycleLife: randomProduct.specifications?.['Cycle Life'] || '8000+ cycles',
+        warranty: randomProduct.specifications?.Warranty || '60 months',
+        cellType: randomProduct.specifications?.['Cell Type'] || 'LiFePO4'
       };
 
       setDevices(prev => [...prev, newDevice]);
@@ -173,7 +168,7 @@ const DeviceMonitoringPage = () => {
                     Device Monitoring
                   </h1>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Monitor and manage your Zuice devices
+                    Monitor and manage your ESS devices
                   </p>
                 </div>
               </div>

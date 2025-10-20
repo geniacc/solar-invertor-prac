@@ -64,7 +64,7 @@ const testimonials = [
     name: 'Sarah Johnson',
     role: 'IT Director',
     company: 'TechCorp Solutions',
-    content: 'The enterprise solution has exceeded my expectations. Our operational efficiency improved by 80%!',
+    content: 'Our ESS system has exceeded expectations. Energy efficiency improved by 80% with reliable backup power!',
     rating: 5,
     initials: 'SJ',
     bgColor: 'from-purple-500 to-pink-500'
@@ -73,7 +73,7 @@ const testimonials = [
     name: 'Mike Chen',
     role: 'Business Owner',
     company: 'Green Energy Co.',
-    content: 'Reliable, efficient, and great customer support. Highly recommend Zuice.',
+    content: 'The ESS technology is reliable, efficient, and comes with excellent customer support. Highly recommend!',
     rating: 5,
     initials: 'MC',
     bgColor: 'from-blue-500 to-cyan-500'
@@ -82,7 +82,7 @@ const testimonials = [
     name: 'Emma Davis',
     role: 'Operations Manager',
     company: 'Sustainable Systems',
-    content: 'Finally, a company that truly delivers on innovation and quality.',
+    content: 'Finally, an ESS company that truly delivers on innovation and quality with real energy storage solutions.',
     rating: 5,
     initials: 'ED',
     bgColor: 'from-green-500 to-emerald-500'
@@ -136,11 +136,11 @@ export default function HomePage() {
             className="text-center space-y-4 mb-16"
           >
             <h2 className="text-3xl lg:text-5xl font-bold font-display">
-              Why Choose Zuice?
+              Why Choose Our Zuice Solutions?
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Experience the perfect blend of innovation, reliability, and performance 
-              with our industry-leading Zuice μ1000 Hybrid PCU solutions.
+              with our industry-leading Energy Storage System solutions.
             </p>
           </motion.div>
 
@@ -208,7 +208,7 @@ export default function HomePage() {
               What Our Customers Say
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Join thousands of satisfied customers who have transformed their energy future with Zuice.
+              Join thousands of satisfied customers who have transformed their energy future with our Zuice solutions.
             </p>
           </motion.div>
 
@@ -290,10 +290,10 @@ export default function HomePage() {
             >
               <div className="space-y-4">
                 <h2 className="text-3xl lg:text-4xl font-bold font-display">
-                  Complete Solar Solution Package
+                  Complete ESS Solution Package
                 </h2>
                 <p className="text-xl text-muted-foreground">
-                  Everything you need for a seamless transition to clean energy, backed by our comprehensive support.
+                  Everything you need for a seamless transition to clean energy storage, backed by our comprehensive support.
                 </p>
               </div>
 
@@ -341,7 +341,7 @@ export default function HomePage() {
                   <div className="space-y-2">
                     <h3 className="text-2xl font-bold">Start Saving Today</h3>
                     <p className="text-muted-foreground">
-                      Join thousands of customers already saving with Zuice solar solutions
+                      Join thousands of customers already saving with our Zuice solutions
                     </p>
                   </div>
                   <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4">
@@ -380,7 +380,7 @@ export default function HomePage() {
             </h2>
             <p className="text-xl opacity-90 max-w-3xl mx-auto">
               Start your journey to energy independence today. Get a free consultation 
-              and discover how much you can save with Zuice solar solutions.
+              and discover how much you can save with our Zuice solutions.
             </p>
           </motion.div>
 
@@ -393,7 +393,7 @@ export default function HomePage() {
           >
             <Link to="/products">
               <Button size="xl" variant="secondary" className="group">
-                Browse Solar Solutions
+                Browse Zuice Solutions
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>

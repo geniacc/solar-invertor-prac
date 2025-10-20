@@ -28,7 +28,7 @@ const ContactPage = () => {
     phone: '',
     subject: '',
     message: '',
-    productModel: 'Zuice μ1000',
+    productModel: '12.8V 100AH Home ESS',
     inquiryType: 'general'
   });
 
@@ -50,7 +50,7 @@ const ContactPage = () => {
     {
       icon: <Phone className={isMobile ? "h-6 w-6" : "h-8 w-8"} />,
       title: "Phone Support",
-      description: "Speak directly with our Zuice μ1000 experts",
+      description: "Speak directly with our ESS system experts",
       contact: "+91-9876543210",
       availability: "Mon-Sat, 9 AM - 7 PM",
       color: "from-green-500 to-emerald-500"
@@ -59,14 +59,14 @@ const ContactPage = () => {
       icon: <Mail className={isMobile ? "h-6 w-6" : "h-8 w-8"} />,
       title: "Email Support",
       description: "Get detailed technical assistance",
-      contact: "support@zuicesolar.com",
+      contact: "support@ess-solutions.com",
       availability: "24/7 Response",
       color: "from-blue-500 to-indigo-500"
     },
     {
       icon: <MessageSquare className={isMobile ? "h-6 w-6" : "h-8 w-8"} />,
       title: "Live Chat",
-      description: "Instant help with Zuice μ1000 queries",
+      description: "Instant help with ESS system queries",
       contact: "Chat Now",
       availability: "Online Now",
       color: "from-purple-500 to-purple-700"
@@ -84,31 +84,31 @@ const ContactPage = () => {
   const officeLocations = [
     {
       city: "Mumbai",
-      address: "123 Solar Street, Andheri East, Mumbai - 400069",
+      address: "123 Energy Storage Street, Andheri East, Mumbai - 400069",
       phone: "+91-9876543210",
-      email: "mumbai@zuicesolar.com"
+      email: "mumbai@ess-solutions.com"
     },
     {
       city: "Delhi",
       address: "456 Green Energy Plaza, Connaught Place, New Delhi - 110001",
       phone: "+91-9876543212",
-      email: "delhi@zuicesolar.com"
+      email: "delhi@ess-solutions.com"
     },
     {
       city: "Bangalore",
       address: "789 Tech Park, Electronic City, Bangalore - 560100",
       phone: "+91-9876543213",
-      email: "bangalore@zuicesolar.com"
+      email: "bangalore@ess-solutions.com"
     }
   ]
 
   const faqItems = [
     {
-      question: "How do I get technical support for my Zuice μ1000?",
+      question: "How do I get technical support for my ESS system?",
       answer: "Call our 24/7 technical support line at +91-9876543211 or use the live chat feature for immediate assistance."
     },
     {
-      question: "What's covered under Zuice μ1000 warranty?",
+      question: "What's covered under ESS system warranty?",
       answer: "Our 2-year warranty covers all manufacturing defects, battery performance, and electronic components. Extended warranty options are available."
     },
     {
@@ -172,14 +172,14 @@ const ContactPage = () => {
             }`}>
               Get in Touch
               <span className="block bg-gradient-to-r from-purple-200 via-purple-300 to-pink-300 bg-clip-text text-transparent">
-                Zuice μ1000 Support
+                Zuice Support
               </span>
             </h1>
             
             <p className={`text-purple-100 leading-relaxed mb-8 ${
               isMobile ? 'text-base' : 'text-xl'
             }`}>
-              Need help with your Zuice μ1000 Hybrid PCU? Our expert team is here to assist you 
+              Need help with your ESS system? Our expert team is here to assist you 
               with installation, maintenance, and technical support.
             </p>
           </motion.div>
@@ -204,7 +204,7 @@ const ContactPage = () => {
             <p className={`text-muted-foreground ${
               isMobile ? 'text-base' : 'text-xl'
             }`}>
-              Choose the best way to reach our Zuice μ1000 experts
+              Choose the best way to reach our ESS system experts
             </p>
           </motion.div>
 
@@ -500,7 +500,7 @@ const ContactPage = () => {
             <p className={`text-red-100 mb-8 max-w-2xl mx-auto ${
               isMobile ? 'text-base' : 'text-xl'
             }`}>
-              Experiencing issues with your Zuice μ1000? Our emergency support team is available round the clock
+              Experiencing issues with your ESS system? Our emergency support team is available round the clock
             </p>
             <div className={`flex gap-4 justify-center ${
               isMobile ? 'flex-col items-center' : 'flex-col sm:flex-row'

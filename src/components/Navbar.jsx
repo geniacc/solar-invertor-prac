@@ -157,14 +157,18 @@ const Navbar = () => {
               <Link to="/" className="flex items-center space-x-3">
                 <motion.div
                   className="relative"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  <Zap className="h-8 w-8 text-cyan-400" />
+                  <img 
+                    src="/images/solar-banner-removebg-preview.png" 
+                    alt="Zuice Logo" 
+                    className="h-10 w-auto object-contain"
+                  />
                   <motion.div
-                    className="absolute inset-0 rounded-full bg-cyan-400/20"
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
+                    className="absolute inset-0 rounded-lg bg-cyan-400/10"
+                    animate={{ scale: [1, 1.05, 1] }}
+                    transition={{ duration: 3, repeat: Infinity }}
                   />
                 </motion.div>
                 <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
