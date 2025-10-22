@@ -294,7 +294,7 @@ const Navbar = () => {
                   <ShoppingCart className="h-5 w-5" />
                   {totalItems > 0 && (
                     <motion.span
-                      className="absolute -top-1 -right-1 h-5 w-5 bg-gradient-to-r from-cyan-400 to-purple-500 text-white text-xs rounded-full flex items-center justify-center font-medium"
+                      className="absolute top-1 right-0 z-10 h-5 w-5 bg-gradient-to-r from-cyan-400 to-purple-500 text-white text-xs rounded-full flex items-center justify-center font-medium"
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ type: 'spring', stiffness: 500, damping: 30 }}

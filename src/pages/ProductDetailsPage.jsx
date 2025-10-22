@@ -153,6 +153,9 @@ const ProductDetailsPage = () => {
                   e.target.src = '/images/placeholder-product.jpg';
                 }}
               />
+              <div className="absolute bottom-4 left-4 bg-black/60 text-white px-3 py-1 rounded-md text-sm font-semibold z-20">
+                Zuice
+              </div>
               <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
                 <button
                   onClick={() => setShowImageModal(true)}

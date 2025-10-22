@@ -2,7 +2,7 @@ export const essProducts = [
   // HOME ESS PRODUCTS
   {
     id: "home-ess-12v",
-    name: "12.8V 100AH Home ESS",
+    name: "Zuice 12.8V 100AH Home ESS",
     category: "home-ess",
     price: 45000,
     originalPrice: 50000,
@@ -65,7 +65,7 @@ export const essProducts = [
   },
   {
     id: "home-ess-25v",
-    name: "25.6V 100AH Home ESS",
+    name: "Zuice 25.6V 100AH Home ESS",
     category: "home-ess",
     price: 65000,
     originalPrice: 72000,
@@ -129,7 +129,7 @@ export const essProducts = [
   },
   {
     id: "home-ess-48v",
-    name: "48V 100AH Home ESS",
+    name: "Zuice 48V 100AH Home ESS",
     category: "home-ess",
     price: 85000,
     originalPrice: 95000,
@@ -193,7 +193,7 @@ export const essProducts = [
   },
   {
     id: "home-ess-51v-wall",
-    name: "51.2V 100AH Wall Mounted",
+    name: "Zuice 51.2V 100AH Wall Mounted",
     category: "home-ess",
     price: 95000,
     originalPrice: 105000,
@@ -258,7 +258,7 @@ export const essProducts = [
   },
   {
     id: "home-ess-51v-stack",
-    name: "51.2V 100AH Stackable",
+    name: "Zuice 51.2V 100AH Stackable",
     category: "home-ess",
     price: 98000,
     originalPrice: 108000,
@@ -325,7 +325,7 @@ export const essProducts = [
   // COMMERCIAL & INDUSTRIAL ESS PRODUCTS
   {
     id: "commercial-96v",
-    name: "96V 100AH Commercial ESS",
+    name: "Zuice 96V 100AH Commercial ESS",
     category: "commercial",
     price: 125000,
     originalPrice: 140000,
@@ -389,7 +389,7 @@ export const essProducts = [
   },
   {
     id: "commercial-120v",
-    name: "120V 100AH Commercial ESS",
+    name: "Zuice 120V 100AH Commercial ESS",
     category: "commercial",
     price: 145000,
     originalPrice: 160000,
@@ -427,7 +427,7 @@ export const essProducts = [
   },
   {
     id: "commercial-180v",
-    name: "180V 100AH Commercial ESS",
+    name: "Zuice 180V 100AH Commercial ESS",
     category: "commercial",
     price: 185000,
     originalPrice: 205000,
@@ -466,7 +466,7 @@ export const essProducts = [
   },
   {
     id: "commercial-240v",
-    name: "240V 100AH Commercial ESS",
+    name: "Zuice 240V 100AH Commercial ESS",
     category: "commercial",
     price: 225000,
     originalPrice: 250000,
@@ -505,7 +505,7 @@ export const essProducts = [
   },
   {
     id: "commercial-384v",
-    name: "384V 100AH Commercial ESS",
+    name: "Zuice 384V 100AH Commercial ESS",
     category: "commercial",
     price: 285000,
     originalPrice: 315000,
@@ -543,7 +543,7 @@ export const essProducts = [
   },
   {
     id: "commercial-576v",
-    name: "576V 100AH Commercial ESS",
+    name: "Zuice 576V 100AH Commercial ESS",
     category: "commercial",
     price: 385000,
     originalPrice: 425000,
@@ -584,7 +584,7 @@ export const essProducts = [
   // TELECOM ESS PRODUCTS
   {
     id: "telecom-48v-rack",
-    name: "48V 100AH Telecom Rack",
+    name: "Zuice 48V 100AH Telecom Rack",
     category: "telecom",
     price: 95000,
     originalPrice: 105000,
@@ -650,7 +650,7 @@ export const essProducts = [
   // LARGE SCALE COMMERCIAL SYSTEM
   {
     id: "commercial-125kw",
-    name: "125kW/261kWh EcoPower System",
+    name: "Zuice 125kW/261kWh EcoPower System",
     category: "commercial",
     price: 2500000,
     originalPrice: 2750000,

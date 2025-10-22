@@ -29,7 +29,7 @@ const ProductsPage = () => {
   const [priceRange, setPriceRange] = useState([0, 3000000]);
   const [showFilters, setShowFilters] = useState(false);
   
-  const { addToCart, items } = useCartStore();
+  const { addItem, items } = useCartStore();
 
   // Categories with counts
   const categories = useMemo(() => {
@@ -109,6 +109,9 @@ const ProductsPage = () => {
             -{product.discount}%
           </div>
         )}
+        <div className="absolute bottom-3 left-3 bg-black/60 text-white px-3 py-1 rounded-md text-sm font-semibold z-20">
+          Zuice
+        </div>
         <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center z-10">
           <Link
             to={`/products/${product.id}`}
@@ -169,7 +172,7 @@ const ProductsPage = () => {
               <Heart className="w-5 h-5" />
             </button>
             <button
-              onClick={() => addToCart(product)}
+              onClick={() => addItem(product)}
               disabled={isInCart(product.id)}
               className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-semibold transition-all ${
                 isInCart(product.id)
@@ -202,7 +205,7 @@ const ProductsPage = () => {
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg dark:hover:shadow-xl transition-shadow duration-300 overflow-hidden border dark:border-gray-700">
       <div className="flex flex-col sm:flex-row">
         {/* Product Image */}
-        <div className="w-full sm:w-56 h-48 sm:h-48 flex-shrink-0 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600">
+        <div className="relative w-full sm:w-56 h-48 sm:h-48 flex-shrink-0 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600">
           <OptimizedImage
             src={product.image}
             alt={product.name}
@@ -211,6 +214,9 @@ const ProductsPage = () => {
             aspectRatio="aspect-auto"
             objectFit="object-contain"
           />
+          <div className="absolute bottom-2 left-2 bg-black/60 text-white px-3 py-1 rounded-md text-xs font-semibold z-20">
+            Zuice
+          </div>
         </div>
 
         {/* Product Info */}
@@ -265,7 +271,7 @@ const ProductsPage = () => {
                 View Details
               </Link>
               <button
-                onClick={() => addToCart(product)}
+                onClick={() => addItem(product)}
                 disabled={isInCart(product.id)}
                 className={`flex items-center space-x-2 px-6 py-2 rounded-lg font-semibold transition-all ${
                   isInCart(product.id)

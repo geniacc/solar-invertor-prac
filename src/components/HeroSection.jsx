@@ -205,7 +205,7 @@ const HeroSection = () => {
                     backgroundSize: '200% 200%',
                   }}
                 >
-                  12.8V 100AH
+                  μ1000
                 </motion.span>
                 <span className="block text-white/90 text-3xl lg:text-4xl font-light mt-2">
                   Home Energy Storage System
@@ -305,7 +305,7 @@ const HeroSection = () => {
             >
               <motion.img
                 src="/images/solar-banner-removebg-preview.png"
-                alt="12.8V 100AH Home ESS"
+                alt="μ1000 Home ESS"
                 className="h-96 w-auto filter drop-shadow-2xl"
                 animate={{
                   filter: [
@@ -416,7 +416,7 @@ const HeroSection = () => {
                 <Play className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                 <p className="text-gray-600">Demo video would play here</p>
                 <p className="text-sm text-gray-500 mt-2">
-                  Experience the 12.8V 100AH Home ESS in action
+                  Experience the μ1000 Home ESS in action
                 </p>
               </div>
             </div>
