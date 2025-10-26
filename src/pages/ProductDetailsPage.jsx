@@ -147,7 +147,7 @@ const ProductDetailsPage = () => {
               <img
                 src={productImages[selectedImage]}
                 alt={product.name}
-                className="w-full h-96 object-cover cursor-zoom-in"
+                className="w-full h-96 object-contain cursor-zoom-in"
                 onClick={() => setShowImageModal(true)}
                 onError={(e) => {
                   e.target.src = '/images/placeholder-product.jpg';
@@ -187,7 +187,7 @@ const ProductDetailsPage = () => {
                     <img
                       src={image}
                       alt={`${product.name} ${index + 1}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                       onError={(e) => {
                         e.target.src = '/images/placeholder-product.jpg';
                       }}
@@ -623,7 +623,7 @@ const ProductDetailsPage = () => {
       {/* Image Modal */}
       {showImageModal && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-          <div className="relative max-w-4xl max-h-full">
+          <div className="relative w-[90vw] h-[85vh]">
             <button
               onClick={() => setShowImageModal(false)}
               className="absolute top-4 right-4 text-white hover:text-gray-300 z-10"
@@ -633,7 +633,7 @@ const ProductDetailsPage = () => {
             <img
               src={productImages[selectedImage]}
               alt={product.name}
-              className="max-w-full max-h-full object-contain"
+              className="w-full h-full object-contain"
               onError={(e) => {
                 e.target.src = '/images/placeholder-product.jpg';
               }}
