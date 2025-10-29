@@ -26,7 +26,7 @@ import {
 } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/Card'
 import { Button } from '../ui/Button'
-import { Input } from '../ui/Input'
+import { Input } from '../ui/input'
 import { Badge } from '../ui/Badge'
 
 const DeviceList = ({ devices = [], onDeviceSelect, onAddDevice, selectedDevice, onScanDevices, isScanning }) => {
