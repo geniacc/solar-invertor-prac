@@ -150,7 +150,7 @@ const ProductDetailsPage = () => {
                 className="w-full h-96 object-contain cursor-zoom-in"
                 onClick={() => setShowImageModal(true)}
                 onError={(e) => {
-                  e.target.src = '/images/placeholder-product.jpg';
+                  e.target.src = '/images/placeholder-product.svg';
                 }}
               />
               <div className="absolute bottom-4 left-4 bg-black/60 text-white px-3 py-1 rounded-md text-sm font-semibold z-20">
@@ -189,7 +189,7 @@ const ProductDetailsPage = () => {
                       alt={`${product.name} ${index + 1}`}
                       className="w-full h-full object-contain"
                       onError={(e) => {
-                        e.target.src = '/images/placeholder-product.jpg';
+                        e.target.src = '/images/placeholder-product.svg';
                       }}
                     />
                   </button>
@@ -577,7 +577,7 @@ const ProductDetailsPage = () => {
                       alt={relatedProduct.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       onError={(e) => {
-                        e.target.src = '/images/placeholder-product.jpg';
+                        e.target.src = '/images/placeholder-product.svg';
                       }}
                     />
                   </div>
@@ -635,7 +635,7 @@ const ProductDetailsPage = () => {
               alt={product.name}
               className="w-full h-full object-contain"
               onError={(e) => {
-                e.target.src = '/images/placeholder-product.jpg';
+                e.target.src = '/images/placeholder-product.svg';
               }}
             />
           </div>

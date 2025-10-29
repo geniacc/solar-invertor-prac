@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button, Progress, Tag } from 'antd';
+import { Modal, Button, Tag } from 'antd';
 import { ThunderboltOutlined, SettingOutlined, SafetyOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import './ProductDetailsModal.css';

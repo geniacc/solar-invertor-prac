@@ -11,8 +11,10 @@
     "deploy": "npm run build && gh-pages -d dist"
   },
   "dependencies": {
+    "@ant-design/icons": "^6.1.0",
     "@react-three/drei": "^9.11.0",
     "@react-three/fiber": "^8.0.27",
+    "antd": "^5.27.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",

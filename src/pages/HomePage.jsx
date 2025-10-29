@@ -106,25 +106,7 @@ export default function HomePage() {
 
       <FeaturesSection />
 
-      {/* Solar Panel Showcase Section */}
-      <section className="section-padding">
-        <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center space-y-4 mb-16"
-          >
-            <h2 className="text-3xl lg:text-5xl font-bold font-display">
-              Premium Technology Solutions
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Explore our cutting-edge enterprise systems with interactive 3D visualization and detailed specifications.
-            </p>
-          </motion.div>
-          <SolarPanelShowcase />
-        </div>
-      </section>
+      {/* Removed: Premium Technology Solutions section */}
 
       {/* Features Section */}
       <section className="section-padding bg-muted/30">

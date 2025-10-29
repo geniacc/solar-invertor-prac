@@ -39,13 +39,14 @@ const ServicesPage = () => {
 
   useEffect(() => {
     if (!isLoading) {
+      const SERVICE_COUNT = services.length;
       const interval = setInterval(() => {
-        setActiveService((prev) => (prev + 1) % services.length);
+        setActiveService((prev) => (prev + 1) % SERVICE_COUNT);
       }, 5000);
 
       return () => clearInterval(interval);
     }
-  }, [isLoading, services.length]);
+  }, [isLoading]);
 
   const services = [
     {

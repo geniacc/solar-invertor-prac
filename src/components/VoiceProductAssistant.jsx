@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { Button } from './ui/Button';
 import { useNavigate } from 'react-router-dom';
-import { products } from '../data/products';
+import { essProducts } from '../data/essProducts';
 import { LoadingSpinner, InlineLoader } from './ui/Loading';
 import { useResponsive } from './ui/Responsive';
 
@@ -51,58 +51,122 @@ const VoiceProductAssistant = () => {
   // Conversation flow steps
   const conversationSteps = [
     {
-      id: 'property_type',
-      question: "Hi! I'm your Zuice power assistant. I'll help you find the perfect Zuice μ1000 Hybrid PCU solution for your needs. Let's start by understanding what type of property you're looking to power.",
+      id: 'segment',
+      question: "Who is this battery for?",
       type: 'choice',
-      key: 'propertyType',
+      key: 'segment',
       options: [
-        { value: 'small_home', label: 'Small Home/Apartment', icon: Home },
-        { value: 'medium_home', label: 'Medium Home', icon: Home },
-        { value: 'large_home', label: 'Large Home', icon: Building },
-        { value: 'office', label: 'Small Office/Shop', icon: Building }
+        { value: 'home', label: 'Home', icon: Home, description: 'Apartments, houses, small solar' },
+        { value: 'commercial', label: 'Business', icon: Building, description: 'Shops, offices, factories' },
+        { value: 'telecom', label: 'Telecom site', icon: Building, description: 'Tower, rack, network rooms' },
+        { value: 'enterprise', label: 'Enterprise/Utility', icon: Building, description: 'Large industrial or utility-scale' },
+        { value: 'not_sure', label: "I'm not sure", description: 'We’ll pick a sensible default' }
       ]
     },
     {
-      id: 'power_usage',
-      question: "What's your typical daily power consumption? Think about your essential appliances.",
+      id: 'voltage',
+      question: "Do you know the battery voltage you need?",
       type: 'choice',
-      key: 'powerUsage',
+      key: 'voltage',
       options: [
-        { value: 'low', label: 'Low (1-3 hours backup needed)', description: 'Lights, fans, phone charging', icon: Zap },
-        { value: 'medium', label: 'Medium (3-5 hours backup)', description: 'Above + TV, laptop, small appliances', icon: Zap },
-        { value: 'high', label: 'High (5+ hours backup)', description: 'Heavy usage, multiple appliances', icon: Zap }
+        { value: '12.8', label: '12.8V', icon: Battery, description: 'Small backups and basic setups' },
+        { value: '25.6', label: '25.6V', icon: Battery, description: 'Mid-size backups, more capacity' },
+        { value: '48', label: '48V', icon: Battery, description: 'Standard for most home systems' },
+        { value: '51.2', label: '51.2V', icon: Battery, description: 'Home system, slightly higher' },
+        { value: '96', label: '96V', icon: Battery, description: 'Commercial/industrial systems' },
+        { value: '120', label: '120V', icon: Battery, description: 'Commercial/industrial systems' },
+        { value: 'not_sure', label: "I'm not sure", description: 'No problem — we’ll choose for you' }
+      ]
+    },
+    {
+      id: 'energy',
+      question: "How much energy do you want to store?",
+      type: 'choice',
+      key: 'energyCapacity',
+      options: [
+        { value: '1-3', label: '1–3 kWh', icon: Zap, description: 'Lights, Wi‑Fi, small appliances' },
+        { value: '3-5', label: '3–5 kWh', icon: Zap, description: 'Fridge + few fans, essential loads' },
+        { value: '5-10', label: '5–10 kWh', icon: Zap, description: 'Most essentials for longer' },
+        { value: '10-20', label: '10–20 kWh', icon: Zap, description: 'Larger homes and longer backup' },
+        { value: '250+', label: '250+ kWh', icon: Zap, description: 'Industrial/utility-scale storage' },
+        { value: 'not_sure', label: "I'm not sure", description: 'Help me choose the right size' }
+      ]
+    },
+    {
+      id: 'mounting',
+      question: "How would you like it installed?",
+      type: 'choice',
+      key: 'mounting',
+      options: [
+        { value: 'wall', label: 'Wall-mounted', description: 'Saves floor space' },
+        { value: 'floor', label: 'Floor cabinet', description: 'Traditional enclosure' },
+        { value: 'stackable', label: 'Stackable modular', description: 'Grow later, flexible capacity' },
+        { value: 'rack', label: '19" rack (telecom)', description: 'Fits standard telecom racks' },
+        { value: 'not_sure', label: "I'm not sure", description: 'Suggest the most common option' }
+      ]
+    },
+    {
+      id: 'cycle_life',
+      question: "Any preference for battery life (number of cycles)?",
+      type: 'choice',
+      key: 'cycleLife',
+      options: [
+        { value: '6000', label: '6000+ cycles', description: 'Good lifespan' },
+        { value: '8000', label: '8000+ cycles', description: 'Better longevity' },
+        { value: '10000', label: '10000+ cycles', description: 'Longest life' },
+        { value: 'not_sure', label: "I'm not sure", description: 'Pick a balanced option' }
+      ]
+    },
+    {
+      id: 'connectivity',
+      question: "Do you want app/remote monitoring?",
+      type: 'choice',
+      key: 'connectivity',
+      options: [
+        { value: 'wifi_4g', label: 'WiFi/4G/App', description: 'Phone app and cloud access' },
+        { value: 'rs485_can', label: 'RS485/CAN', description: 'Integrate with inverters/EMS' },
+        { value: 'bluetooth', label: 'Bluetooth', description: 'Local monitoring' },
+        { value: 'none', label: 'No preference', description: 'Basic setup is fine' },
+        { value: 'not_sure', label: "I'm not sure", description: 'Choose a helpful default' }
+      ]
+    },
+    {
+      id: 'scalability',
+      question: "Do you plan to expand later?",
+      type: 'choice',
+      key: 'scalability',
+      options: [
+        { value: 'single', label: 'Single unit', description: 'Simple, one battery' },
+        { value: 'parallel', label: 'Parallel support', description: 'Add more units side‑by‑side' },
+        { value: 'modular', label: 'Modular/Stackable', description: 'Easy to expand capacity' },
+        { value: 'not_sure', label: "I'm not sure", description: 'Suggest a flexible option' }
+      ]
+    },
+    {
+      id: 'environment',
+      question: "Where will it be installed?",
+      type: 'choice',
+      key: 'environment',
+      options: [
+        { value: 'indoor', label: 'Indoors', description: 'Inside your home or office' },
+        { value: 'outdoor', label: 'Outdoors', description: 'Weather-resistant enclosure' },
+        { value: 'harsh', label: 'Harsh climates', description: 'Extreme heat/cold or dust' },
+        { value: 'telecom_rack', label: 'Telecom rack', description: '19" rack environment' },
+        { value: 'not_sure', label: "I'm not sure", description: 'We’ll adjust for your space' }
       ]
     },
     {
       id: 'budget',
-      question: "What's your budget range for this Zuice μ1000 Hybrid PCU solution?",
+      question: "What’s your budget range?",
       type: 'choice',
-      key: 'budget',
+      key: 'budgetRange',
       options: [
-        { value: 'budget', label: '₹40,000 - ₹50,000', description: 'Zuice μ1000 - 50Ah', icon: DollarSign },
-        { value: 'mid', label: '₹50,000 - ₹70,000', description: 'Zuice μ1000 Pro - 86Ah', icon: DollarSign },
-        { value: 'premium', label: '₹70,000+', description: 'Zuice μ1000 Max - 100Ah', icon: DollarSign }
-      ]
-    },
-    {
-      id: 'backup_priority',
-      question: "How important is extended backup time during power outages?",
-      type: 'choice',
-      key: 'backupPriority',
-      options: [
-        { value: 'basic', label: 'Basic (2-3 hours is enough)', icon: Clock },
-        { value: 'extended', label: 'Extended (4-6 hours preferred)', icon: Clock },
-        { value: 'maximum', label: 'Maximum (6+ hours essential)', icon: Clock }
-      ]
-    },
-    {
-      id: 'monitoring',
-      question: "Would you like the Zuice μ1000 Monitoring Kit for real-time monitoring and mobile app control?",
-      type: 'choice',
-      key: 'monitoring',
-      options: [
-        { value: 'yes', label: 'Yes, I want monitoring', description: 'Track performance & get alerts' },
-        { value: 'no', label: 'No, basic system is fine', description: 'Just the power unit' }
+        { value: '40-60', label: '₹40k–₹60k', icon: DollarSign, description: 'Entry-level' },
+        { value: '60-90', label: '₹60k–₹90k', icon: DollarSign, description: 'Most popular' },
+        { value: '90-120', label: '₹90k–₹120k', icon: DollarSign, description: 'Higher capacity' },
+        { value: '120-200', label: '₹120k–₹200k', icon: DollarSign, description: 'Premium home/commercial' },
+        { value: '2000+', label: '₹2M+', icon: DollarSign, description: 'Large industrial/utility' },
+        { value: 'not_sure', label: "I'm not sure", description: 'Recommend best value' }
       ]
     }
   ];
@@ -721,39 +785,98 @@ const VoiceProductAssistant = () => {
       return response; // For text inputs, return as-is
     }
 
-    const lowerResponse = response.toLowerCase();
-    
-    // Try to match against option values or labels
+    const lower = response.toLowerCase().trim();
+
+    const notSurePhrases = ['not sure', "don't know", 'dont know', 'unsure', 'no idea', 'anything', 'either', 'skip', 'whatever', 'any', 'no preference'];
+    if (notSurePhrases.some(p => lower.includes(p))) {
+      return 'not_sure';
+    }
+
+    // Try to match against option values, labels, or descriptions
     for (const option of stepData.options) {
-      if (lowerResponse.includes(option.value.toLowerCase()) ||
-          lowerResponse.includes(option.label.toLowerCase()) ||
-          (option.description && lowerResponse.includes(option.description.toLowerCase()))) {
+      if (
+        lower.includes(String(option.value).toLowerCase()) ||
+        lower.includes(option.label.toLowerCase()) ||
+        (option.description && lower.includes(option.description.toLowerCase()))
+      ) {
         return option.value;
       }
     }
 
-    // Fallback: try to match common keywords
-    if (stepData.key === 'powerUsage') {
-      if (lowerResponse.includes('low') || lowerResponse.includes('basic') || lowerResponse.includes('1') || lowerResponse.includes('2') || lowerResponse.includes('3')) return 'low';
-      if (lowerResponse.includes('high') || lowerResponse.includes('heavy') || lowerResponse.includes('5') || lowerResponse.includes('6')) return 'high';
-      if (lowerResponse.includes('medium') || lowerResponse.includes('moderate') || lowerResponse.includes('4')) return 'medium';
+    // Specific mappings by key
+    if (stepData.key === 'segment') {
+      if (/(home|house|residential)/.test(lower)) return 'home';
+      if (/(business|shop|office|commercial)/.test(lower)) return 'commercial';
+      if (/(telecom|tower|rack|network)/.test(lower)) return 'telecom';
+      if (/(enterprise|utility|industrial|large)/.test(lower)) return 'enterprise';
     }
-    
-    if (stepData.key === 'budget') {
-      if (lowerResponse.includes('40') || lowerResponse.includes('50') || lowerResponse.includes('budget') || lowerResponse.includes('cheap')) return 'budget';
-      if (lowerResponse.includes('70') || lowerResponse.includes('premium') || lowerResponse.includes('high') || lowerResponse.includes('expensive')) return 'premium';
-      if (lowerResponse.includes('60') || lowerResponse.includes('mid') || lowerResponse.includes('medium')) return 'mid';
+
+    if (stepData.key === 'voltage') {
+      const m = lower.match(/(\d+(\.\d+)?)\s*v/);
+      if (m) return m[1];
+      if (lower.includes('48')) return '48';
+      if (lower.includes('51')) return '51.2';
+      if (lower.includes('12')) return '12.8';
+      if (lower.includes('25')) return '25.6';
+      if (lower.includes('96')) return '96';
+      if (lower.includes('120')) return '120';
     }
-    
-    if (stepData.key === 'backupPriority') {
-      if (lowerResponse.includes('basic') || lowerResponse.includes('2') || lowerResponse.includes('3') || lowerResponse.includes('short')) return 'basic';
-      if (lowerResponse.includes('maximum') || lowerResponse.includes('6') || lowerResponse.includes('long') || lowerResponse.includes('essential')) return 'maximum';
-      if (lowerResponse.includes('extended') || lowerResponse.includes('4') || lowerResponse.includes('5') || lowerResponse.includes('preferred')) return 'extended';
+
+    if (stepData.key === 'energyCapacity') {
+      const mk = lower.match(/(\d+(\.\d+)?)\s*kwh/);
+      if (mk) {
+        const val = parseFloat(mk[1]);
+        if (val < 3) return '1-3';
+        if (val < 5) return '3-5';
+        if (val < 10) return '5-10';
+        if (val < 20) return '10-20';
+        return '250+';
+      }
     }
-    
-    if (stepData.key === 'monitoring') {
-      if (lowerResponse.includes('yes') || lowerResponse.includes('want') || lowerResponse.includes('monitoring') || lowerResponse.includes('app')) return 'yes';
-      if (lowerResponse.includes('no') || lowerResponse.includes('basic') || lowerResponse.includes('fine') || lowerResponse.includes('don\'t')) return 'no';
+
+    if (stepData.key === 'mounting') {
+      if (lower.includes('wall')) return 'wall';
+      if (lower.includes('floor') || lower.includes('cabinet')) return 'floor';
+      if (lower.includes('stack')) return 'stackable';
+      if (lower.includes('rack')) return 'rack';
+    }
+
+    if (stepData.key === 'cycleLife') {
+      if (lower.includes('10000')) return '10000';
+      if (lower.includes('8000')) return '8000';
+      if (lower.includes('6000')) return '6000';
+    }
+
+    if (stepData.key === 'connectivity') {
+      if (/(wifi|app|4g)/.test(lower)) return 'wifi_4g';
+      if (/(rs485|can)/.test(lower)) return 'rs485_can';
+      if (lower.includes('bluetooth')) return 'bluetooth';
+      if (lower.includes('no preference') || lower.includes('basic')) return 'none';
+    }
+
+    if (stepData.key === 'scalability') {
+      if (lower.includes('single')) return 'single';
+      if (lower.includes('parallel')) return 'parallel';
+      if (/(modular|stack)/.test(lower)) return 'modular';
+    }
+
+    if (stepData.key === 'environment') {
+      if (lower.includes('indoor')) return 'indoor';
+      if (lower.includes('outdoor')) return 'outdoor';
+      if (/(harsh|extreme|dust|cold|heat)/.test(lower)) return 'harsh';
+      if (/(telecom|rack)/.test(lower)) return 'telecom_rack';
+    }
+
+    if (stepData.key === 'budgetRange') {
+      const mb = lower.match(/(\d+)\s*k/);
+      if (mb) {
+        const k = parseInt(mb[1], 10);
+        if (k < 60) return '40-60';
+        if (k < 90) return '60-90';
+        if (k < 120) return '90-120';
+        if (k < 200) return '120-200';
+        return '2000+';
+      }
     }
 
     return response; // Return original if no match found
@@ -869,108 +992,232 @@ const VoiceProductAssistant = () => {
   };
 
   const getProductRecommendation = (responses) => {
-    const { propertyType, powerUsage, budget, backupPriority, monitoring } = responses;
-    
-    // Process user responses for product recommendation
-    
-    // Score each product based on user preferences
-    const scoredProducts = products.filter(p => p.category.includes('Hybrid PCU')).map(product => {
-      let score = 0;
-      let reasons = [];
-      
-      // Budget scoring
-      if (budget === 'budget' && product.price <= 50000) {
-        score += 30;
-        reasons.push('Fits your budget perfectly');
-      } else if (budget === 'mid' && product.price >= 50000 && product.price <= 70000) {
-        score += 30;
-        reasons.push('Great value for money');
-      } else if (budget === 'premium' && product.price >= 70000) {
-        score += 30;
-        reasons.push('Premium features for maximum performance');
-      } else if (budget === 'budget' && product.price <= 60000) {
-        score += 15;
-        reasons.push('Slightly above budget but excellent value');
-      } else if (budget === 'mid' && product.price <= 75000) {
-        score += 15;
-        reasons.push('Within extended budget range');
+    const {
+      segment = 'home',
+      voltage = 'not_sure',
+      energyCapacity = 'not_sure',
+      mounting = 'not_sure',
+      cycleLife = 'not_sure',
+      connectivity = 'not_sure',
+      scalability = 'not_sure',
+      environment = 'not_sure',
+      budgetRange = 'not_sure'
+    } = responses;
+
+    const segmentCategoryMap = {
+      home: 'home-ess',
+      commercial: 'commercial',
+      telecom: 'telecom',
+      enterprise: 'commercial'
+    };
+
+    const defaultVoltageBySegment = {
+      home: 51.2,
+      commercial: 96,
+      telecom: 48,
+      enterprise: 120
+    };
+
+    const parseVoltagePref = (v) => {
+      if (!v || v === 'not_sure') return defaultVoltageBySegment[segment] || 51.2;
+      const num = parseFloat(String(v));
+      return isNaN(num) ? defaultVoltageBySegment[segment] || 51.2 : num;
+    };
+
+    const voltagePref = parseVoltagePref(voltage);
+
+    const energyRangeMap = {
+      '1-3': [1, 3],
+      '3-5': [3, 5],
+      '5-10': [5, 10],
+      '10-20': [10, 20],
+      '250+': [250, 10000]
+    };
+
+    const parseBudgetRange = (br) => {
+      if (!br || br === 'not_sure') return null; // treat as no constraint
+      const map = {
+        '40-60': [40000, 60000],
+        '60-90': [60000, 90000],
+        '90-120': [90000, 120000],
+        '120-200': [120000, 200000],
+        '2000+': [2000000, Infinity]
+      };
+      return map[br] || null;
+    };
+
+    const preferredBudget = parseBudgetRange(budgetRange);
+
+    const getEnergyKWh = (product) => {
+      const specs = product.specifications || {};
+      const energyStr = specs['Energy'] || specs['Energy Capacity'] || '';
+      const match = String(energyStr).match(/(\d+(\.\d+)?)/);
+      return match ? parseFloat(match[1]) : null;
+    };
+
+    const getNominalVoltage = (product) => {
+      // Try from name first
+      const nameMatch = String(product.name).match(/(\d+(\.\d+)?)\s*V/i);
+      if (nameMatch) return parseFloat(nameMatch[1]);
+      // Try voltage range
+      const specs = product.specifications || {};
+      const vr = String(specs['Voltage Range'] || '');
+      const nums = [...vr.matchAll(/(\d+(\.\d+)?)\s*V?/g)].map(m => parseFloat(m[1]));
+      if (nums.length >= 2) {
+        // average the range to approximate nominal
+        const avg = nums.reduce((a, b) => a + b, 0) / nums.length;
+        return Math.round(avg * 10) / 10;
+      } else if (nums.length === 1) {
+        return nums[0];
       }
-      
-      // Power usage and backup scoring
-      if (powerUsage === 'low' && product.name.includes('50Ah')) {
-        score += 25;
-        reasons.push('Perfect for low power consumption');
-      } else if (powerUsage === 'medium' && product.name.includes('86Ah')) {
-        score += 25;
-        reasons.push('Ideal for medium power usage');
-      } else if (powerUsage === 'high' && product.name.includes('100Ah')) {
-        score += 25;
-        reasons.push('Excellent for high power demands');
-      } else if (powerUsage === 'low' && product.name.includes('86Ah')) {
-        score += 15;
-        reasons.push('Extra backup capacity for peace of mind');
-      } else if (powerUsage === 'medium' && product.name.includes('100Ah')) {
-        score += 15;
-        reasons.push('Maximum backup for extended usage');
+      // Try energy mapping (e.g., 5.12 kWh -> 51.2V)
+      const e = getEnergyKWh(product);
+      if (e) {
+        const mappings = { 1.28: 12.8, 2.56: 25.6, 4.8: 48, 5.12: 51.2, 9.6: 96, 12: 120 };
+        const v = mappings[e];
+        if (v) return v;
       }
-      
-      // Backup priority scoring
-      if (backupPriority === 'basic' && product.name.includes('50Ah')) {
-        score += 20;
-        reasons.push('2 hours backup meets your basic needs');
-      } else if (backupPriority === 'extended' && product.name.includes('86Ah')) {
-        score += 20;
-        reasons.push('2.75 hours backup for extended coverage');
-      } else if (backupPriority === 'maximum' && product.name.includes('100Ah')) {
-        score += 20;
-        reasons.push('3.25 hours backup for maximum security');
+      // Large systems: use Max Voltage if available
+      const maxV = String(specs['Max Voltage'] || specs['Max Voltage DC'] || '').match(/(\d+(\.\d+)?)/);
+      if (maxV) return parseFloat(maxV[1]);
+      return null;
+    };
+
+    const categoryFilter = segmentCategoryMap[segment] || 'home-ess';
+    const candidates = essProducts.filter(p => p.category === categoryFilter);
+
+    const scoreProduct = (product) => {
+      let score = 10; // base score
+      const reasons = [];
+      const specs = product.specifications || {};
+
+      // Voltage matching
+      const vNom = getNominalVoltage(product);
+      if (vNom) {
+        const diff = Math.abs(vNom - voltagePref);
+        if (diff <= 2) {
+          score += 30;
+          reasons.push('Matches your voltage preference');
+        } else if (diff <= 10) {
+          score += 18;
+          reasons.push('Close to your voltage choice');
+        } else {
+          score += 6;
+          reasons.push('Standard voltage option for compatibility');
+        }
       }
-      
-      // Property type scoring
-      if (propertyType === 'small_home' && product.name.includes('50Ah')) {
-        score += 15;
-        reasons.push('Right-sized for small homes');
-      } else if ((propertyType === 'medium_home' || propertyType === 'office') && product.name.includes('86Ah')) {
-        score += 15;
-        reasons.push('Perfect for medium-sized properties');
-      } else if (propertyType === 'large_home' && product.name.includes('100Ah')) {
-        score += 15;
-        reasons.push('Designed for larger properties');
+
+      // Energy capacity range
+      const energy = getEnergyKWh(product);
+      if (energy) {
+        if (energyCapacity !== 'not_sure' && energyRangeMap[energyCapacity]) {
+          const [minK, maxK] = energyRangeMap[energyCapacity];
+          if (energy >= minK && energy <= maxK) {
+            score += 22;
+            reasons.push('Energy capacity fits your usage');
+          } else if (Math.abs((energy - minK)) <= 1 || Math.abs((energy - maxK)) <= 1) {
+            score += 12;
+            reasons.push('Near your desired energy range');
+          }
+        } else {
+          // sensible default: prefer mid capacities for home
+          if (segment === 'home' && energy >= 4.5 && energy <= 5.2) {
+            score += 16;
+            reasons.push('Popular capacity for homes');
+          }
+        }
       }
-      
-      // Base score for all products
-      score += 10;
-      
+
+      // Mounting preference
+      const mountingText = String(specs['Mounting'] || specs['Design'] || product.badge || '').toLowerCase();
+      if (mounting !== 'not_sure') {
+        if (mounting === 'wall' && mountingText.includes('wall')) { score += 12; reasons.push('Wall-mount fits your space'); }
+        if (mounting === 'floor' && (mountingText.includes('floor') || mountingText.includes('cabinet'))) { score += 12; reasons.push('Floor cabinet installation'); }
+        if (mounting === 'stackable' && mountingText.includes('stack')) { score += 12; reasons.push('Stackable for easy expansion'); }
+        if (mounting === 'rack' && mountingText.includes('rack')) { score += 14; reasons.push('Telecom rack compatible'); }
+      }
+
+      // Cycle life
+      const cycleText = String(specs['Cycle Life'] || '').toLowerCase();
+      if (cycleLife !== 'not_sure') {
+        if (cycleLife === '10000' && cycleText.includes('10000')) { score += 10; reasons.push('10,000+ cycles long life'); }
+        if (cycleLife === '8000' && cycleText.includes('8000')) { score += 8; reasons.push('8,000+ cycles longevity'); }
+        if (cycleLife === '6000' && cycleText.includes('6000')) { score += 6; reasons.push('6,000+ cycles value'); }
+      } else {
+        if (cycleText.includes('8000')) { score += 6; reasons.push('Long-life battery chemistry'); }
+      }
+
+      // Connectivity
+      const comm = String(specs['Communication'] || specs['Connectivity'] || '').toLowerCase();
+      const allText = (product.features || []).join(' ').toLowerCase() + ' ' + comm;
+      if (connectivity !== 'not_sure') {
+        if (connectivity === 'wifi_4g' && /(wifi|4g|app)/.test(allText)) { score += 10; reasons.push('Remote monitoring via app/WiFi/4G'); }
+        if (connectivity === 'rs485_can' && /(rs485|can)/.test(allText)) { score += 10; reasons.push('Industrial RS485/CAN communication'); }
+        if (connectivity === 'bluetooth' && allText.includes('bluetooth')) { score += 8; reasons.push('Bluetooth monitoring support'); }
+      } else {
+        if (/(rs485|can)/.test(allText)) { score += 6; reasons.push('Easy inverter integration'); }
+      }
+
+      // Scalability
+      const parallelText = String(specs['Parallel Support'] || '').toLowerCase();
+      const designText = String(specs['Design'] || '').toLowerCase();
+      const featureText = (product.features || []).join(' ').toLowerCase();
+      if (scalability !== 'not_sure') {
+        if (scalability === 'parallel' && (parallelText.includes('units') || featureText.includes('parallel'))) { score += 10; reasons.push('Supports parallel expansion'); }
+        if (scalability === 'modular' && designText.includes('stackable')) { score += 12; reasons.push('Modular stackable design'); }
+        if (scalability === 'single') { score += 4; reasons.push('Simple single-unit setup'); }
+      } else {
+        if (designText.includes('stackable')) { score += 6; reasons.push('Expandable design if needed'); }
+      }
+
+      // Environment
+      const protection = String(specs['Protection Rating'] || '').toUpperCase();
+      const envText = (product.description || '').toLowerCase();
+      if (environment !== 'not_sure') {
+        if (environment === 'indoor') { score += 4; reasons.push('Safe for indoor use'); }
+        if (environment === 'outdoor' && /(IP54|IP65|IP66)/.test(protection)) { score += 8; reasons.push('Weather-resistant for outdoor'); }
+        if (environment === 'harsh' && /(IP65|IP66)/.test(protection)) { score += 10; reasons.push('Built for harsh environments'); }
+        if (environment === 'telecom_rack' && envText.includes('telecom')) { score += 12; reasons.push('Telecom-grade reliability'); }
+      } else {
+        if (/(IP54|IP65)/.test(protection)) { score += 6; reasons.push('Good protection rating'); }
+      }
+
+      // Budget alignment
+      if (preferredBudget) {
+        const [minB, maxB] = preferredBudget;
+        if (product.price >= minB && product.price <= maxB) {
+          score += 20;
+          reasons.push('Fits your budget range');
+        } else if (Math.abs(product.price - minB) <= 10000 || Math.abs(product.price - maxB) <= 10000) {
+          score += 10;
+          reasons.push('Close to your budget');
+        }
+      } else {
+        // Friendly default: prefer mid-range for home
+        if (segment === 'home' && product.price >= 80000 && product.price <= 100000) {
+          score += 10;
+          reasons.push('Great value for home systems');
+        }
+      }
+
       return {
         ...product,
         score,
-        reasons: reasons.slice(0, 3) // Limit to top 3 reasons
+        reasons: reasons.slice(0, 3)
       };
-    });
-    
-    // Sort by score and return top recommendations
-    const sortedProducts = scoredProducts.sort((a, b) => b.score - a.score);
-    
+    };
+
+    const scored = candidates.map(scoreProduct).sort((a, b) => b.score - a.score);
+
     return {
-      primary: sortedProducts[0],
-      alternatives: sortedProducts.slice(1, 3) // Return top 2 alternatives
+      primary: scored[0],
+      alternatives: scored.slice(1, 3)
     };
   };
 
-  const getAdditionalRecommendations = (responses) => {
-    const additional = [];
-    
-    if (responses.monitoring === 'yes') {
-      const monitoringKit = products.find(p => p.category === 'Accessories');
-      if (monitoringKit) {
-        additional.push({
-          ...monitoringKit,
-          reasons: ['Real-time monitoring and mobile app control', 'Performance analytics and alerts', 'Remote system management']
-        });
-      }
-    }
-    
-    return additional;
+  const getAdditionalRecommendations = () => {
+    // Accessory add-ons disabled for now to keep choices simple.
+    return [];
   };
 
   const handleSendMessage = () => {
