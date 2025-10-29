@@ -327,7 +327,7 @@ export default function HomePage() {
                     </p>
                   </div>
                   <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4">
-                    <div className="text-3xl font-bold text-green-600">$2,500+</div>
+                    <div className="text-3xl font-bold text-green-600">₹2,500+</div>
                     <div className="text-sm text-muted-foreground">Average Annual Savings</div>
                   </div>
                 </div>

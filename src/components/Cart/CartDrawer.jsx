@@ -126,10 +126,10 @@ const CartDrawer = () => {
                           
                           <div className="text-right">
                             <div className="text-sm font-bold text-gray-900 dark:text-gray-100">
-                              ${(item.price * item.quantity).toLocaleString()}
+                              ₹{(item.price * item.quantity).toLocaleString()}
                             </div>
                             <div className="text-xs text-gray-500">
-                              ${item.price.toLocaleString()} each
+                              ₹{item.price.toLocaleString()} each
                             </div>
                           </div>
                         </div>
@@ -158,11 +158,11 @@ const CartDrawer = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600 dark:text-gray-400">Subtotal ({itemCount} items)</span>
-                    <span className="font-medium text-gray-900 dark:text-gray-100">${total.toLocaleString()}</span>
+                    <span className="font-medium text-gray-900 dark:text-gray-100">₹{total.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between text-base font-bold border-t border-gray-200 dark:border-gray-700 pt-2">
                     <span className="text-gray-900 dark:text-gray-100">Total</span>
-                    <span className="text-emerald-600">${total.toLocaleString()}</span>
+                    <span className="text-emerald-600">₹{total.toLocaleString()}</span>
                   </div>
                 </div>
                 

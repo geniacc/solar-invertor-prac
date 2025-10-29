@@ -82,7 +82,7 @@ export default function ProfilePage() {
       id: 'ORD-001',
       date: '2024-01-15',
       status: 'Delivered',
-      total: '$2,499.99',
+      total: '₹2,499.99',
       items: 2,
       product: 'SolarMax Pro 5kW Inverter'
     },
@@ -90,7 +90,7 @@ export default function ProfilePage() {
       id: 'ORD-002',
       date: '2024-01-10',
       status: 'Shipped',
-      total: '$899.99',
+      total: '₹899.99',
       items: 1,
       product: 'Solar Battery Pack 10kWh'
     },
@@ -98,7 +98,7 @@ export default function ProfilePage() {
       id: 'ORD-003',
       date: '2024-01-05',
       status: 'Processing',
-      total: '$1,299.99',
+      total: '₹1,299.99',
       items: 3,
       product: 'Solar Panel Kit 300W'
     }
@@ -108,21 +108,21 @@ export default function ProfilePage() {
     {
       id: 1,
       name: 'SolarMax Elite 10kW',
-      price: '$4,999.99',
+      price: '₹4,999.99',
       image: '/api/placeholder/200/200',
       inStock: true
     },
     {
       id: 2,
       name: 'Smart Solar Controller',
-      price: '$299.99',
+      price: '₹299.99',
       image: '/api/placeholder/200/200',
       inStock: false
     },
     {
       id: 3,
       name: 'Solar Monitoring System',
-      price: '$199.99',
+      price: '₹199.99',
       image: '/api/placeholder/200/200',
       inStock: true
     }

@@ -159,7 +159,7 @@ export default function CartPage() {
       name: 'Economy Delivery',
       price: 0,
       days: '5-7 business days',
-      description: 'Standard shipping for orders over $1000'
+      description: 'Standard shipping for orders over ₹1,000'
     },
     {
       id: 'standard',
@@ -372,14 +372,14 @@ export default function CartPage() {
                             {/* Price */}
                             <div className="text-right">
                               <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
-                                ${(item.price * item.quantity).toLocaleString()}
+                                ₹{(item.price * item.quantity).toLocaleString()}
                               </div>
                               <div className="text-sm text-gray-500">
-                                ${item.price.toLocaleString()} each
+                                ₹{item.price.toLocaleString()} each
                               </div>
                               {item.originalPrice && (
                                 <div className="text-xs text-gray-400 line-through">
-                                  ${item.originalPrice.toLocaleString()} each
+                                  ₹{item.originalPrice.toLocaleString()} each
                                 </div>
                               )}
                             </div>
@@ -426,7 +426,7 @@ export default function CartPage() {
                             </div>
                             <div>
                               <h4 className="font-medium text-sm">{item.name}</h4>
-                              <p className="text-xs text-gray-500">${item.price.toLocaleString()}</p>
+                              <p className="text-xs text-gray-500">₹{item.price.toLocaleString()}</p>
                             </div>
                           </div>
                           <div className="flex items-center space-x-2">
@@ -521,7 +521,7 @@ export default function CartPage() {
                         </div>
                       </div>
                       <div className="text-sm font-medium">
-                        {option.price === 0 ? 'FREE' : `$${option.price}`}
+                        {option.price === 0 ? 'FREE' : `₹${option.price}`}
                       </div>
                     </div>
                   </div>
@@ -613,7 +613,7 @@ export default function CartPage() {
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span>Subtotal ({items.length} items)</span>
-                    <span>${subtotal.toLocaleString()}</span>
+                    <span>₹{subtotal.toLocaleString()}</span>
                   </div>
                   
                   {appliedPromo && (
@@ -636,7 +636,7 @@ export default function CartPage() {
                         </Badge>
                       )}
                     </span>
-                    <span>${shipping.toFixed(2)}</span>
+                    <span>₹{shipping.toFixed(2)}</span>
                   </div>
                   
                   <div className="flex justify-between">
@@ -644,13 +644,13 @@ export default function CartPage() {
                       <CreditCard className="w-4 h-4 mr-1" />
                       Tax
                     </span>
-                    <span>${tax.toFixed(2)}</span>
+                    <span>₹{tax.toFixed(2)}</span>
                   </div>
                   
                   <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
                     <div className="flex justify-between text-lg font-bold">
                       <span>Total</span>
-                      <span className="text-emerald-600">${total.toFixed(2)}</span>
+                      <span className="text-emerald-600">₹{total.toFixed(2)}</span>
                     </div>
                     <div className="text-xs text-gray-500 mt-1">
                       Monthly rental payment

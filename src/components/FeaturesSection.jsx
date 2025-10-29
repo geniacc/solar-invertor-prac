@@ -472,7 +472,6 @@ const FeaturesSection = () => {
         transition={{ duration: 0.8, delay: 0.6 }}
         className="price-section"
       >
-        <h3>Starting from <span className="price-highlight">$1,899</span></h3>
         <p>Professional installation and 25-year warranty included</p>
         <div className="price-features">
           <div className="price-feature">
