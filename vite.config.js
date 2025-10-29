@@ -7,8 +7,9 @@ export default defineConfig(({ command }) => {
     plugins: [react()],
   }
 
+  // For custom domain (zuice.in) use root base to avoid subpath issues
   if (command !== 'serve') {
-    config.base = '/solar-invertor-prac/'
+    config.base = '/'
   }
 
   return config
