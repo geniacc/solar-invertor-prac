@@ -1,0 +1,41 @@
+name: Deploy to GoDaddy Hosting
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy via FTP to GoDaddy
+        uses: SamKirkland/FTP-Deploy-Action@v4
+        with:
+          server: ${{ secrets.GODADDY_FTP_HOST }}
+          username: ${{ secrets.GODADDY_FTP_USERNAME }}
+          password: ${{ secrets.GODADDY_FTP_PASSWORD }}
+          port: ${{ secrets.GODADDY_FTP_PORT }} # usually 21
+          protocol: ${{ secrets.GODADDY_FTP_PROTOCOL }} # set to ftps if available, else ftp
+          local-dir: ./dist
+          server-dir: /public_html
+          exclude: |
+            **/.git*
+            **/.github/**
+            **/node_modules/**
+            **/*.map
