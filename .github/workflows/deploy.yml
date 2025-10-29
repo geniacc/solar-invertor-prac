@@ -26,6 +26,22 @@ jobs:
       
     - name: Build
       run: npm run build
+
+    - name: Inspect built index and asset list
+      run: |
+        echo "--- dist/index.html head ---"
+        head -n 40 dist/index.html || true
+        echo "--- dist/assets ---"
+        ls -lah dist/assets || true
+
+    - name: Fail if legacy subpath references exist
+      run: |
+        if grep -R -q "/solar-invertor-prac" dist; then
+          echo "ERROR: Found legacy subpath references in built output";
+          exit 1;
+        else
+          echo "OK: No legacy subpath references detected";
+        fi
       
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
