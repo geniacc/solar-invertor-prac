@@ -1,487 +1,284 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
-import { 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Facebook, 
-  Twitter, 
-  Instagram, 
-  Linkedin,
-  Send,
-  Zap,
-  Shield,
-  Globe,
-  ArrowRight,
-  CheckCircle,
-  Youtube,
-  Github,
-  Award,
-  Clock,
-  Users,
-  Headphones,
-  Download,
-  ExternalLink
-} from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Mail, Phone, Facebook, Twitter, Instagram, Linkedin, MapPin, Shield, Globe, Zap, CheckCircle, Send } from 'lucide-react';
 import './Footer.css';
+import { useUIStore } from '../store/useStore';
 
 const Footer = () => {
-  const [email, setEmail] = useState('');
-  const [isSubscribed, setIsSubscribed] = useState(false);
   const [currentYear] = useState(new Date().getFullYear());
-  const navigate = useNavigate();
-
-  const handleNewsletterSubmit = (e) => {
-    e.preventDefault();
-    if (email) {
-      setIsSubscribed(true);
-      setEmail('');
-      setTimeout(() => setIsSubscribed(false), 3000);
-      // Navigate to contact after successful subscribe intent
-      navigate('/contact');
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+  const [cookieOpen, setCookieOpen] = useState(false);
+  const [cookies, setCookies] = useState(() => {
+    try {
+      const saved = localStorage.getItem('cookie_prefs');
+      return saved ? JSON.parse(saved) : { necessary: true, performance: true, marketing: false };
+    } catch {
+      return { necessary: true, performance: true, marketing: false };
     }
-  };
+  });
 
-  const footerSections = [
-    {
-      title: 'Products',
-      links: [
-        { label: '12.8V 100AH Home ESS', to: '/products', icon: <Zap className="w-4 h-4" /> },
-        { label: 'Lithium-ion Batteries', to: '/products', icon: <Shield className="w-4 h-4" /> },
-        { label: 'BMS Systems', to: '/products', icon: <Globe className="w-4 h-4" /> },
-        { label: 'Energy Storage Solutions', to: '/products', icon: <Award className="w-4 h-4" /> },
-        { label: 'Monitoring Systems', to: '/device-monitoring', icon: <Clock className="w-4 h-4" /> }
-      ]
-    },
-    {
-      title: 'Solutions',
-      links: [
-        { label: 'Residential ESS', to: '/services', icon: <Users className="w-4 h-4" /> },
-        { label: 'Commercial ESS', to: '/services', icon: <Shield className="w-4 h-4" /> },
-        { label: 'Industrial ESS', to: '/services', icon: <Globe className="w-4 h-4" /> },
-        { label: 'Energy Storage', to: '/services', icon: <Award className="w-4 h-4" /> },
-        { label: 'Grid Integration', to: '/services', icon: <Zap className="w-4 h-4" /> }
-      ]
-    },
-    {
-      title: 'Support',
-      links: [
-        { label: 'Installation Guide', to: '/services', icon: <Download className="w-4 h-4" /> },
-        { label: 'Technical Support', to: '/contact', icon: <Headphones className="w-4 h-4" /> },
-        { label: 'Warranty Information', to: '/about', icon: <Shield className="w-4 h-4" /> },
-        { label: 'Documentation', href: '/brochure.pdf', external: true, icon: <ExternalLink className="w-4 h-4" /> },
-        { label: 'FAQ', to: '/about', icon: <CheckCircle className="w-4 h-4" /> }
-      ]
-    }
-  ];
-
-  const contactInfo = [
-    {
-      icon: <Phone className="w-5 h-5" />,
-      label: 'Phone',
-      value: '+1 (555) 123-4567',
-      href: 'tel:+15551234567',
-      description: '24/7 Support Available'
-    },
-    {
-      icon: <Mail className="w-5 h-5" />,
-      label: 'Email',
-      value: 'info@ess-solutions.com',
-      href: 'mailto:info@ess-solutions.com',
-      description: 'Quick Response Guaranteed'
-    },
-    {
-      icon: <MapPin className="w-5 h-5" />,
-      label: 'Address',
-      value: '123 Solar Boulevard, Green City, CA 90210',
-      href: 'https://maps.google.com/?q=123+Solar+Boulevard+Green+City+CA',
-      description: 'Visit Our Showroom'
-    }
+  const navLinks = [
+    { label: 'Products', to: '/products' },
+    { label: 'Services', to: '/services' },
+    { label: 'About', to: '/about' },
+    { label: 'Contact', to: '/contact' },
   ];
 
   const socialLinks = [
-    { icon: <Facebook className="w-5 h-5" />, href: 'https://facebook.com/ess-solutions', label: 'Facebook', color: '#1877F2' },
-    { icon: <Twitter className="w-5 h-5" />, href: 'https://twitter.com/ess-solutions', label: 'Twitter', color: '#1DA1F2' },
-    { icon: <Instagram className="w-5 h-5" />, href: 'https://instagram.com/ess-solutions', label: 'Instagram', color: '#E4405F' },
-    { icon: <Linkedin className="w-5 h-5" />, href: 'https://linkedin.com/company/ess-solutions', label: 'LinkedIn', color: '#0A66C2' },
-    { icon: <Youtube className="w-5 h-5" />, href: 'https://youtube.com/ess-solutions', label: 'YouTube', color: '#FF0000' },
-    { icon: <Github className="w-5 h-5" />, href: 'https://github.com/ess-solutions', label: 'GitHub', color: '#333' }
+    { icon: <Linkedin className="w-5 h-5" />, href: 'https://linkedin.com/company/zuice' },
+    { icon: <Instagram className="w-5 h-5" />, href: 'https://instagram.com/zuice' },
+    { icon: <Twitter className="w-5 h-5" />, href: 'https://twitter.com/zuice' },
+    { icon: <Facebook className="w-5 h-5" />, href: 'https://facebook.com/zuice' },
   ];
 
-  const certifications = [
-    { icon: <Shield className="w-5 h-5" />, text: 'ISO 9001:2015', description: 'Quality Management' },
-    { icon: <CheckCircle className="w-5 h-5" />, text: 'IEC 62109', description: 'Safety Standards' },
-    { icon: <Award className="w-5 h-5" />, text: 'UL Listed', description: 'Safety Certified' },
-    { icon: <Globe className="w-5 h-5" />, text: 'CE Marked', description: 'European Conformity' }
+  const quickLinks = [
+    { label: 'Home', to: '/' },
+    { label: 'Features', to: '/products' },
+    { label: 'Gallery', to: '/products' },
+    { label: 'Testimonials', to: '/about' },
   ];
 
-  const quickStats = [
-    { number: '50K+', label: 'Happy Customers', icon: <Users className="w-6 h-6" /> },
-    { number: '100MW+', label: 'Solar Installed', icon: <Zap className="w-6 h-6" /> },
-    { number: '25+', label: 'Countries Served', icon: <Globe className="w-6 h-6" /> },
-    { number: '24/7', label: 'Support Available', icon: <Headphones className="w-6 h-6" /> }
+  const solutions = [
+    { label: 'Residential ESS', to: '/services' },
+    { label: 'Commercial ESS', to: '/services' },
+    { label: 'Industrial ESS', to: '/services' },
   ];
+
+  const resources = [
+    { label: 'Brochure', href: '/brochure.pdf' },
+    { label: 'Device Monitoring', to: '/device-monitoring' },
+    { label: 'FAQ', to: '/about' },
+  ];
+
+  const badges = [
+    { icon: <Shield className="w-4 h-4" />, text: 'ISO 9001' },
+    { icon: <CheckCircle className="w-4 h-4" />, text: 'UL Listed' },
+    { icon: <Globe className="w-4 h-4" />, text: 'CE Marked' },
+    { icon: <Zap className="w-4 h-4" />, text: 'Green Powered' },
+  ];
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (!email) return;
+    setSubscribed(true);
+    setTimeout(() => setSubscribed(false), 2500);
+    setEmail('');
+  };
+
+  const toggleCookie = (key) => setCookies((prev) => ({ ...prev, [key]: !prev[key] }));
+  const saveCookiePrefs = () => {
+    try {
+      localStorage.setItem('cookie_prefs', JSON.stringify(cookies));
+    } catch {}
+    setCookieOpen(false);
+  };
+
+  const setAssistantsHidden = useUIStore((s) => s.setAssistantsHidden);
+  const footerRef = useRef(null);
+
+  useEffect(() => {
+    const el = footerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      setAssistantsHidden(entry.isIntersecting);
+    }, { threshold: 0.2 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [setAssistantsHidden]);
 
   return (
-    <footer className="footer">
-      {/* Animated Background */}
-      <div className="footer-background">
-        <div className="energy-grid"></div>
-        <div className="floating-particles">
-          {[...Array(30)].map((_, i) => (
-            <div key={i} className="particle" style={{
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${3 + Math.random() * 4}s`
-            }}></div>
+    <footer ref={footerRef} className="footer footer-minimal">
+      <div className="container">
+        {/* Animated accent background */}
+        <div className="footer-accent" aria-hidden="true" />
+
+        <div className="footer-top">
+          <div className="footer-brand">
+            <motion.img
+              src="/images/solar-banner-removebg-preview.png"
+              alt="Zuice Logo"
+              className="logo-icon"
+              style={{ height: '36px', width: 'auto', objectFit: 'contain' }}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35 }}
+            />
+            <div className="brand-texts">
+              <h3 className="logo-text">Zuice</h3>
+              <p className="brand-tagline">Energy that doesn’t quit.</p>
+            </div>
+          </div>
+
+          <nav className="footer-nav">
+            {navLinks.map((link) => (
+              <motion.div key={link.label} whileHover={{ y: -2 }}>
+                <Link to={link.to} className="footer-nav-link">
+                  {link.label}
+                </Link>
+              </motion.div>
+            ))}
+          </nav>
+
+          <div className="footer-social">
+            {socialLinks.map((s, i) => (
+              <motion.a
+                key={i}
+                href={s.href}
+                className="social-pill"
+                whileHover={{ scale: 1.06, rotate: 1 }}
+                whileTap={{ scale: 0.98 }}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Social link"
+              >
+                {s.icon}
+              </motion.a>
+            ))}
+          </div>
+          {/* Animated energy line under the nav */}
+          <div className="energy-line" aria-hidden="true" />
+        </div>
+
+        <div className="footer-contact-row">
+          <a href="tel:+15551234567" className="contact-pill"><Phone className="w-4 h-4" /> <span>+1 (555) 123-4567</span></a>
+          <a href="mailto:info@zuice.energy" className="contact-pill"><Mail className="w-4 h-4" /> <span>info@zuice.energy</span></a>
+          <a href="https://maps.google.com/?q=Green+City" target="_blank" rel="noopener noreferrer" className="contact-pill"><MapPin className="w-4 h-4" /> <span>Green City, CA</span></a>
+        </div>
+
+        {/* Link tiles */}
+        <div className="footer-tiles">
+          <div className="tile">
+            <h4 className="tile-title">Quick Links</h4>
+            <ul className="tile-links">
+              {quickLinks.map((l) => (
+                <li key={l.label}>
+                  <motion.div whileHover={{ x: 3 }}>
+                    <Link to={l.to} className="tile-link">{l.label}</Link>
+                  </motion.div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="tile">
+            <h4 className="tile-title">Solutions</h4>
+            <ul className="tile-links">
+              {solutions.map((l) => (
+                <li key={l.label}>
+                  <motion.div whileHover={{ x: 3 }}>
+                    <Link to={l.to} className="tile-link">{l.label}</Link>
+                  </motion.div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="tile">
+            <h4 className="tile-title">Resources</h4>
+            <ul className="tile-links">
+              {resources.map((l) => (
+                <li key={l.label}>
+                  {'href' in l ? (
+                    <motion.a href={l.href} className="tile-link" target="_blank" rel="noopener noreferrer" whileHover={{ x: 3 }}>{l.label}</motion.a>
+                  ) : (
+                    <motion.div whileHover={{ x: 3 }}>
+                      <Link to={l.to} className="tile-link">{l.label}</Link>
+                    </motion.div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Newsletter */}
+        <div className="newsletter-min">
+          <div className="newsletter-text">
+            <h4>Stay in the loop</h4>
+            <p>Product drops, tips, and ESS insights—no spam.</p>
+          </div>
+          <form onSubmit={handleSubscribe} className="newsletter-form-min">
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Your email" aria-label="Email" />
+            <motion.button type="submit" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.96 }}>
+              <Send className="w-4 h-4" />
+              Subscribe
+            </motion.button>
+            {subscribed && <span className="newsletter-ok">Thanks! Check your inbox.</span>}
+          </form>
+        </div>
+
+        {/* Badges */}
+        <div className="footer-badges">
+          {badges.map((b, i) => (
+            <motion.div key={i} className="badge-pill" whileHover={{ y: -2 }}>
+              {b.icon}
+              <span>{b.text}</span>
+            </motion.div>
           ))}
         </div>
-      </div>
 
-      <div className="footer-content">
-        {/* Quick Stats Section */}
-        <motion.div 
-          className="stats-section"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="container">
-            <div className="stats-grid">
-              {quickStats.map((stat, index) => (
-                <motion.div
-                  key={index}
-                  className="stat-item"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ scale: 1.05 }}
-                >
-                  <div className="stat-icon">
-                    {stat.icon}
-                  </div>
-                  <div className="stat-content">
-                    <div className="stat-number">{stat.number}</div>
-                    <div className="stat-label">{stat.label}</div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
+        <div className="footer-divider" />
 
-        {/* Newsletter Section */}
-        <motion.div 
-          className="newsletter-section"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="container">
-            <div className="newsletter-content">
-              <div className="newsletter-text">
-                <h3>Stay Powered Up with Zuice</h3>
-                <p>Get the latest updates on energy storage technology, Zuice solutions, and exclusive offers delivered to your inbox</p>
-                <div className="newsletter-benefits">
-                  <div className="benefit">
-                    <CheckCircle className="w-4 h-4" />
-                    <span>Weekly energy tips</span>
-                  </div>
-                  <div className="benefit">
-                    <CheckCircle className="w-4 h-4" />
-                    <span>Product updates</span>
-                  </div>
-                  <div className="benefit">
-                    <CheckCircle className="w-4 h-4" />
-                    <span>Exclusive discounts</span>
-                  </div>
-                </div>
-              </div>
-              <form onSubmit={handleNewsletterSubmit} className="newsletter-form">
-                <div className="input-group">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email address"
-                    className="newsletter-input"
-                    required
-                  />
-                  <motion.button 
-                    type="submit" 
-                    className="newsletter-btn"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {isSubscribed ? <CheckCircle className="w-5 h-5" /> : <Send className="w-5 h-5" />}
-                    {isSubscribed ? 'Subscribed!' : 'Subscribe'}
-                  </motion.button>
-                </div>
-                {isSubscribed && (
-                  <motion.p
-                    className="success-message"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                  >
-                    Thank you for subscribing! Check your email for confirmation.
-                  </motion.p>
-                )}
-              </form>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Main Footer Content */}
-        <div className="footer-main">
-          <div className="container">
-            <div className="footer-grid">
-              {/* Company Info */}
-              <motion.div 
-                className="footer-column company-info"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                <div className="footer-logo">
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <img 
-                      src="/images/solar-banner-removebg-preview.png" 
-                      alt="Zuice Logo" 
-                      className="logo-icon"
-                      style={{ height: '40px', width: 'auto', objectFit: 'contain' }}
-                    />
-                  </motion.div>
-                  <h3 className="logo-text">Zuice</h3>
-                </div>
-                <p className="company-description">
-                  Leading the future of renewable energy with innovative energy storage solutions. Our ESS systems and intelligent energy storage technologies are transforming how the world stores and manages power.
-                </p>
-                <div className="company-highlights">
-                  <div className="highlight">
-                    <Award className="w-4 h-4" />
-                    <span>Industry Leader Since 2015</span>
-                  </div>
-                  <div className="highlight">
-                    <Shield className="w-4 h-4" />
-                    <span>25-Year Warranty</span>
-                  </div>
-                  <div className="highlight">
-                    <Globe className="w-4 h-4" />
-                    <span>Global Presence</span>
-                  </div>
-                </div>
-                <div className="social-links">
-                  {socialLinks.map((social, index) => (
-                    <motion.a 
-                      key={index} 
-                      href={social.href} 
-                      className="social-link" 
-                      aria-label={social.label}
-                      whileHover={{ 
-                        scale: 1.1, 
-                        backgroundColor: social.color + '20',
-                        borderColor: social.color 
-                      }}
-                      whileTap={{ scale: 0.95 }}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {social.icon}
-                    </motion.a>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* Footer Sections */}
-              {footerSections.map((section, index) => (
-                <motion.div 
-                  key={index}
-                  className="footer-column"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
-                >
-                  <h4 className="footer-heading">{section.title}</h4>
-                  <ul className="footer-links">
-                    {section.links.map((link, linkIndex) => (
-                      <li key={linkIndex}>
-                        {link.external ? (
-                          <motion.a
-                            href={link.href}
-                            className="footer-link"
-                            whileHover={{ x: 5 }}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <div className="link-content">
-                              {link.icon}
-                              <span>{link.label}</span>
-                            </div>
-                            <ArrowRight className="link-arrow" />
-                          </motion.a>
-                        ) : (
-                          <motion.div whileHover={{ x: 5 }}>
-                            <Link to={link.to} className="footer-link">
-                              <div className="link-content">
-                                {link.icon}
-                                <span>{link.label}</span>
-                              </div>
-                              <ArrowRight className="link-arrow" />
-                            </Link>
-                          </motion.div>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              ))}
-
-              {/* Contact Info */}
-              <motion.div 
-                className="footer-column contact-info"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-              >
-                <h4 className="footer-heading">Get in Touch</h4>
-                <div className="contact-list">
-                  {contactInfo.map((contact, index) => (
-                    <motion.a 
-                      key={index} 
-                      href={contact.href} 
-                      className="contact-item"
-                      whileHover={{ scale: 1.02, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <div className="contact-icon">
-                        {contact.icon}
-                      </div>
-                      <div className="contact-details">
-                        <span className="contact-label">{contact.label}</span>
-                        <span className="contact-value">{contact.value}</span>
-                        <span className="contact-description">{contact.description}</span>
-                      </div>
-                    </motion.a>
-                  ))}
-                </div>
-
-                {/* Business Hours */}
-                <div className="business-hours">
-                  <h5>Business Hours</h5>
-                  <div className="hours-list">
-                    <div className="hours-item">
-                      <span>Monday - Friday</span>
-                      <span>9:00 AM - 6:00 PM</span>
-                    </div>
-                    <div className="hours-item">
-                      <span>Saturday</span>
-                      <span>10:00 AM - 4:00 PM</span>
-                    </div>
-                    <div className="hours-item">
-                      <span>Sunday</span>
-                      <span>Emergency Support Only</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
+        {/* Renewable ticker */}
+        <div className="footer-ticker" aria-hidden="true">
+          <div className="ticker-track">
+            <span>Made with renewable energy</span>
+            <span>98% efficiency</span>
+            <span>24/7 smart monitoring</span>
+            <span>10-year warranty</span>
+            <span>Grid-friendly storage</span>
           </div>
         </div>
 
-        {/* Certifications Section */}
-        <motion.div 
-          className="certifications-section"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="container">
-            <h4 className="certifications-title">Certifications & Standards</h4>
-            <div className="certifications-grid">
-              {certifications.map((cert, index) => (
-                <motion.div 
-                  key={index} 
-                  className="certification-item"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <div className="cert-icon">
-                    {cert.icon}
-                  </div>
-                  <div className="cert-content">
-                    <span className="cert-title">{cert.text}</span>
-                    <span className="cert-description">{cert.description}</span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Footer Bottom */}
-        <div className="footer-bottom">
-          <div className="container">
-            <div className="footer-bottom-content">
-              <div className="copyright">
-                <p>© {currentYear} ESS Energy Solutions. All rights reserved.</p>
-                <div className="legal-links">
-                  <Link to="/privacy">Privacy Policy</Link>
-                  <Link to="/terms">Terms of Service</Link>
-                  <Link to="/cookies">Cookie Policy</Link>
-                  <Link to="/accessibility">Accessibility</Link>
-                </div>
-              </div>
-              <div className="footer-meta">
-                <div className="powered-by">
-                  <span>Powered by renewable energy</span>
-                  <Zap className="w-4 h-4 text-green-400" />
-                </div>
-                <div className="version-info">
-                  <span>Version 2.1.0</span>
-                </div>
-              </div>
-            </div>
+        <div className="footer-bottom-simple">
+          <p>© {currentYear} Zuice. All rights reserved.</p>
+          <div className="legal-links">
+            <Link to="/privacy">Privacy</Link>
+            <Link to="/terms">Terms</Link>
+            <Link to="/cookies">Cookies</Link>
+            <Link to="/accessibility">Accessibility</Link>
+            <a href="#" onClick={(e) => { e.preventDefault(); setCookieOpen(true); }}>Cookie Settings</a>
           </div>
         </div>
       </div>
 
-      {/* Enhanced Energy Wave Animation */}
-      <div className="energy-wave-container">
-        <motion.div 
-          className="energy-wave"
-          animate={{
-            backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: 'linear'
-          }}
-        />
-        <motion.div 
-          className="energy-wave secondary"
-          animate={{
-            backgroundPosition: ['100% 50%', '0% 50%', '100% 50%'],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: 'linear'
-          }}
-        />
-      </div>
+      {/* Cookie preferences modal */}
+      {cookieOpen && (
+        <div className="cookie-modal" role="dialog" aria-modal="true" aria-labelledby="cookie-title">
+          <div className="cookie-backdrop" onClick={() => setCookieOpen(false)} />
+          <motion.div className="cookie-panel" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+            <h4 id="cookie-title">Cookie Preferences</h4>
+            <p className="cookie-desc">We use cookies to improve your experience. Manage your preferences below.</p>
+            <div className="cookie-options">
+              <label className="cookie-option">
+                <input type="checkbox" checked disabled />
+                <span>
+                  <strong>Necessary</strong>
+                  <small>Required for core site functionality.</small>
+                </span>
+              </label>
+              <label className="cookie-option">
+                <input type="checkbox" checked={cookies.performance} onChange={() => toggleCookie('performance')} />
+                <span>
+                  <strong>Performance</strong>
+                  <small>Analytics to improve speed and reliability.</small>
+                </span>
+              </label>
+              <label className="cookie-option">
+                <input type="checkbox" checked={cookies.marketing} onChange={() => toggleCookie('marketing')} />
+                <span>
+                  <strong>Marketing</strong>
+                  <small>Personalized promotions and recommendations.</small>
+                </span>
+              </label>
+            </div>
+            <div className="cookie-actions">
+              <button type="button" className="btn-secondary" onClick={() => setCookieOpen(false)}>Cancel</button>
+              <button type="button" className="btn-primary" onClick={saveCookiePrefs}>Save Preferences</button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </footer>
   );
 };

@@ -26,6 +26,7 @@ import { useNavigate } from 'react-router-dom';
 import { essProducts } from '../data/essProducts';
 import { LoadingSpinner, InlineLoader } from './ui/Loading';
 import { useResponsive } from './ui/Responsive';
+import { useUIStore } from '../store/useStore';
 
 const VoiceProductAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,6 +48,16 @@ const VoiceProductAssistant = () => {
   const recognitionRef = useRef(null);
   const synthRef = useRef(null);
   const navigate = useNavigate();
+  const assistantsHidden = useUIStore((s) => s.assistantsHidden);
+
+  useEffect(() => {
+    if (assistantsHidden) {
+      setIsOpen(false);
+      // ensure no audio/listening continues when hidden
+      try { stopListening(); } catch {}
+      try { stopSpeaking(); } catch {}
+    }
+  }, [assistantsHidden])
 
   // Conversation flow steps
   const conversationSteps = [
@@ -1259,6 +1270,8 @@ const VoiceProductAssistant = () => {
     navigate(`/products/${productId}`);
     closeAssistant();
   };
+
+  if (assistantsHidden) return null;
 
   return (
     <>

@@ -23,11 +23,12 @@ import HeroSection from '../components/HeroSection'
 import FeaturesSection from '../components/FeaturesSection'
 import Footer from '../components/Footer'
 import ThreeDGrid from '../components/ThreeDGrid'
-import RollingGallery from '../components/RollingGallery'
+import { Carousel } from '../components/Carousel'
 import InteractivePricingCalculator from '../components/InteractivePricingCalculator'
 import SolarPanelShowcase from '../components/SolarPanelShowcase'
 import AnimatedStats from '../components/AnimatedStats'
 import VoiceProductAssistant from '../components/VoiceProductAssistant'
+import TestimonialsSection from '../components/TestimonialsSection'
 
 const features = [
   {
@@ -153,7 +154,7 @@ export default function HomePage() {
       {/* Animated Stats Section */}
       <AnimatedStats />
 
-      {/* Rolling Gallery Section */}
+      {/* Our Technology Implementations - Carousel Section */}
       <section className="section-padding bg-muted/30">
         <div className="container-custom">
           <motion.div
@@ -169,7 +170,35 @@ export default function HomePage() {
               See our premium technology solutions in action across different industries and environments.
             </p>
           </motion.div>
-          <RollingGallery />
+          {/* New Carousel replacing previous RollingGallery */}
+          <Carousel
+            slides={[
+              {
+                title: 'Premium Solar Solutions',
+                button: 'Discover',
+                src: '/images/solar-banner.jpg',
+                to: '/products',
+              },
+              {
+                title: 'Home ESS 12.8V 100AH',
+                button: 'View Details',
+                src: '/images/12.8v 100AH background.jpg',
+                to: '/products/home-ess-12v',
+              },
+              {
+                title: 'Commercial ESS 25.6V 100AH',
+                button: 'Explore Product',
+                src: '/images/25.6v 100AH background.png',
+                to: '/products/home-ess-25v',
+              },
+              {
+                title: 'Telecom ESS 48V 100AH',
+                button: 'Learn More',
+                src: '/images/48v 100AH background.jpg',
+                to: '/products/telecom-48v-rack',
+              },
+            ]}
+          />
         </div>
       </section>
 
@@ -194,46 +223,7 @@ export default function HomePage() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={testimonial.name}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
-              >
-                <Card className="card-hover h-full relative overflow-hidden">
-                  <div className="absolute top-4 right-4 text-primary/20">
-                    <Quote className="h-8 w-8" />
-                  </div>
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center space-x-4 mb-4">
-                      <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${testimonial.bgColor} flex items-center justify-center text-white font-semibold text-sm shadow-lg`}>
-                        {testimonial.initials}
-                      </div>
-                      <div>
-                        <div className="font-semibold">{testimonial.name}</div>
-                        <div className="text-sm text-muted-foreground">{testimonial.role}</div>
-                        <div className="text-xs text-primary font-medium">{testimonial.company}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-1 mb-4">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      ))}
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base italic leading-relaxed">
-                      "{testimonial.content}"
-                    </CardDescription>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
+          <TestimonialsSection />
 
           {/* Trust Indicators */}
           <motion.div

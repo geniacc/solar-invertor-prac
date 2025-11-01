@@ -95,6 +95,7 @@ export const useUIStore = create((set, get) => ({
   isMobileMenuOpen: false,
   isSearchOpen: false,
   isLoading: false,
+  assistantsHidden: false,
   
   toggleMobileMenu: () => set({ isMobileMenuOpen: !get().isMobileMenuOpen }),
   closeMobileMenu: () => set({ isMobileMenuOpen: false }),
@@ -102,7 +103,8 @@ export const useUIStore = create((set, get) => ({
   toggleSearch: () => set({ isSearchOpen: !get().isSearchOpen }),
   closeSearch: () => set({ isSearchOpen: false }),
   
-  setLoading: (loading) => set({ isLoading: loading })
+  setLoading: (loading) => set({ isLoading: loading }),
+  setAssistantsHidden: (hidden) => set({ assistantsHidden: hidden })
 }))
 
 // Products Store

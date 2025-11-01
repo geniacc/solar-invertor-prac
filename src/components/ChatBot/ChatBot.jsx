@@ -18,6 +18,7 @@ import {
 import { Button } from '../ui/Button'
 import { Card, CardContent } from '../ui/Card'
 import { cn } from '../../lib/utils'
+import { useUIStore } from '../../store/useStore'
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -40,6 +41,13 @@ const ChatBot = () => {
   const [isTyping, setIsTyping] = useState(false)
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
+  const assistantsHidden = useUIStore((s) => s.assistantsHidden)
+
+  useEffect(() => {
+    if (assistantsHidden) {
+      setIsOpen(false)
+    }
+  }, [assistantsHidden])
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -254,6 +262,8 @@ const ChatBot = () => {
   const formatTime = (date) => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   }
+
+  if (assistantsHidden) return null
 
   return (
     <>
