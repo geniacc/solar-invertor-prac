@@ -16,6 +16,10 @@ import ContactPage from './pages/ContactPage'
 import AboutPage from './pages/AboutPage'
 import DeviceDashboardPage from './pages/DeviceDashboardPage'
 import DeviceMonitoringPage from './pages/DeviceMonitoringPage'
+import PrivacyPage from './pages/PrivacyPage'
+import TermsPage from './pages/TermsPage'
+import CookiesPage from './pages/CookiesPage'
+import AccessibilityPage from './pages/AccessibilityPage'
 
 function App() {
   return (
@@ -37,6 +41,10 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/cookies" element={<CookiesPage />} />
+              <Route path="/accessibility" element={<AccessibilityPage />} />
             </Routes>
           </main>
           <CartDrawer />

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Button, Input, Space, Typography, Row, Col, Divider } from 'antd';
 import { 
   MailOutlined, 
@@ -119,16 +120,16 @@ const FooterSection = () => {
                     We're powering a reliable future, one innovation at a time.
                   </Paragraph>
                   <div className="social-links">
-                    <a href="#" className="social-link facebook">
+                    <a href="https://facebook.com/ess-solutions" target="_blank" rel="noopener noreferrer" className="social-link facebook">
                       <FacebookOutlined />
                     </a>
-                    <a href="#" className="social-link twitter">
+                    <a href="https://twitter.com/ess-solutions" target="_blank" rel="noopener noreferrer" className="social-link twitter">
                       <TwitterOutlined />
                     </a>
-                    <a href="#" className="social-link instagram">
+                    <a href="https://instagram.com/ess-solutions" target="_blank" rel="noopener noreferrer" className="social-link instagram">
                       <InstagramOutlined />
                     </a>
-                    <a href="#" className="social-link linkedin">
+                    <a href="https://linkedin.com/company/ess-solutions" target="_blank" rel="noopener noreferrer" className="social-link linkedin">
                       <LinkedinOutlined />
                     </a>
                   </div>
@@ -140,12 +141,12 @@ const FooterSection = () => {
                 <div className="footer-column">
                   <Title level={4} className="footer-heading text-gray-900 dark:text-gray-100">Quick Links</Title>
                   <ul className="footer-links">
-                    <li><a href="#features" className="text-gray-700 dark:text-gray-300 hover:text-primary">Features</a></li>
-                    <li><a href="#how-it-works" className="text-gray-700 dark:text-gray-300 hover:text-primary">How It Works</a></li>
-                    <li><a href="#gallery" className="text-gray-700 dark:text-gray-300 hover:text-primary">Gallery</a></li>
-                    <li><a href="#testimonials" className="text-gray-700 dark:text-gray-300 hover:text-primary">Testimonials</a></li>
-                    <li><a href="#faq" className="text-gray-700 dark:text-gray-300 hover:text-primary">FAQ</a></li>
-                    <li><a href="#contact" className="text-gray-700 dark:text-gray-300 hover:text-primary">Contact</a></li>
+                    <li><Link to="/products" className="text-gray-700 dark:text-gray-300 hover:text-primary">Features</Link></li>
+                    <li><Link to="/services" className="text-gray-700 dark:text-gray-300 hover:text-primary">How It Works</Link></li>
+                    <li><Link to="/products" className="text-gray-700 dark:text-gray-300 hover:text-primary">Gallery</Link></li>
+                    <li><Link to="/about" className="text-gray-700 dark:text-gray-300 hover:text-primary">Testimonials</Link></li>
+                    <li><Link to="/contact" className="text-gray-700 dark:text-gray-300 hover:text-primary">FAQ</Link></li>
+                    <li><Link to="/contact" className="text-gray-700 dark:text-gray-300 hover:text-primary">Contact</Link></li>
                   </ul>
                 </div>
               </Col>
@@ -155,12 +156,12 @@ const FooterSection = () => {
                 <div className="footer-column">
                   <Title level={4} className="footer-heading text-gray-900 dark:text-gray-100">Products</Title>
                   <ul className="footer-links">
-                    <li><a href="#ups-systems" className="text-gray-700 dark:text-gray-300 hover:text-primary">UPS Systems</a></li>
-                    <li><a href="#batteries" className="text-gray-700 dark:text-gray-300 hover:text-primary">Energy Storage</a></li>
-                    <li><a href="#monitoring" className="text-gray-700 dark:text-gray-300 hover:text-primary">Smart Monitoring</a></li>
-                    <li><a href="#maintenance" className="text-gray-700 dark:text-gray-300 hover:text-primary">Maintenance</a></li>
-                    <li><a href="#upgrades" className="text-gray-700 dark:text-gray-300 hover:text-primary">Upgrades</a></li>
-                    <li><a href="#warranty" className="text-gray-700 dark:text-gray-300 hover:text-primary">Warranty</a></li>
+                    <li><Link to="/products" className="text-gray-700 dark:text-gray-300 hover:text-primary">UPS Systems</Link></li>
+                    <li><Link to="/products" className="text-gray-700 dark:text-gray-300 hover:text-primary">Energy Storage</Link></li>
+                    <li><Link to="/device-monitoring" className="text-gray-700 dark:text-gray-300 hover:text-primary">Smart Monitoring</Link></li>
+                    <li><Link to="/services" className="text-gray-700 dark:text-gray-300 hover:text-primary">Maintenance</Link></li>
+                    <li><Link to="/services" className="text-gray-700 dark:text-gray-300 hover:text-primary">Upgrades</Link></li>
+                    <li><Link to="/about" className="text-gray-700 dark:text-gray-300 hover:text-primary">Warranty</Link></li>
                   </ul>
                 </div>
               </Col>

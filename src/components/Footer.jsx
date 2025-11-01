@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Link, useNavigate } from 'react-router-dom';
 import { 
   Mail, 
   Phone, 
@@ -29,6 +30,7 @@ const Footer = () => {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [currentYear] = useState(new Date().getFullYear());
+  const navigate = useNavigate();
 
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
@@ -36,6 +38,8 @@ const Footer = () => {
       setIsSubscribed(true);
       setEmail('');
       setTimeout(() => setIsSubscribed(false), 3000);
+      // Navigate to contact after successful subscribe intent
+      navigate('/contact');
     }
   };
 
@@ -43,31 +47,31 @@ const Footer = () => {
     {
       title: 'Products',
       links: [
-        { label: '12.8V 100AH Home ESS', href: '/products/home-ess', icon: <Zap className="w-4 h-4" /> },
-        { label: 'Lithium-ion Batteries', href: '/products/batteries', icon: <Shield className="w-4 h-4" /> },
-        { label: 'BMS Systems', href: '/products/bms', icon: <Globe className="w-4 h-4" /> },
-        { label: 'Energy Storage Solutions', href: '/products/storage', icon: <Award className="w-4 h-4" /> },
-        { label: 'Monitoring Systems', href: '/products/monitoring', icon: <Clock className="w-4 h-4" /> }
+        { label: '12.8V 100AH Home ESS', to: '/products', icon: <Zap className="w-4 h-4" /> },
+        { label: 'Lithium-ion Batteries', to: '/products', icon: <Shield className="w-4 h-4" /> },
+        { label: 'BMS Systems', to: '/products', icon: <Globe className="w-4 h-4" /> },
+        { label: 'Energy Storage Solutions', to: '/products', icon: <Award className="w-4 h-4" /> },
+        { label: 'Monitoring Systems', to: '/device-monitoring', icon: <Clock className="w-4 h-4" /> }
       ]
     },
     {
       title: 'Solutions',
       links: [
-        { label: 'Residential ESS', href: '/solutions/residential', icon: <Users className="w-4 h-4" /> },
-        { label: 'Commercial ESS', href: '/solutions/commercial', icon: <Shield className="w-4 h-4" /> },
-        { label: 'Industrial ESS', href: '/solutions/industrial', icon: <Globe className="w-4 h-4" /> },
-        { label: 'Energy Storage', href: '/solutions/storage', icon: <Award className="w-4 h-4" /> },
-        { label: 'Grid Integration', href: '/solutions/grid', icon: <Zap className="w-4 h-4" /> }
+        { label: 'Residential ESS', to: '/services', icon: <Users className="w-4 h-4" /> },
+        { label: 'Commercial ESS', to: '/services', icon: <Shield className="w-4 h-4" /> },
+        { label: 'Industrial ESS', to: '/services', icon: <Globe className="w-4 h-4" /> },
+        { label: 'Energy Storage', to: '/services', icon: <Award className="w-4 h-4" /> },
+        { label: 'Grid Integration', to: '/services', icon: <Zap className="w-4 h-4" /> }
       ]
     },
     {
       title: 'Support',
       links: [
-        { label: 'Installation Guide', href: '/support/installation', icon: <Download className="w-4 h-4" /> },
-        { label: 'Technical Support', href: '/support/technical', icon: <Headphones className="w-4 h-4" /> },
-        { label: 'Warranty Information', href: '/support/warranty', icon: <Shield className="w-4 h-4" /> },
-        { label: 'Documentation', href: '/support/docs', icon: <ExternalLink className="w-4 h-4" /> },
-        { label: 'FAQ', href: '/support/faq', icon: <CheckCircle className="w-4 h-4" /> }
+        { label: 'Installation Guide', to: '/services', icon: <Download className="w-4 h-4" /> },
+        { label: 'Technical Support', to: '/contact', icon: <Headphones className="w-4 h-4" /> },
+        { label: 'Warranty Information', to: '/about', icon: <Shield className="w-4 h-4" /> },
+        { label: 'Documentation', href: '/brochure.pdf', external: true, icon: <ExternalLink className="w-4 h-4" /> },
+        { label: 'FAQ', to: '/about', icon: <CheckCircle className="w-4 h-4" /> }
       ]
     }
   ];
@@ -311,17 +315,31 @@ const Footer = () => {
                   <ul className="footer-links">
                     {section.links.map((link, linkIndex) => (
                       <li key={linkIndex}>
-                        <motion.a 
-                          href={link.href} 
-                          className="footer-link"
-                          whileHover={{ x: 5 }}
-                        >
-                          <div className="link-content">
-                            {link.icon}
-                            <span>{link.label}</span>
-                          </div>
-                          <ArrowRight className="link-arrow" />
-                        </motion.a>
+                        {link.external ? (
+                          <motion.a
+                            href={link.href}
+                            className="footer-link"
+                            whileHover={{ x: 5 }}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <div className="link-content">
+                              {link.icon}
+                              <span>{link.label}</span>
+                            </div>
+                            <ArrowRight className="link-arrow" />
+                          </motion.a>
+                        ) : (
+                          <motion.div whileHover={{ x: 5 }}>
+                            <Link to={link.to} className="footer-link">
+                              <div className="link-content">
+                                {link.icon}
+                                <span>{link.label}</span>
+                              </div>
+                              <ArrowRight className="link-arrow" />
+                            </Link>
+                          </motion.div>
+                        )}
                       </li>
                     ))}
                   </ul>
@@ -419,10 +437,10 @@ const Footer = () => {
               <div className="copyright">
                 <p>© {currentYear} ESS Energy Solutions. All rights reserved.</p>
                 <div className="legal-links">
-                  <a href="/privacy">Privacy Policy</a>
-                  <a href="/terms">Terms of Service</a>
-                  <a href="/cookies">Cookie Policy</a>
-                  <a href="/accessibility">Accessibility</a>
+                  <Link to="/privacy">Privacy Policy</Link>
+                  <Link to="/terms">Terms of Service</Link>
+                  <Link to="/cookies">Cookie Policy</Link>
+                  <Link to="/accessibility">Accessibility</Link>
                 </div>
               </div>
               <div className="footer-meta">
