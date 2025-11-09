@@ -82,7 +82,13 @@ const Footer = () => {
     const el = footerRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(([entry]) => {
-      setAssistantsHidden(entry.isIntersecting);
+      // On mobile, keep assistants visible even if footer intersects
+      const isPhone = window.innerWidth < 640;
+      if (isPhone) {
+        setAssistantsHidden(false);
+        return;
+      }
+      setAssistantsHidden(entry.isIntersecting && entry.intersectionRatio > 0.2);
     }, { threshold: 0.2 });
     observer.observe(el);
     return () => observer.disconnect();

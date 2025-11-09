@@ -19,6 +19,7 @@ import { Button } from '../ui/Button'
 import { Card, CardContent } from '../ui/Card'
 import { cn } from '../../lib/utils'
 import { useUIStore } from '../../store/useStore'
+import { useResponsive } from '../../hooks/useResponsive'
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -275,7 +276,10 @@ const ChatBot = () => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   }
 
-  if (assistantsHidden) return null
+  const { isMobile } = useResponsive()
+
+  // Do not hide assistants on mobile; only hide on larger screens near footer
+  if (assistantsHidden && !isMobile) return null
 
   return (
     <>
@@ -286,7 +290,7 @@ const ChatBot = () => {
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
-            className="fixed bottom-6 left-6 z-50"
+            className={`fixed ${isMobile ? 'left-4 stacked-mobile-ui' : 'bottom-6 left-6'} z-[100]`}
           >
             <motion.button
               onClick={() => setIsOpen(true)}
@@ -342,8 +346,9 @@ const ChatBot = () => {
             }}
             exit={{ opacity: 0, y: 100, scale: 0.8 }}
             className={cn(
-              "fixed bottom-6 left-6 z-50 w-96 bg-background border rounded-2xl shadow-2xl overflow-hidden",
-              isMinimized && "h-auto"
+              `fixed ${isMobile ? 'left-4 stacked-mobile-ui--modal' : 'bottom-6 left-6'} z-[100] bg-background border rounded-2xl shadow-2xl overflow-hidden`,
+              isMinimized && "h-auto",
+              isMobile ? 'w-[calc(100vw-2rem)] max-w-sm' : 'w-96'
             )}
           >
             {/* Header */}
