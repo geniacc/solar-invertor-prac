@@ -162,7 +162,7 @@ const AnimatedStats = () => {
 
         <motion.div
           ref={ref}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
@@ -173,7 +173,7 @@ const AnimatedStats = () => {
             return (
               <motion.div
                 key={stat.key}
-                className={`relative p-8 rounded-2xl ${stat.bgColor} border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 group overflow-hidden`}
+                className={`relative p-4 sm:p-6 lg:p-8 rounded-2xl ${stat.bgColor} border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300 group overflow-hidden`}
                 variants={itemVariants}
                 whileHover={{ 
                   scale: 1.05,
@@ -211,11 +211,11 @@ const AnimatedStats = () => {
                 <div className="relative z-10">
                   {/* Icon */}
                   <motion.div
-                    className={`inline-flex p-4 rounded-xl bg-gradient-to-r ${stat.color} text-white mb-4 shadow-lg`}
+                    className={`inline-flex p-3 sm:p-4 rounded-xl bg-gradient-to-r ${stat.color} text-white mb-4 shadow-lg`}
                     whileHover={{ rotate: 360 }}
                     transition={{ duration: 0.6 }}
                   >
-                    <IconComponent className="w-8 h-8" />
+                    <IconComponent className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8" />
                   </motion.div>
 
                   {/* Counter */}
@@ -230,13 +230,13 @@ const AnimatedStats = () => {
                       delay: index * 0.1 
                     }}
                   >
-                    <span className={`text-4xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
+                    <span className={`text-3xl sm:text-4xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
                       {stat.value.toLocaleString()}{stat.suffix}
                     </span>
                   </motion.div>
 
                   {/* Label */}
-                  <p className="text-gray-700 dark:text-gray-300 font-medium text-lg">
+                  <p className="text-gray-700 dark:text-gray-300 font-medium text-base sm:text-lg">
                     {stat.label}
                   </p>
 

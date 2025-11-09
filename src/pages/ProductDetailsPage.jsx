@@ -139,7 +139,7 @@ const ProductDetailsPage = () => {
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
+        <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 lg:gap-12 mb-12">
           {/* Product Images */}
           <div className="space-y-4">
             {/* Main Image */}
@@ -147,7 +147,7 @@ const ProductDetailsPage = () => {
               <img
                 src={productImages[selectedImage]}
                 alt={product.name}
-                className="w-full h-96 object-contain cursor-zoom-in"
+                className="w-full h-64 sm:h-80 lg:h-96 object-contain cursor-zoom-in"
                 onClick={() => setShowImageModal(true)}
                 onError={(e) => {
                   e.target.src = '/images/placeholder-product.svg';

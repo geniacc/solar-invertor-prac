@@ -30,14 +30,14 @@ const ValuesSection = () => {
   return (
     <section className={`${isMobile ? 'py-10' : 'py-14'} px-4 pb-[var(--bottom-nav-h,56px)]`}>
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
           {values.map(({ title, body }) => (
             <div
               key={title}
-              className="rounded-xl border border-border bg-card p-6 shadow-sm hover:shadow-md transition-shadow"
+              className="rounded-xl border border-border bg-card p-4 sm:p-6 shadow-sm hover:shadow-md transition-shadow"
             >
-              <h3 className="text-xl font-semibold mb-2 text-foreground">{title}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">{body}</p>
+              <h3 className="text-lg sm:text-xl font-semibold mb-2 text-foreground">{title}</h3>
+              <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">{body}</p>
             </div>
           ))}
         </div>

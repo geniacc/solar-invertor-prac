@@ -31,8 +31,8 @@ const TestimonialsSection = ({ isMobile, isTablet, testimonials }) => {
           </p>
         </motion.div>
 
-        <div className={`grid gap-8 ${
-          m ? 'grid-cols-1' : t ? 'grid-cols-2' : 'md:grid-cols-3'
+        <div className={`grid gap-4 sm:gap-8 ${
+          m ? 'grid-cols-2' : t ? 'grid-cols-2' : 'md:grid-cols-3'
         }`}>
           {data.map((testimonial, index) => (
             <motion.div

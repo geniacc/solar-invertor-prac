@@ -27,6 +27,7 @@ import { Carousel } from '../components/Carousel'
 import InteractivePricingCalculator from '../components/InteractivePricingCalculator'
 import SolarPanelShowcase from '../components/SolarPanelShowcase'
 import AnimatedStats from '../components/AnimatedStats'
+import India3DMap from '../components/India3DMap'
 import VoiceProductAssistant from '../components/VoiceProductAssistant'
 // Lazy-load testimonials for consistent code-splitting across pages
 const TestimonialsSectionLazy = lazy(() => import('../components/TestimonialsSection'))
@@ -205,6 +206,27 @@ export default function HomePage() {
               },
             ]}
           />
+        </div>
+      </section>
+
+      {/* India Map Section */}
+      <section className="section-padding mobile-section-tight min-h-[70vh]">
+        <div className="container-custom safe-area-x">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className={`text-center space-y-4 ${isMobile ? 'mb-8' : 'mb-12'}`}
+          >
+            <h2 className="text-3xl lg:text-5xl font-bold font-display">Our India Presence</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Explore our service and manufacturing locations across the country.
+            </p>
+          </motion.div>
+        </div>
+        {/* Place globe outside container and center vertically/horizontally in the page space */}
+        <div className="min-h-[70vh] flex items-center justify-center">
+          <India3DMap />
         </div>
       </section>
 

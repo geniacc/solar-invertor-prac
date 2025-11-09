@@ -269,8 +269,8 @@ const ServicesPage = () => {
             </p>
           </motion.div>
 
-          <div className={`grid gap-8 ${
-            isMobile ? 'grid-cols-1' : isTablet ? 'grid-cols-1' : 'lg:grid-cols-2'
+          <div className={`grid gap-4 sm:gap-8 ${
+            isMobile ? 'grid-cols-2' : isTablet ? 'grid-cols-2' : 'lg:grid-cols-2'
           }`}>
             {services.map((service, index) => (
               <motion.div

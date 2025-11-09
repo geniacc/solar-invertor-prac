@@ -13,6 +13,12 @@ const HeroSection = () => {
   const heroRef = useRef(null);
   const { isMobile, isTablet, mobileLite } = useResponsive();
 
+  // Typewriter effect text states (mobile-only)
+  const subtitleFull = 'Home Energy Storage System';
+  const paragraphFull = 'Advanced lithium-ion technology with smart BMS for reliable home energy storage and backup power solutions';
+  const [typedSubtitle, setTypedSubtitle] = useState('');
+  const [typedParagraph, setTypedParagraph] = useState('');
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -43,13 +49,45 @@ const HeroSection = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  // Run typewriter effect only on mobile and when section becomes visible
+  useEffect(() => {
+    if (!isMobile || !isVisible) return;
+
+    setTypedSubtitle('');
+    setTypedParagraph('');
+    let i = 0;
+    let j = 0;
+    let subtitleTimer = null;
+    let paragraphTimer = null;
+
+    subtitleTimer = setInterval(() => {
+      i += 1;
+      setTypedSubtitle(subtitleFull.slice(0, i));
+      if (i >= subtitleFull.length) {
+        clearInterval(subtitleTimer);
+        paragraphTimer = setInterval(() => {
+          j += 1;
+          setTypedParagraph(paragraphFull.slice(0, j));
+          if (j >= paragraphFull.length) {
+            clearInterval(paragraphTimer);
+          }
+        }, 25);
+      }
+    }, 45);
+
+    return () => {
+      if (subtitleTimer) clearInterval(subtitleTimer);
+      if (paragraphTimer) clearInterval(paragraphTimer);
+    };
+  }, [isMobile, isVisible]);
+
   return (
     <section 
       ref={heroRef} 
       className="hero-section relative min-h-screen flex items-center overflow-hidden bg-black mobile-section-tight"
     >
-      {/* Interactive Mouse Follower (disabled on mobileLite) */}
-      {!mobileLite && (
+      {/* Interactive Mouse Follower (disabled on mobile) */}
+      {!isMobile && (
         <motion.div
           className="fixed w-6 h-6 bg-blue-400/30 rounded-full pointer-events-none z-50 mix-blend-screen"
           animate={{
@@ -67,25 +105,25 @@ const HeroSection = () => {
       {/* Animated Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900/30 to-black"></div>
       
-      {/* Product Image Background - More Prominent */}
+      {/* Product Image Background - toned down on mobile */}
       <motion.div 
         className="absolute inset-0 opacity-20 bg-center bg-no-repeat bg-contain"
         style={{
           backgroundImage: `url(/images/solar-banner-removebg-preview.png)`,
         }}
         animate={{
-          scale: isVisible ? [1, 1.05, 1] : 1,
-          opacity: isVisible ? [0.2, 0.3, 0.2] : 0.2,
+          scale: isMobile ? 1 : (isVisible ? [1, 1.05, 1] : 1),
+          opacity: isMobile ? 0.12 : (isVisible ? [0.2, 0.3, 0.2] : 0.2),
         }}
         transition={{
-          duration: 4,
+          duration: isMobile ? 6 : 4,
           repeat: Infinity,
           ease: "easeInOut"
         }}
       ></motion.div>
       
-      {/* Floating Energy Particles (disabled on mobileLite) */}
-      {!mobileLite && ([...Array(20)].map((_, i) => (
+      {/* Floating Energy Particles (disabled on mobile) */}
+      {!isMobile && ([...Array(20)].map((_, i) => (
         <motion.div
           key={i}
           className="absolute w-2 h-2 bg-blue-400/60 rounded-full"
@@ -106,8 +144,8 @@ const HeroSection = () => {
         />
       )))}
       
-      {/* Floating Animated Orbs */}
-      {!mobileLite && (
+      {/* Floating Animated Orbs (disabled on mobile) */}
+      {!isMobile && (
         <motion.div 
           className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
           animate={{
@@ -123,7 +161,7 @@ const HeroSection = () => {
         ></motion.div>
       )}
       
-      {!mobileLite && (
+      {!isMobile && (
         <motion.div 
           className="absolute bottom-20 right-10 w-80 h-80 bg-gradient-to-r from-cyan-400/15 to-purple-500/15 rounded-full blur-3xl"
           animate={{
@@ -139,8 +177,8 @@ const HeroSection = () => {
         ></motion.div>
       )}
       
-      {/* Animated Particles (disabled on mobileLite) */}
-      {!mobileLite && ([...Array(30)].map((_, i) => (
+      {/* Animated Particles (disabled on mobile) */}
+      {!isMobile && ([...Array(30)].map((_, i) => (
         <motion.div
           key={i}
           className="absolute w-1 h-1 bg-purple-400/60 rounded-full"
@@ -163,10 +201,10 @@ const HeroSection = () => {
       )))}
 
       <div className="container mx-auto px-6 safe-area-x relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center min-h-screen">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-screen">
           {/* Left Content - Minimal and Focused */}
           <motion.div
-            className="space-y-8"
+            className={`${isMobile ? 'space-y-6 text-center items-center flex flex-col px-3' : 'space-y-8'}`}
             initial={{ opacity: 0, x: -50 }}
             animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
             transition={{ duration: 1, delay: 0.3 }}
@@ -193,12 +231,12 @@ const HeroSection = () => {
 
             {/* Main Heading - Focused on μ1000 */}
             <motion.div
-              className="space-y-4"
+              className={`space-y-4 ${isMobile ? 'mx-auto max-w-[92%]' : ''}`}
               initial={{ opacity: 0, y: 30 }}
               animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 1, delay: 0.5 }}
             >
-              <h1 className={`${(isMobile ? (mobileLite ? 'text-3xl' : 'text-4xl') : 'text-5xl lg:text-7xl')} leading-tight font-bold text-white`}>
+              <h1 className={`${(isMobile ? (mobileLite ? 'text-3xl' : 'text-4xl') : 'text-5xl lg:text-7xl')} leading-tight font-bold text-white ${isMobile ? 'mx-auto' : ''}`}>
                 {mobileLite ? (
                   <span className="block text-white">μ1000</span>
                 ) : (
@@ -219,22 +257,80 @@ const HeroSection = () => {
                     μ1000
                   </motion.span>
                 )}
-                <span className={`block text-white/90 ${isMobile ? 'text-2xl leading-snug' : 'text-3xl lg:text-4xl'} font-light mt-2`}>
-                  Home Energy Storage System
+                <span
+                  className={`block text-white/90 ${isMobile ? 'text-2xl leading-snug' : 'text-3xl lg:text-4xl'} font-light mt-3 ${isMobile ? 'mx-auto' : ''}`}
+                  aria-live="polite"
+                >
+                  {isMobile ? typedSubtitle : 'Home Energy Storage System'}
                 </span>
               </h1>
               
               <motion.p
-                className={`${isMobile ? 'text-base leading-snug' : 'text-xl leading-relaxed'} text-gray-300 max-w-lg typo-lead-tight`}
+                className={`${isMobile ? 'text-base leading-snug mx-auto max-w-[92%]' : 'text-xl leading-relaxed max-w-lg'} text-gray-300 typo-lead-tight`}
                 initial={{ opacity: 0 }}
                 animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
                 transition={{ duration: 1, delay: 0.8 }}
               >
-                Advanced lithium-ion technology with smart BMS for reliable home energy storage and backup power solutions
+                {isMobile ? (
+                  <>
+                    {typedParagraph}
+                    <span className="inline-block w-[0.75ch] align-baseline ml-1 bg-white/70" style={{ height: '1em', opacity: 0.9 }}></span>
+                  </>
+                ) : (
+                  'Advanced lithium-ion technology with smart BMS for reliable home energy storage and backup power solutions'
+                )}
               </motion.p>
 
-              {/* Key Features Pills (disabled on mobileLite) */}
-              {!mobileLite && (
+              {/* Mobile-only centered feature badges */}
+              {isMobile && (
+                <motion.div
+                  className="w-full mx-auto mt-6 mb-2 max-w-[92%]"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+                  transition={{ duration: 0.6, delay: 1 }}
+                >
+                  <div className="flex flex-wrap items-center justify-center gap-3">
+                    <span className="px-3 py-2 rounded-full bg-white/10 border border-white/20 text-white text-sm">
+                      Long Life Cycle
+                    </span>
+                    <span className="px-3 py-2 rounded-full bg-white/10 border border-white/20 text-white text-sm">
+                      Smart BMS Protection
+                    </span>
+                    <span className="px-3 py-2 rounded-full bg-white/10 border border-white/20 text-white text-sm">
+                      Zero Maintenance
+                    </span>
+                  </div>
+                </motion.div>
+              )}
+
+              {isMobile && (
+                <motion.div
+                  className="w-full mx-auto max-w-[92%] mt-12 mb-2"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+                  transition={{ duration: 0.6, delay: 1.1 }}
+                >
+                  <Link to="/products">
+                    <motion.button
+                      className="mx-auto w-full max-w-[280px] group relative px-5 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full overflow-hidden shadow-lg"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100"
+                        transition={{ duration: 0.3 }}
+                      />
+                      <span className="relative flex items-center justify-center space-x-2">
+                        <span>Explore Zuice Solutions</span>
+                        <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                      </span>
+                    </motion.button>
+                  </Link>
+                </motion.div>
+              )}
+
+              {/* Key Features Pills (disabled on mobile) */}
+              {!isMobile && (
               <motion.div
                 className="flex flex-wrap gap-3 mt-6"
                 initial={{ opacity: 0, y: 20 }}
@@ -257,44 +353,44 @@ const HeroSection = () => {
               )}
             </motion.div>
 
-            {/* Action Buttons */}
-            <motion.div
-              className="flex flex-col sm:flex-row gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 1, delay: 1 }}
-            >
-              <Link to="/products">
+            {/* Action Buttons (desktop only here) */}
+            {!isMobile && (
+              <motion.div
+                className="flex flex-col sm:flex-row gap-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 1, delay: 1 }}
+              >
+                <Link to="/products">
+                  <motion.button
+                    className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full overflow-hidden"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100"
+                      transition={{ duration: 0.3 }}
+                    />
+                    <span className="relative flex items-center space-x-2">
+                      <span>Explore Zuice Solutions</span>
+                      <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                </motion.button>
+                </Link>
+                
                 <motion.button
-                  className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full overflow-hidden"
+                  className="group px-8 py-4 border-2 border-white/20 text-white font-semibold rounded-full hover:bg-white/10 transition-all duration-300"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => setShowVideoModal(true)}
                 >
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100"
-                    transition={{ duration: 0.3 }}
-                  />
-                  <span className="relative flex items-center space-x-2">
-                    <span>Explore Zuice Solutions</span>
-                    <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  <span className="flex items-center space-x-2">
+                    <Play className="h-5 w-5" />
+                    <span>Watch Demo</span>
                   </span>
-              </motion.button>
-              </Link>
-              
-              {!isMobile && (
-              <motion.button
-                className="group px-8 py-4 border-2 border-white/20 text-white font-semibold rounded-full hover:bg-white/10 transition-all duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setShowVideoModal(true)}
-              >
-                <span className="flex items-center space-x-2">
-                  <Play className="h-5 w-5" />
-                  <span>Watch Demo</span>
-                </span>
-              </motion.button>
-              )}
-            </motion.div>
+                </motion.button>
+              </motion.div>
+            )}
           </motion.div>
 
           {/* Right Content - Product Showcase */}
@@ -304,15 +400,15 @@ const HeroSection = () => {
             animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
             transition={{ duration: 1, delay: 0.4 }}
           >
-            {/* Product Image with Enhanced Animation */}
+            {/* Product Image with Enhanced Animation (toned down on mobile) */}
             <motion.div
               className="relative cursor-pointer"
               animate={{
-                y: [0, -20, 0],
-                rotateY: [0, 5, 0, -5, 0],
+                y: isMobile ? [0, -8, 0] : [0, -20, 0],
+                rotateY: isMobile ? 0 : [0, 5, 0, -5, 0],
               }}
               transition={{
-                duration: 6,
+                duration: isMobile ? 7 : 6,
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
@@ -371,8 +467,8 @@ const HeroSection = () => {
               )}
             </motion.div>
 
-            {/* Floating Feature Icons (disabled on mobileLite) */}
-            {!mobileLite && ([
+            {/* Floating Feature Icons (disabled on mobile) */}
+            {!isMobile && ([
               { icon: Zap, position: 'top-10 left-10', delay: 0, label: 'Fast Charging' },
               { icon: Shield, position: 'top-20 right-10', delay: 0.5, label: 'BMS Protection' },
               { icon: Battery, position: 'bottom-20 left-20', delay: 1, label: 'Long Cycle Life' },
@@ -399,8 +495,10 @@ const HeroSection = () => {
                   {/* Tooltip */}
                   <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                     {label}
-                  </div>
-                </div>
+      </div>
+    </div>
+
+    
               </motion.div>
             )))}
           </motion.div>

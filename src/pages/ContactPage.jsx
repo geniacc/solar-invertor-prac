@@ -210,8 +210,8 @@ const ContactPage = () => {
             </p>
           </motion.div>
 
-          <div className={`grid gap-6 ${
-            isMobile ? 'grid-cols-1' : isTablet ? 'grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-4'
+          <div className={`grid gap-4 ${
+            isMobile ? 'grid-cols-2' : isTablet ? 'grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-4'
           }`}>
             {contactMethods.map((method, index) => (
               <motion.div
@@ -222,23 +222,23 @@ const ContactPage = () => {
                 viewport={{ once: true }}
               >
                 <Card className="h-full hover:shadow-lg transition-shadow duration-300 border-purple-500/20">
-                  <CardContent className={isMobile ? 'p-4 text-center' : 'p-6 text-center'}>
+                  <CardContent className={isMobile ? 'p-3 text-center' : 'p-6 text-center'}>
                     <div className={`inline-flex items-center justify-center bg-gradient-to-r ${method.color} rounded-full mb-4 ${
-                      isMobile ? 'w-12 h-12' : 'w-16 h-16'
+                      isMobile ? 'w-10 h-10' : 'w-16 h-16'
                     }`}>
                       <div className="text-white">
                         {method.icon}
                       </div>
                     </div>
                     <h3 className={`font-semibold mb-2 ${
-                      isMobile ? 'text-base' : 'text-lg'
+                      isMobile ? 'text-sm' : 'text-lg'
                     }`}>{method.title}</h3>
                     <p className={`text-muted-foreground mb-4 ${
                       isMobile ? 'text-xs' : 'text-sm'
                     }`}>{method.description}</p>
                     <div className="space-y-2">
                       <div className={`font-medium text-purple-500 ${
-                        isMobile ? 'text-sm' : 'text-base'
+                        isMobile ? 'text-xs' : 'text-base'
                       }`}>{method.contact}</div>
                       <div className={`text-muted-foreground ${
                         isMobile ? 'text-xs' : 'text-xs'
