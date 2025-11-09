@@ -4,7 +4,6 @@ import { ThemeProvider } from './hooks/useTheme.jsx'
 import Navbar from './components/Navbar'
 import FloatingNavbar from './components/FloatingNavbar'
 import MobileBottomBar from './components/MobileBottomBar'
-import MobileQuickActions from './components/MobileQuickActions'
 import './mobile/mobile.css'
 import CartDrawer from './components/Cart/CartDrawer'
 import ChatBot from './components/ChatBot/ChatBot'
@@ -32,7 +31,7 @@ function App() {
   return (
     <ThemeProvider>
       <Router>
-        <div className={`min-h-screen bg-background text-foreground ${isPhone ? 'mobile-root' : ''}`}>
+        <div className={`min-h-screen bg-background text-foreground ${isPhone ? 'mobile-root mobile-root--no-quick-actions' : ''}`}>
           {/* Desktop/tablet retains the full Navbar; phone (≤640px) uses bottom bar below */}
           {!isPhone && <Navbar />}
           <main style={{ paddingBottom: isPhone ? 'calc(env(safe-area-inset-bottom) + var(--bottom-nav-h) + var(--quick-actions-h))' : undefined }}>
@@ -59,7 +58,7 @@ function App() {
           <ChatBot />
           {isPhone && (
             <>
-              <MobileQuickActions />
+              {/* Quick actions bar removed per request; only show bottom nav */}
               <MobileBottomBar />
             </>
           )}

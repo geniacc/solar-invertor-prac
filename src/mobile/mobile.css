@@ -16,6 +16,11 @@
   scroll-padding-bottom: calc(env(safe-area-inset-bottom) + var(--bottom-nav-h) + var(--quick-actions-h));
 }
 
+/* Variant: when quick actions are removed, zero out its height to avoid extra offset */
+.mobile-root--no-quick-actions {
+  --quick-actions-h: 0px;
+}
+
 .mobile-root main {
   /* Ensure content isn’t overlapped by quick actions and bottom nav */
   padding-bottom: calc(env(safe-area-inset-bottom) + var(--bottom-nav-h) + var(--quick-actions-h));
