@@ -26,6 +26,8 @@ import { Button } from '../components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card'
 import { LoadingSpinner } from '../components/ui/Loading'
 import { useResponsive } from '../hooks/useResponsive'
+import VisionMissionBanner from '../components/VisionMissionBanner'
+import ValuesSection from '../components/ValuesSection'
 
 const AboutPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -112,145 +114,11 @@ const AboutPage = () => {
         </motion.div>
       </section>
 
-      {/* Mission & Vision */}
-      <section className={`${isMobile ? 'py-12' : 'py-16'} px-4`}>
-        <div className="max-w-6xl mx-auto">
-          <motion.div 
-            className="grid md:grid-cols-2 gap-12 items-center"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-          >
-            <motion.div variants={fadeInUp}>
-              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
-                <Target className="w-4 h-4" />
-                Our Mission
-              </div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-6 typo-h2-tight">
-                Democratizing Clean Energy Access
-              </h2>
-              <p className={`${isMobile ? 'text-base leading-snug' : 'text-lg leading-relaxed'} text-gray-600 mb-6 typo-lead-tight`}>
-                At Zuice, we believe that everyone deserves access to reliable, clean energy. Our mission is to make 
-                energy storage solutions affordable, efficient, and easy to use for homes and businesses of all sizes.
-              </p>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-6 h-6 text-green-500 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Sustainable Innovation</h4>
-                    <p className="text-gray-600">Developing cutting-edge energy storage technology for a greener future</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-6 h-6 text-green-500 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Affordable Solutions</h4>
-                    <p className="text-gray-600">Making clean energy accessible without compromising on quality</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-6 h-6 text-green-500 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Customer First</h4>
-                    <p className="text-gray-600">Putting our customers' energy needs at the heart of everything we do</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-            
-            <motion.div variants={fadeInUp} className="relative">
-              <div className="bg-gradient-to-br from-purple-500 to-blue-600 rounded-2xl p-8 text-white">
-                <Sun className="w-16 h-16 mb-6 text-yellow-300" />
-                <h3 className="text-2xl font-bold mb-4">Our Vision</h3>
-                <p className={`${isMobile ? 'text-base leading-snug' : 'text-lg leading-relaxed'} opacity-90 mb-6`}>
-                  To become the leading provider of intelligent energy storage solutions, powering millions of homes 
-                  and businesses with clean, reliable energy while contributing to a sustainable planet.
-                </p>
-                <div className="grid grid-cols-2 gap-4 text-center">
-                  <div>
-                    <div className="text-3xl font-bold text-yellow-300">1000+</div>
-                    <div className="text-sm opacity-80">Happy Customers</div>
-                  </div>
-                  <div>
-                    <div className="text-3xl font-bold text-yellow-300">99.9%</div>
-                    <div className="text-sm opacity-80">Uptime Reliability</div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
+      {/* Mission & Vision (Replaced with banner) */}
+      <VisionMissionBanner />
 
-      {/* Core Values */}
-      <section className={`${isMobile ? 'py-12' : 'py-16'} px-4 bg-white`}>
-        <div className="max-w-6xl mx-auto">
-          <motion.div 
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="inline-flex items-center gap-2 bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <Heart className="w-4 h-4" />
-              Our Values
-            </div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">What Drives Us Forward</h2>
-            <p className={`${isMobile ? 'text-base leading-snug' : 'text-lg leading-relaxed'} text-gray-600 max-w-2xl mx-auto`}>
-              Our core values shape every decision we make and every product we create
-            </p>
-          </motion.div>
-
-          <motion.div 
-            className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-          >
-            {[
-              {
-                icon: Lightbulb,
-                title: 'Innovation',
-                description: 'Constantly pushing the boundaries of solar inverter technology to deliver smarter, more efficient solutions.',
-                color: 'from-yellow-400 to-orange-500'
-              },
-              {
-                icon: Shield,
-                title: 'Reliability',
-                description: 'Building products that our customers can depend on, with industry-leading quality and durability standards.',
-                color: 'from-blue-400 to-blue-600'
-              },
-              {
-                icon: Leaf,
-                title: 'Sustainability',
-                description: 'Committed to environmental responsibility and creating products that contribute to a cleaner planet.',
-                color: 'from-green-400 to-green-600'
-              },
-              {
-                icon: Users,
-                title: 'Community',
-                description: 'Building strong relationships with our customers, partners, and communities we serve.',
-                color: 'from-purple-400 to-purple-600'
-              }
-            ].map((value, index) => (
-              <motion.div key={index} variants={fadeInUp}>
-                <Card className="h-full hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-gray-50 to-white">
-                  <CardContent className="p-6 text-center">
-                    <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r ${value.color} flex items-center justify-center`}>
-                      <value.icon className="w-8 h-8 text-white" />
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">{value.title}</h3>
-                    <p className="text-gray-600">{value.description}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      {/* Core Values (Replaced with four-card grid) */}
+      <ValuesSection />
 
       {/* Product Focus */}
       <section className={`${isMobile ? 'py-12' : 'py-16'} px-4 bg-gradient-to-br from-purple-50 to-blue-50`}>
