@@ -53,6 +53,7 @@
 @layer base {
   * {
     @apply border-0;
+    box-sizing: border-box;
   }
   
   body {
@@ -62,6 +63,30 @@
 
   html {
     scroll-behavior: smooth;
+  }
+
+  /* Compact global typography on small screens */
+  @media (max-width: 768px) {
+    html { font-size: 15px; }
+    body { line-height: 1.45; }
+    h1, h2 { line-height: 1.1; }
+    h3, h4, h5, h6, p { line-height: 1.3; }
+  }
+
+  @media (max-width: 480px) {
+    html { font-size: 14px; }
+  }
+
+  /* Media elements scale within their containers */
+  img, video, canvas, svg, iframe {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Long words wrap to avoid edge clipping on mobile */
+  h1, h2, h3, h4, p, li, blockquote {
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   /* Custom scrollbar */
@@ -79,6 +104,19 @@
 
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-muted-foreground/50;
+  }
+}
+
+/* Prevent horizontal scroll only on mobile/tablet */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Compact section spacing on mobile to avoid vertical stretching */
+  section {
+    padding-top: clamp(16px, 5vw, 24px) !important;
+    padding-bottom: clamp(16px, 5vw, 24px) !important;
   }
 }
 
@@ -126,11 +164,34 @@
   /* Container styles */
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    width: 100%;
+  }
+
+  /* Ensure Tailwind's .container also has safe mobile gutters */
+  .container {
+    width: 100%;
   }
 
   /* Section spacing */
   .section-padding {
     @apply py-16 lg:py-24;
+  }
+
+  @media (max-width: 480px) {
+    .section-padding {
+      /* Maintain breathing room without crowding on small phones */
+      padding-top: clamp(20px, 6vw, 28px);
+      padding-bottom: clamp(20px, 6vw, 28px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .container-custom,
+    .container {
+      /* Mobile-friendly side gutters only on small screens */
+      padding-left: clamp(16px, 5vw, 24px);
+      padding-right: clamp(16px, 5vw, 24px);
+    }
   }
 
   /* Animation utilities */

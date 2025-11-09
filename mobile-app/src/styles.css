@@ -1,0 +1,60 @@
+/* Mobile-only base styles; no sharing with desktop project */
+
+:root {
+  --bg: #0b1220;
+  --fg: #e5e7eb;
+  --muted: #94a3b8;
+  --primary: #06b6d4;
+  --surface: rgba(17, 24, 39, 0.8);
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1 1 auto;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 120px);
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+}
+
+.pill {
+  background: rgba(31, 41, 55, 0.9);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bottom-inset {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.top-inset {
+  padding-top: env(safe-area-inset-top);
+}
+
+.page {
+  padding: 16px;
+}
+
+.page h1 { font-size: 20px; margin-bottom: 12px; }
+.page p { font-size: 14px; color: var(--muted); }

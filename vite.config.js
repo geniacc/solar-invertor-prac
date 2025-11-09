@@ -15,6 +15,17 @@ export default defineConfig(({ command }) => {
         '@': path.resolve(__dirname, 'src'),
       },
     },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            react: ['react', 'react-dom'],
+            router: ['react-router-dom'],
+            motion: ['framer-motion'],
+          },
+        },
+      },
+    },
   }
 
   // For custom domain (zuice.in) use root base to avoid subpath issues

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { 
   Wrench, 
@@ -23,10 +23,12 @@ import { Badge } from '../components/ui/Badge'
 import LoadingSpinner from '../components/ui/Loading'
 import { useResponsive } from '../hooks/useResponsive'
 
+const TestimonialsSection = lazy(() => import('../components/TestimonialsSection'))
+
 const ServicesPage = () => {
   const [activeService, setActiveService] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const { isMobile, isTablet } = useResponsive();
+  const { isMobile, isTablet, mobileLite } = useResponsive();
 
   useEffect(() => {
     // Simulate loading time
@@ -157,10 +159,8 @@ const ServicesPage = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className={`relative bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900 text-white overflow-hidden ${
-        isMobile ? 'py-16' : 'py-20'
-      }`}>
-        <div className="container mx-auto px-4">
+      <section className={`section-padding mobile-section-ultra-tight relative ${mobileLite ? 'bg-background' : 'bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900'} text-white overflow-hidden`}>
+        <div className="container mx-auto px-4 safe-area-x">
           <motion.div 
             className={`text-center mx-auto ${isMobile ? 'max-w-2xl' : 'max-w-4xl'}`}
             initial={{ opacity: 0, y: 30 }}
@@ -171,25 +171,29 @@ const ServicesPage = () => {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className={`inline-flex items-center justify-center bg-gradient-to-br from-purple-500 to-purple-700 rounded-full mb-8 ${
+              className={`inline-flex items-center justify-center ${mobileLite ? 'bg-white/10' : 'bg-gradient-to-br from-purple-500 to-purple-700'} rounded-full mb-8 ${
                 isMobile ? 'w-16 h-16' : 'w-20 h-20'
               }`}
             >
-              <Settings className={`text-white ${isMobile ? 'h-8 w-8' : 'h-10 w-10'}`} />
+              <Settings className={`text-white ${isMobile ? 'h-7 w-7' : 'h-10 w-10'}`} />
             </motion.div>
             
             <h1 className={`font-bold text-foreground mb-6 ${
-              isMobile ? 'text-3xl' : isTablet ? 'text-4xl' : 'text-4xl lg:text-6xl'
+              isMobile ? (mobileLite ? 'text-3xl leading-tight' : 'text-4xl leading-tight') : isTablet ? 'text-4xl' : 'text-4xl lg:text-6xl'
             }`}>
               Zuice 
-              <span className="block bg-gradient-to-r from-purple-400 via-purple-500 to-pink-600 bg-clip-text text-transparent">
-                Services & Support
-              </span>
+              {mobileLite ? (
+                <span className="block text-white/90">Services & Support</span>
+              ) : (
+                <span className="block bg-gradient-to-r from-purple-400 via-purple-500 to-pink-600 bg-clip-text text-transparent">
+                  Services & Support
+                </span>
+              )}
             </h1>
             
-            <p className={`text-muted-foreground leading-relaxed mb-8 ${
-              isMobile ? 'text-lg' : 'text-xl'
-            }`}>
+            <p className={`text-muted-foreground ${
+              isMobile ? 'text-lg leading-snug' : 'text-xl leading-relaxed'
+            } mb-8`}>
               Comprehensive services for your ESS system - from professional installation 
               to ongoing maintenance and technical support.
             </p>
@@ -210,10 +214,9 @@ const ServicesPage = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className={`bg-gradient-to-r from-purple-500/10 to-purple-700/10 ${
-        isMobile ? 'py-12' : 'py-16'
-      }`}>
+      {/* Mobile-lite: hide stats on touch mobile */}
+      {!mobileLite && (
+      <section className={`section-padding mobile-section-tight bg-gradient-to-r from-purple-500/10 to-purple-700/10`}>
         <div className="container mx-auto px-4">
           <div className={`grid gap-8 ${
             isMobile ? 'grid-cols-2' : isTablet ? 'grid-cols-2' : 'grid-cols-2 lg:grid-cols-4'
@@ -242,10 +245,11 @@ const ServicesPage = () => {
           </div>
         </div>
       </section>
+      )}
 
       {/* Services Grid */}
-      <section className={`${isMobile ? 'py-16' : 'py-20'}`}>
-        <div className="container mx-auto px-4">
+      <section className={`section-padding`}>
+        <div className="container mx-auto px-4 safe-area-x">
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 30 }}
@@ -317,7 +321,7 @@ const ServicesPage = () => {
                       </div>
                       <Button 
                         size={isMobile ? "sm" : "default"}
-                        className="bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800"
+                        className="tap-target bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800"
                       >
                         Book Now
                       </Button>
@@ -330,81 +334,16 @@ const ServicesPage = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className={`bg-gradient-to-br from-purple-900/10 via-background to-purple-900/5 ${
-        isMobile ? 'py-16' : 'py-20'
-      }`}>
-        <div className="container mx-auto px-4">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className={`font-bold text-foreground mb-4 ${
-              isMobile ? 'text-2xl' : 'text-3xl lg:text-4xl'
-            }`}>
-              What Our Customers Say
-            </h2>
-            <p className={`text-muted-foreground max-w-2xl mx-auto ${
-              isMobile ? 'text-base' : 'text-xl'
-            }`}>
-              Real experiences from ESS system users
-            </p>
-          </motion.div>
-
-          <div className={`grid gap-8 ${
-            isMobile ? 'grid-cols-1' : isTablet ? 'grid-cols-2' : 'md:grid-cols-3'
-          }`}>
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <Card className="h-full">
-                  <CardContent className={isMobile ? 'p-4' : 'p-6'}>
-                    <div className="flex items-center gap-1 mb-4">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      ))}
-                    </div>
-                    <p className={`text-muted-foreground mb-4 italic ${
-                      isMobile ? 'text-sm' : 'text-base'
-                    }`}>
-                      "{testimonial.comment}"
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className={`font-semibold ${
-                          isMobile ? 'text-sm' : 'text-base'
-                        }`}>{testimonial.name}</div>
-                        <div className={`text-muted-foreground ${
-                          isMobile ? 'text-xs' : 'text-sm'
-                        }`}>{testimonial.location}</div>
-                      </div>
-                      <div className={`bg-purple-500/10 text-purple-500 px-2 py-1 rounded ${
-                        isMobile ? 'text-xs' : 'text-xs'
-                      }`}>
-                        {testimonial.service}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Mobile-lite: hide testimonials on touch mobile */}
+      {!mobileLite && (
+        <Suspense fallback={<div className="section-padding text-center text-muted-foreground">Loading testimonials...</div>}>
+          <TestimonialsSection isMobile={isMobile} isTablet={isTablet} testimonials={testimonials} />
+        </Suspense>
+      )}
 
       {/* CTA Section */}
-      <section className={`bg-gradient-to-r from-purple-500 to-purple-700 ${
-        isMobile ? 'py-16' : 'py-20'
-      }`}>
-        <div className="container mx-auto px-4 text-center">
+      <section className={`section-padding bg-gradient-to-r from-purple-500 to-purple-700`}>
+        <div className="container mx-auto px-4 safe-area-x text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -424,14 +363,14 @@ const ServicesPage = () => {
             <div className={`flex gap-4 justify-center ${
               isMobile ? 'flex-col items-center' : 'flex-col sm:flex-row'
             }`}>
-              <Button size={isMobile ? "default" : "lg"} variant="secondary">
+              <Button size={isMobile ? "default" : "lg"} variant="secondary" className="tap-target">
                 Schedule Service
                 <Clock className="ml-2 h-4 w-4" />
               </Button>
               <Button 
                 size={isMobile ? "default" : "lg"} 
                 variant="outline" 
-                className="border-white text-white hover:bg-white hover:text-purple-700"
+                className="tap-target border-white text-white hover:bg-white hover:text-purple-700"
               >
                 Call Now: +91-9876543210
                 <Phone className="ml-2 h-4 w-4" />

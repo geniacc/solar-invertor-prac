@@ -322,6 +322,90 @@ export const essProducts = [
     gallery: ["/images/51.2v 100AH(stacked).png", "/images/51.2v 100AH(stacked).jpg"]
   },
 
+  // LFP-51100 Cabinet Variants (Images Provided)
+  {
+    id: "home-ess-lfp51100-small",
+    name: "Zuice LFP-51100 51.2V 100Ah (Small Cabinet)",
+    category: "home-ess",
+    price: 97000,
+    originalPrice: 105000,
+    discount: 8,
+    rating: 4.8,
+    reviews: 112,
+    inStock: true,
+    badge: "Compact",
+    image: "/images/LFP -51100 smaller.png",
+    description: "Compact 51.2V 100Ah LiFePO4 cabinet pack with LED SOC indication, robust protections, and terminal block connectors. Ideal for residential ESS installations.",
+    features: [
+      "LED for SOC and Warning",
+      "Optional IoT connectivity",
+      "MCB & multi-protection suite",
+      "4‑Pole terminal block connectors",
+      "Data logging up to 6 months"
+    ],
+    specifications: {
+      "Model No.": "LFP-51100",
+      "Voltage (V) - Minimum": "44.8 V",
+      "Voltage (V) - Nominal": "51.2 V",
+      "Voltage (V) - Maximum": "57.6 V",
+      "Nominal Capacity (Ah)": "100 Ah",
+      "Rated Energy (kWh)": "5.1 kWh",
+      "Battery Configuration (Series & Parallel)": "16S 1P",
+      "Number Of Batteries in Parallel": "15 (Maximum)",
+      "Standard Discharge Current (A)": "50 A",
+      "Maximum Discharge Current (A)": "100 A",
+      "Standard Charging Current (A)": "50 A",
+      "Discharging Connector": "4 Pole Terminal Block",
+      "Charging Connector": "4 Pole Terminal Block",
+      "Indications": "LED For SOC and Warning",
+      "IOT": "Available (Optional)",
+      "Protections": "MCB, Short Circuit, Reverse Polarity, Over temperature, Under temperature, Over voltage, Under Voltage",
+      "Data logging": "6 Months of Data Storage"
+    },
+    gallery: ["/images/LFP -51100 smaller.png"]
+  },
+  {
+    id: "home-ess-lfp51100-large",
+    name: "Zuice LFP-51100 51.2V 100Ah (Large Cabinet)",
+    category: "home-ess",
+    price: 104000,
+    originalPrice: 115000,
+    discount: 10,
+    rating: 4.9,
+    reviews: 89,
+    inStock: true,
+    badge: "Cabinet",
+    image: "/images/LFP -51100 larger.png",
+    description: "Full-size 51.2V 100Ah LiFePO4 cabinet battery with enhanced thermal margin, terminal block connectors, and comprehensive protections for home ESS.",
+    features: [
+      "LED for SOC and Warning",
+      "Optional IoT connectivity",
+      "Robust protection suite (MCB, polarity, temperature, voltage)",
+      "4‑Pole terminal block connectors",
+      "6 months data logging"
+    ],
+    specifications: {
+      "Model No.": "LFP-51100",
+      "Voltage (V) - Minimum": "44.8 V",
+      "Voltage (V) - Nominal": "51.2 V",
+      "Voltage (V) - Maximum": "57.6 V",
+      "Nominal Capacity (Ah)": "100 Ah",
+      "Rated Energy (kWh)": "5.1 kWh",
+      "Battery Configuration (Series & Parallel)": "16S 1P",
+      "Number Of Batteries in Parallel": "15 (Maximum)",
+      "Standard Discharge Current (A)": "50 A",
+      "Maximum Discharge Current (A)": "100 A",
+      "Standard Charging Current (A)": "50 A",
+      "Discharging Connector": "4 Pole Terminal Block",
+      "Charging Connector": "4 Pole Terminal Block",
+      "Indications": "LED For SOC and Warning",
+      "IOT": "Available (Optional)",
+      "Protections": "MCB, Short Circuit, Reverse Polarity, Over temperature, Under temperature, Over voltage, Under Voltage",
+      "Data logging": "6 Months of Data Storage"
+    },
+    gallery: ["/images/LFP -51100 larger.png"]
+  },
+
   // COMMERCIAL & INDUSTRIAL ESS PRODUCTS
   {
     id: "commercial-96v",
@@ -386,6 +470,158 @@ export const essProducts = [
       "Efficiency": ">95%"
     },
     gallery: ["/images/96v 100 AH.png", "/images/96v 100AH background.jpg"]
+  },
+
+  // NEW HOME INVERTER PRO SERIES (Zuice branding)
+  {
+    id: "home-ess-12v-150-pro",
+    name: "Zuice 12V 150-PRO Home Battery",
+    category: "home-ess",
+    price: 65000,
+    originalPrice: 72000,
+    discount: 10,
+    rating: 4.7,
+    reviews: 48,
+    inStock: true,
+    badge: "New",
+    image: "/images/12v pro.jpg",
+    backgroundImage: "/images/12v pro.jpg",
+    description: "Zuice 12V 150-PRO LiFePO4 battery with smart BMS for home inverter systems. High energy density, low maintenance, lighter and more compact than lead-acid.",
+    detailedDescription: "The Zuice 12V 150-PRO brings modern lithium performance to home inverter setups. Built with premium LiFePO4 cells and an intelligent Battery Management System (BMS), it delivers 1.8 kWh of reliable storage, excellent safety, and >3500 cycle life. Ideal upgrade from tubular lead-acid — lighter weight, compact volume, and consistent backup even at higher loads.",
+    applications: [
+      "Home inverter backup",
+      "Small solar energy storage",
+      "UPS and essential loads",
+      "Emergency lighting"
+    ],
+    benefits: [
+      "No routine maintenance",
+      "Less volume, less weight",
+      "Higher backup at higher loads",
+      "Integrated Smart BMS safety"
+    ],
+    specifications: {
+      "Model No.": "12V 150-PRO",
+      "Voltage": "12.8 V",
+      "Energy": "1920 Wh",
+      "Rated Energy": "1920 Wh",
+      "Continuous Standard Discharge Current": "150 A",
+      "Maximum Discharging Pulse Current": "300 A (3s)",
+      "Standard Charging Current": "50 A",
+      "Terminals": "M8",
+      "Dimensions (L x W x H)": "480 x 170 x 250 mm",
+      "Weight": "22 kg",
+      "IP Rating": "IP67",
+      "Working Temperature": "-20°C to 60°C",
+      "Life Cycles": "≥2000 (@ 80% DOD, 0.5C)",
+      "Warranty": "36 + 24 Months"
+    },
+    features: [
+      "Smart BMS Protection",
+      "High Energy Density",
+      "Fast & Efficient Charging",
+      "Long Cycle Life"
+    ]
+  },
+  {
+    id: "home-ess-24v-150-pro",
+    name: "Zuice 24V 150-PRO Home Battery",
+    category: "home-ess",
+    price: 115000,
+    originalPrice: 125000,
+    discount: 8,
+    rating: 4.8,
+    reviews: 37,
+    inStock: true,
+    badge: "New",
+    image: "/images/24v pro.jpg",
+    backgroundImage: "/images/24v pro.jpg",
+    description: "Zuice 24V 150-PRO LiFePO4 battery for higher-load home inverter systems. Bigger storage, robust safety, and consistent performance.",
+    detailedDescription: "Designed for homes needing higher power, the Zuice 24V 150-PRO provides ~3.6 kWh storage with a smart BMS for safe and efficient operation. Offers superior backup compared to legacy lead-acid solutions, with compact footprint and reduced weight.",
+    applications: [
+      "Medium-load home inverter",
+      "Solar energy storage",
+      "Workshop and appliances",
+      "Telecom and small commercial"
+    ],
+    benefits: [
+      "Low maintenance",
+      "Compact and lightweight",
+      "High-load backup",
+      "Smart BMS monitoring"
+    ],
+    specifications: {
+      "Model No.": "24V 150-PRO",
+      "Voltage": "25.6 V",
+      "Energy": "3840 Wh",
+      "Rated Energy": "3840 Wh",
+      "Continuous Standard Discharge Current": "150 A",
+      "Maximum Discharging Pulse Current": "300 A (3s)",
+      "Standard Charging Current": "50 A",
+      "Terminals": "M8",
+      "Dimensions (L x W x H)": "480 x 170 x 250 mm",
+      "Weight": "38 kg",
+      "IP Rating": "IP67",
+      "Working Temperature": "-20°C to 60°C",
+      "Life Cycles": "≥2000 (@ 80% DOD, 0.5C)",
+      "Warranty": "36 + 24 Months"
+    },
+    features: [
+      "Advanced BMS Protection",
+      "High Energy Capacity",
+      "Fast Charging Capability",
+      "Long Cycle Life"
+    ]
+  },
+  {
+    id: "home-ess-12v-300-pro",
+    name: "Zuice 12V 300-PRO Home Battery",
+    category: "home-ess",
+    price: 120000,
+    originalPrice: 135000,
+    discount: 11,
+    rating: 4.8,
+    reviews: 29,
+    inStock: true,
+    badge: "New",
+    image: "/images/12v pro.jpg",
+    backgroundImage: "/images/12v pro.jpg",
+    description: "Zuice 12V 300-PRO LiFePO4 battery delivering extended backup for home inverter systems with superior safety and reliability.",
+    detailedDescription: "The Zuice 12V 300-PRO doubles capacity for longer runtime and heavier loads in 12V home inverter setups. With smart BMS, >3500 cycles, and efficient charging/discharging, it’s a dependable replacement for tubular lead-acid batteries.",
+    applications: [
+      "Long-duration home backup",
+      "Solar storage",
+      "UPS and essential loads",
+      "Small commercial use"
+    ],
+    benefits: [
+      "Maintenance-free operation",
+      "Higher backup at higher loads",
+      "Less volume and weight than lead-acid",
+      "Smart BMS with comprehensive safety"
+    ],
+    specifications: {
+      "Model No.": "12V 300-PRO",
+      "Voltage": "12.8 V",
+      "Energy": "3840 Wh",
+      "Rated Energy": "3840 Wh",
+      "Continuous Standard Discharge Current": "300 A",
+      "Maximum Discharging Pulse Current": "600 A (3s)",
+      "Standard Charging Current": "100 A",
+      "Terminals": "M8",
+      "Dimensions (L x W x H)": "540 x 240 x 250 mm",
+      "Weight": "38 kg",
+      "IP Rating": "IP67",
+      "Working Temperature": "-20°C to 60°C",
+      "Life Cycles": "≥2000 (@ 80% DOD, 0.5C)",
+      "Warranty": "36 + 24 Months"
+    },
+    features: [
+      "Smart BMS",
+      "High Energy Density",
+      "Fast Charging",
+      "Long Cycle Life"
+    ]
   },
   {
     id: "commercial-120v",

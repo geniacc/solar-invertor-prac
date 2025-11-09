@@ -25,16 +25,16 @@ export default function TestimonialsCarousel({ items = [], autoPlay = false, int
   return (
     <div className="relative">
       <Card className="card-hover overflow-hidden">
-        <div className="grid gap-8 md:grid-cols-[380px,1fr] items-center p-6">
+        <div className="grid gap-8 md:grid-cols-[minmax(280px,380px),1fr] items-center p-6">
           {/* Layered images */}
-          <div className="relative mx-auto w-[300px] h-[400px] md:w-[340px] md:h-[440px]">
+          <div className="relative mx-auto w-full max-w-[90vw] sm:max-w-[320px] md:max-w-[340px] aspect-[3/4]">
             {/* Left background (previous) */}
             <motion.img
               key={`bg-left-${prevItem.src}`}
               src={prevItem.src}
               alt=""
               loading="lazy"
-              className="absolute inset-0 rounded-2xl object-cover shadow-xl border border-border"
+              className="absolute inset-0 w-full h-full rounded-2xl object-cover shadow-xl border border-border"
               initial={{ opacity: 0.4, rotate: -6, x: -24, y: 16, scale: 0.95 }}
               animate={{ opacity: 0.6, rotate: -6, x: -24, y: 16, scale: 0.95 }}
               exit={{ opacity: 0.4 }}
@@ -48,7 +48,7 @@ export default function TestimonialsCarousel({ items = [], autoPlay = false, int
               src={nextItem.src}
               alt=""
               loading="lazy"
-              className="absolute inset-0 rounded-2xl object-cover shadow-xl border border-border"
+              className="absolute inset-0 w-full h-full rounded-2xl object-cover shadow-xl border border-border"
               initial={{ opacity: 0.4, rotate: 6, x: 24, y: 8, scale: 0.95 }}
               animate={{ opacity: 0.6, rotate: 6, x: 24, y: 8, scale: 0.95 }}
               exit={{ opacity: 0.4 }}
@@ -63,7 +63,7 @@ export default function TestimonialsCarousel({ items = [], autoPlay = false, int
                 src={item.src}
                 alt={item.name}
                 loading="lazy"
-                className="absolute inset-0 rounded-2xl object-cover shadow-2xl border border-border"
+                className="absolute inset-0 w-full h-full rounded-2xl object-cover shadow-2xl border border-border"
                 initial={{ opacity: 0, y: 8, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -8, scale: 0.98 }}

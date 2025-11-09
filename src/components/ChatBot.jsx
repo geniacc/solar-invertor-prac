@@ -84,7 +84,7 @@ const ChatBot = () => {
             width: isMobile ? '50px' : '60px',
             height: isMobile ? '50px' : '60px',
             top: isMobile ? 'auto' : '50%',
-            bottom: isMobile ? '80px' : 'auto'
+            bottom: isMobile ? 'calc(env(safe-area-inset-bottom) + 96px)' : 'auto'
           }}
         >
           <div className="chatbot-icon-content">

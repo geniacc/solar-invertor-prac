@@ -37,6 +37,7 @@ import { Button } from '../components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card'
 import { useCartStore } from '../store/useStore'
 import { cn } from '../lib/utils'
+import { useResponsive } from '../hooks/useResponsive'
 
 // Enhanced Button component
 const EnhancedButton = ({ children, onClick, className = '', size = 'md', variant = 'default', disabled = false, loading = false, ...props }) => {
@@ -97,6 +98,7 @@ const Badge = ({ children, variant = 'default', className = '', ...props }) => {
 }
 
 export default function CartPage() {
+  const { isMobile } = useResponsive()
   const { items, updateQuantity, removeItem, clearCart, getTotalPrice } = useCartStore()
   const [promoCode, setPromoCode] = useState('')
   const [appliedPromo, setAppliedPromo] = useState(null)
@@ -180,7 +182,7 @@ export default function CartPage() {
   if (items.length === 0 && savedItems.length === 0) {
     return (
       <div className="min-h-screen pt-20">
-        <div className="container-custom py-16">
+        <div className={`container-custom ${isMobile ? 'py-12' : 'py-16'}`}>
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -191,7 +193,7 @@ export default function CartPage() {
             </div>
             <div className="space-y-4">
               <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Your rental cart is empty</h1>
-              <p className="text-xl text-gray-600 dark:text-gray-400 max-w-md mx-auto">
+              <p className={`text-gray-600 dark:text-gray-400 max-w-md mx-auto ${isMobile ? 'text-base leading-snug' : 'text-xl leading-relaxed'}`}>
                 Looks like you haven't added any solar inverters to rent yet.
               </p>
             </div>

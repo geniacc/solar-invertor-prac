@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { 
   MessageSquare, 
@@ -21,6 +21,8 @@ import { Textarea } from '../components/ui/textarea'
 import LoadingSpinner from '../components/ui/Loading'
 import { useResponsive } from '../hooks/useResponsive'
 
+const ContactSidebar = lazy(() => import('../components/ContactSidebar'))
+
 const ContactPage = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -35,7 +37,7 @@ const ContactPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const { isMobile, isTablet } = useResponsive();
+  const { isMobile, isTablet, mobileLite } = useResponsive();
 
   useEffect(() => {
     // Simulate loading time
@@ -146,8 +148,8 @@ const ContactPage = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className={`relative bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900 text-white overflow-hidden ${
-        isMobile ? 'py-16' : 'py-20'
+      <section className={`relative ${!mobileLite ? 'bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900' : 'bg-purple-900'} text-white overflow-hidden ${
+        isMobile ? 'py-12' : 'py-20'
       }`}>
         <div className="container mx-auto px-4">
           <motion.div 
@@ -168,7 +170,7 @@ const ContactPage = () => {
             </motion.div>
             
             <h1 className={`font-bold text-white mb-6 ${
-              isMobile ? 'text-3xl' : 'text-4xl lg:text-6xl'
+              isMobile ? 'text-3xl leading-tight' : 'text-4xl lg:text-6xl'
             }`}>
               Get in Touch
               <span className="block bg-gradient-to-r from-purple-200 via-purple-300 to-pink-300 bg-clip-text text-transparent">
@@ -176,9 +178,9 @@ const ContactPage = () => {
               </span>
             </h1>
             
-            <p className={`text-purple-100 leading-relaxed mb-8 ${
-              isMobile ? 'text-base' : 'text-xl'
-            }`}>
+            <p className={`text-purple-100 ${
+              isMobile ? 'text-base leading-snug' : 'text-xl leading-relaxed'
+            } mb-8`}>
               Need help with your ESS system? Our expert team is here to assist you 
               with installation, maintenance, and technical support.
             </p>
@@ -187,7 +189,7 @@ const ContactPage = () => {
       </section>
 
       {/* Contact Methods */}
-      <section className={isMobile ? 'py-16' : 'py-20'}>
+      <section className={isMobile ? 'py-12' : 'py-20'}>
         <div className="container mx-auto px-4">
           <motion.div
             className="text-center mb-16"
@@ -251,10 +253,8 @@ const ContactPage = () => {
       </section>
 
       {/* Contact Form & Info */}
-      <section className={`bg-gradient-to-br from-purple-900/10 via-background to-purple-900/5 ${
-        isMobile ? 'py-16' : 'py-20'
-      }`}>
-        <div className="container mx-auto px-4">
+      <section className={`section-padding mobile-section-tight bg-gradient-to-br from-purple-900/10 via-background to-purple-900/5`}>
+        <div className="container mx-auto px-4 safe-area-x">
           <div className={`grid gap-12 ${
             isMobile ? 'grid-cols-1' : 'lg:grid-cols-2'
           }`}>
@@ -411,78 +411,19 @@ const ContactPage = () => {
               </Card>
             </motion.div>
 
-            {/* Office Locations & FAQ */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="space-y-8"
-            >
-              {/* Office Locations */}
-              <Card>
-                <CardHeader className={isMobile ? 'p-4' : 'p-6'}>
-                  <CardTitle className={`flex items-center gap-2 ${
-                    isMobile ? 'text-lg' : 'text-xl'
-                  }`}>
-                    <MapPin className="h-5 w-5" />
-                    Our Locations
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className={`space-y-4 ${isMobile ? 'p-4 pt-0' : 'p-6 pt-0'}`}>
-                  {officeLocations.map((location, index) => (
-                    <div key={index} className="border-b border-gray-200 last:border-b-0 pb-4 last:pb-0">
-                      <h4 className={`font-semibold text-purple-500 mb-1 ${
-                        isMobile ? 'text-sm' : 'text-base'
-                      }`}>{location.city}</h4>
-                      <p className={`text-muted-foreground mb-2 ${
-                        isMobile ? 'text-xs' : 'text-sm'
-                      }`}>{location.address}</p>
-                      <div className={`flex flex-col gap-1 ${
-                        isMobile ? 'text-xs' : 'text-xs'
-                      }`}>
-                        <div className="flex items-center gap-2">
-                          <Phone className="h-3 w-3" />
-                          <span>{location.phone}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Mail className="h-3 w-3" />
-                          <span>{location.email}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-
-              {/* FAQ */}
-              <Card>
-                <CardHeader className={isMobile ? 'p-4' : 'p-6'}>
-                  <CardTitle className={isMobile ? 'text-lg' : 'text-xl'}>Frequently Asked Questions</CardTitle>
-                </CardHeader>
-                <CardContent className={`space-y-4 ${isMobile ? 'p-4 pt-0' : 'p-6 pt-0'}`}>
-                  {faqItems.map((faq, index) => (
-                    <div key={index} className="border-b border-gray-200 last:border-b-0 pb-4 last:pb-0">
-                      <h4 className={`font-medium mb-2 ${
-                        isMobile ? 'text-sm' : 'text-base'
-                      }`}>{faq.question}</h4>
-                      <p className={`text-muted-foreground ${
-                        isMobile ? 'text-xs' : 'text-sm'
-                      }`}>{faq.answer}</p>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </motion.div>
+            {/* Mobile-lite: hide Office Locations and FAQ on touch mobile to keep the page concise */}
+            {!mobileLite && (
+              <Suspense fallback={<div className="text-center text-muted-foreground">Loading more info...</div>}>
+                <ContactSidebar isMobile={isMobile} officeLocations={officeLocations} faqItems={faqItems} />
+              </Suspense>
+            )}
           </div>
         </div>
       </section>
 
       {/* Emergency Support */}
-      <section className={`bg-gradient-to-r from-red-500 to-orange-500 ${
-        isMobile ? 'py-16' : 'py-20'
-      }`}>
-        <div className="container mx-auto px-4 text-center">
+      <section className={`section-padding mobile-section-ultra-tight bg-gradient-to-r from-red-500 to-orange-500`}>
+        <div className="container mx-auto px-4 safe-area-x text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -505,14 +446,14 @@ const ContactPage = () => {
             <div className={`flex gap-4 justify-center ${
               isMobile ? 'flex-col items-center' : 'flex-col sm:flex-row'
             }`}>
-              <Button size={isMobile ? "default" : "lg"} variant="secondary">
+              <Button size={isMobile ? "default" : "lg"} variant="secondary" className="tap-target">
                 <Phone className="mr-2 h-4 w-4" />
                 Emergency: +91-9876543211
               </Button>
               <Button 
                 size={isMobile ? "default" : "lg"} 
                 variant="outline" 
-                className="border-white text-white hover:bg-white hover:text-red-600"
+                className="tap-target border-white text-white hover:bg-white hover:text-red-600"
               >
                 <MessageSquare className="mr-2 h-4 w-4" />
                 Live Chat Support

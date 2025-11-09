@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Play, Zap, Shield, Battery, Sun, Sparkles, Power, X } from 'lucide-react';
 import { Button } from './ui/Button';
 import DotGrid from './DotGrid';
+import { useResponsive } from '../hooks/useResponsive';
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const heroRef = useRef(null);
+  const { isMobile, isTablet, mobileLite } = useResponsive();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -44,21 +46,23 @@ const HeroSection = () => {
   return (
     <section 
       ref={heroRef} 
-      className="hero-section relative min-h-screen flex items-center overflow-hidden bg-black"
+      className="hero-section relative min-h-screen flex items-center overflow-hidden bg-black mobile-section-tight"
     >
-      {/* Interactive Mouse Follower */}
-      <motion.div
-        className="fixed w-6 h-6 bg-blue-400/30 rounded-full pointer-events-none z-50 mix-blend-screen"
-        animate={{
-          x: mousePosition.x - 12,
-          y: mousePosition.y - 12,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 500,
-          damping: 28,
-        }}
-      />
+      {/* Interactive Mouse Follower (disabled on mobileLite) */}
+      {!mobileLite && (
+        <motion.div
+          className="fixed w-6 h-6 bg-blue-400/30 rounded-full pointer-events-none z-50 mix-blend-screen"
+          animate={{
+            x: mousePosition.x - 12,
+            y: mousePosition.y - 12,
+          }}
+          transition={{
+            type: "spring",
+            stiffness: 500,
+            damping: 28,
+          }}
+        />
+      )}
 
       {/* Animated Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900/30 to-black"></div>
@@ -80,8 +84,8 @@ const HeroSection = () => {
         }}
       ></motion.div>
       
-      {/* Floating Energy Particles */}
-      {[...Array(20)].map((_, i) => (
+      {/* Floating Energy Particles (disabled on mobileLite) */}
+      {!mobileLite && ([...Array(20)].map((_, i) => (
         <motion.div
           key={i}
           className="absolute w-2 h-2 bg-blue-400/60 rounded-full"
@@ -100,39 +104,43 @@ const HeroSection = () => {
             delay: Math.random() * 2,
           }}
         />
-      ))}
+      )))}
       
       {/* Floating Animated Orbs */}
-      <motion.div 
-        className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
-        animate={{
-          x: [0, 100, 0],
-          y: [0, -50, 0],
-          scale: [1, 1.3, 1],
-        }}
-        transition={{
-          duration: 12,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      ></motion.div>
+      {!mobileLite && (
+        <motion.div 
+          className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"
+          animate={{
+            x: [0, 100, 0],
+            y: [0, -50, 0],
+            scale: [1, 1.3, 1],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        ></motion.div>
+      )}
       
-      <motion.div 
-        className="absolute bottom-20 right-10 w-80 h-80 bg-gradient-to-r from-cyan-400/15 to-purple-500/15 rounded-full blur-3xl"
-        animate={{
-          x: [0, -80, 0],
-          y: [0, 60, 0],
-          scale: [1, 0.8, 1],
-        }}
-        transition={{
-          duration: 15,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      ></motion.div>
+      {!mobileLite && (
+        <motion.div 
+          className="absolute bottom-20 right-10 w-80 h-80 bg-gradient-to-r from-cyan-400/15 to-purple-500/15 rounded-full blur-3xl"
+          animate={{
+            x: [0, -80, 0],
+            y: [0, 60, 0],
+            scale: [1, 0.8, 1],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        ></motion.div>
+      )}
       
-      {/* Animated Particles */}
-      {[...Array(30)].map((_, i) => (
+      {/* Animated Particles (disabled on mobileLite) */}
+      {!mobileLite && ([...Array(30)].map((_, i) => (
         <motion.div
           key={i}
           className="absolute w-1 h-1 bg-purple-400/60 rounded-full"
@@ -152,9 +160,9 @@ const HeroSection = () => {
             ease: "easeInOut"
           }}
         />
-      ))}
+      )))}
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-6 safe-area-x relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center min-h-screen">
           {/* Left Content - Minimal and Focused */}
           <motion.div
@@ -190,30 +198,34 @@ const HeroSection = () => {
               animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 1, delay: 0.5 }}
             >
-              <h1 className="text-5xl lg:text-7xl font-bold text-white leading-tight">
-                <motion.span
-                  className="block bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent"
-                  animate={{
-                    backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "linear"
-                  }}
-                  style={{
-                    backgroundSize: '200% 200%',
-                  }}
-                >
-                  μ1000
-                </motion.span>
-                <span className="block text-white/90 text-3xl lg:text-4xl font-light mt-2">
+              <h1 className={`${(isMobile ? (mobileLite ? 'text-3xl' : 'text-4xl') : 'text-5xl lg:text-7xl')} leading-tight font-bold text-white`}>
+                {mobileLite ? (
+                  <span className="block text-white">μ1000</span>
+                ) : (
+                  <motion.span
+                    className="block bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent"
+                    animate={{
+                      backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }}
+                    style={{
+                      backgroundSize: '200% 200%',
+                    }}
+                  >
+                    μ1000
+                  </motion.span>
+                )}
+                <span className={`block text-white/90 ${isMobile ? 'text-2xl leading-snug' : 'text-3xl lg:text-4xl'} font-light mt-2`}>
                   Home Energy Storage System
                 </span>
               </h1>
               
               <motion.p
-                className="text-xl text-gray-300 max-w-lg leading-relaxed"
+                className={`${isMobile ? 'text-base leading-snug' : 'text-xl leading-relaxed'} text-gray-300 max-w-lg typo-lead-tight`}
                 initial={{ opacity: 0 }}
                 animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
                 transition={{ duration: 1, delay: 0.8 }}
@@ -221,7 +233,8 @@ const HeroSection = () => {
                 Advanced lithium-ion technology with smart BMS for reliable home energy storage and backup power solutions
               </motion.p>
 
-              {/* Key Features Pills */}
+              {/* Key Features Pills (disabled on mobileLite) */}
+              {!mobileLite && (
               <motion.div
                 className="flex flex-wrap gap-3 mt-6"
                 initial={{ opacity: 0, y: 20 }}
@@ -241,6 +254,7 @@ const HeroSection = () => {
                   </motion.span>
                 ))}
               </motion.div>
+              )}
             </motion.div>
 
             {/* Action Buttons */}
@@ -264,9 +278,10 @@ const HeroSection = () => {
                     <span>Explore Zuice Solutions</span>
                     <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                   </span>
-                </motion.button>
+              </motion.button>
               </Link>
               
+              {!isMobile && (
               <motion.button
                 className="group px-8 py-4 border-2 border-white/20 text-white font-semibold rounded-full hover:bg-white/10 transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
@@ -278,6 +293,7 @@ const HeroSection = () => {
                   <span>Watch Demo</span>
                 </span>
               </motion.button>
+              )}
             </motion.div>
           </motion.div>
 
@@ -301,7 +317,7 @@ const HeroSection = () => {
                 ease: "easeInOut"
               }}
               whileHover={{ scale: 1.05 }}
-              onClick={() => setShowVideoModal(true)}
+              onClick={() => !isMobile && setShowVideoModal(true)}
             >
               <motion.img
                 src="/images/solar-banner-removebg-preview.png"
@@ -341,20 +357,22 @@ const HeroSection = () => {
               />
 
               {/* Click to Play Indicator */}
-              <motion.div
-                className="absolute inset-0 flex items-center justify-center"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 1, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                <div className="bg-white/20 backdrop-blur-sm rounded-full p-4">
-                  <Play className="h-8 w-8 text-white" />
-                </div>
-              </motion.div>
+              {!isMobile && (
+                <motion.div
+                  className="absolute inset-0 flex items-center justify-center"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: [0, 1, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <div className="bg-white/20 backdrop-blur-sm rounded-full p-4">
+                    <Play className="h-8 w-8 text-white" />
+                  </div>
+                </motion.div>
+              )}
             </motion.div>
 
-            {/* Floating Feature Icons */}
-            {[
+            {/* Floating Feature Icons (disabled on mobileLite) */}
+            {!mobileLite && ([
               { icon: Zap, position: 'top-10 left-10', delay: 0, label: 'Fast Charging' },
               { icon: Shield, position: 'top-20 right-10', delay: 0.5, label: 'BMS Protection' },
               { icon: Battery, position: 'bottom-20 left-20', delay: 1, label: 'Long Cycle Life' },
@@ -384,13 +402,13 @@ const HeroSection = () => {
                   </div>
                 </div>
               </motion.div>
-            ))}
+            )))}
           </motion.div>
         </div>
       </div>
 
       {/* Video Modal */}
-      {showVideoModal && (
+      {!isMobile && showVideoModal && (
         <motion.div
           className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           initial={{ opacity: 0 }}

@@ -242,7 +242,7 @@ const FeaturesSection = () => {
   );
 
   return (
-    <section className="features-section" ref={sectionRef}>
+    <section className="features-section section-padding mobile-section-tight" ref={sectionRef}>
       {/* 3D Background Elements */}
       <div className="bg-3d">
         <div className="floating-orb orb-1"></div>
@@ -257,8 +257,8 @@ const FeaturesSection = () => {
         transition={{ duration: 0.8 }}
         className="section-header"
       >
-        <h2 className="text-foreground">Revolutionary Technology Solutions</h2>
-        <p className="text-muted-foreground">Experience the future of technology innovation with our cutting-edge enterprise solutions</p>
+        <h2 className="text-foreground typo-h2-tight">Revolutionary Technology Solutions</h2>
+        <p className="text-muted-foreground typo-lead-tight">Experience the future of technology innovation with our cutting-edge enterprise solutions</p>
       </motion.div>
 
       {/* 3D Featured Product Showcase */}

@@ -2,6 +2,10 @@ import React from 'react'
 import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from './hooks/useTheme.jsx'
 import Navbar from './components/Navbar'
+import FloatingNavbar from './components/FloatingNavbar'
+import MobileBottomBar from './components/MobileBottomBar'
+import MobileQuickActions from './components/MobileQuickActions'
+import './mobile/mobile.css'
 import CartDrawer from './components/Cart/CartDrawer'
 import ChatBot from './components/ChatBot/ChatBot'
 import HomePage from './pages/HomePage'
@@ -20,14 +24,18 @@ import PrivacyPage from './pages/PrivacyPage'
 import TermsPage from './pages/TermsPage'
 import CookiesPage from './pages/CookiesPage'
 import AccessibilityPage from './pages/AccessibilityPage'
+import { useResponsive } from './hooks/useResponsive'
 
 function App() {
+  const { isPhone } = useResponsive()
+
   return (
     <ThemeProvider>
       <Router>
-        <div className="min-h-screen bg-background text-foreground">
-          <Navbar />
-          <main>
+        <div className={`min-h-screen bg-background text-foreground ${isPhone ? 'mobile-root' : ''}`}>
+          {/* Desktop/tablet retains the full Navbar; phone (≤640px) uses bottom bar below */}
+          {!isPhone && <Navbar />}
+          <main style={{ paddingBottom: isPhone ? 'calc(env(safe-area-inset-bottom) + var(--bottom-nav-h) + var(--quick-actions-h))' : undefined }}>
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/products" element={<ProductsPage />} />
@@ -49,6 +57,12 @@ function App() {
           </main>
           <CartDrawer />
           <ChatBot />
+          {isPhone && (
+            <>
+              <MobileQuickActions />
+              <MobileBottomBar />
+            </>
+          )}
         </div>
       </Router>
     </ThemeProvider>

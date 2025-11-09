@@ -62,7 +62,7 @@ const Slide = ({
     <div className="[perspective:1200px] [transform-style:preserve-3d]">
       <li
         ref={slideRef}
-        className="flex flex-1 flex-col items-center justify-center relative text-center text-white opacity-100 transition-all duration-300 ease-in-out w-[70vmin] h-[70vmin] mx-[4vmin] z-10 "
+        className="flex flex-1 flex-col items-center justify-center relative text-center text-white opacity-100 transition-all duration-300 ease-in-out mx-[3vmin] sm:mx-[4vmin] z-10"
         onClick={() => handleSlideClick(index)}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -73,6 +73,8 @@ const Slide = ({
               : "scale(1) rotateX(0deg)",
           transition: "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
           transformOrigin: "bottom",
+          width: "var(--carousel-size)",
+          height: "var(--carousel-size)",
         }}
       >
         <div
@@ -85,7 +87,7 @@ const Slide = ({
           }}
         >
           <img
-            className="absolute inset-0 w-[120%] h-[120%] object-cover opacity-100 transition-opacity duration-600 ease-in-out"
+            className="absolute inset-0 w-[110%] h-[110%] object-cover opacity-100 transition-opacity duration-600 ease-in-out"
             style={{
               opacity: current === index ? 1 : 0.5,
             }}
@@ -137,6 +139,7 @@ const CarouselControl = ({
       }`}
       title={title}
       onClick={handleClick}
+      aria-label={title}
     >
       <IconArrowNarrowRight className="text-neutral-600 dark:text-neutral-200" />
     </button>
@@ -148,6 +151,9 @@ export function Carousel({
 }) {
   const [current, setCurrent] = useState(0);
   const navigate = useNavigate();
+  const containerRef = useRef(null);
+  const touchStartXRef = useRef(null);
+  const touchEndXRef = useRef(null);
 
   const handlePreviousClick = () => {
     const previous = current - 1;
@@ -167,13 +173,61 @@ export function Carousel({
     const to = slide?.to || "/products";
     navigate(to);
   };
+
+  // Keyboard navigation for accessibility
+  const handleKeyDown = (e) => {
+    if (e.key === "ArrowLeft") {
+      handlePreviousClick();
+    } else if (e.key === "ArrowRight") {
+      handleNextClick();
+    }
+  };
+
+  // Touch navigation for mobile devices
+  const onTouchStart = (e) => {
+    touchStartXRef.current = e.touches[0].clientX;
+  };
+  const onTouchMove = (e) => {
+    touchEndXRef.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = () => {
+    const start = touchStartXRef.current;
+    const end = touchEndXRef.current;
+    if (start != null && end != null) {
+      const delta = end - start;
+      const threshold = 30; // minimal swipe distance
+      if (delta > threshold) {
+        handlePreviousClick();
+      } else if (delta < -threshold) {
+        handleNextClick();
+      }
+    }
+    touchStartXRef.current = null;
+    touchEndXRef.current = null;
+  };
   return (
     <div
-      className="relative w-[70vmin] h-[70vmin] mx-auto"
+      ref={containerRef}
+      className="relative mx-auto w-full max-w-[90vw] md:max-w-[70vmin]"
       aria-labelledby={`carousel-heading-${id}`}
+      role="region"
+      aria-roledescription="carousel"
+      aria-live="polite"
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+      style={{
+        // unified size for container and slides
+        "--carousel-size": "min(90vw, 70vmin)",
+        width: "var(--carousel-size)",
+        height: "var(--carousel-size)",
+        overflow: "hidden",
+      }}
     >
       <ul
-        className="absolute flex mx-[-4vmin] transition-transform duration-1000 ease-in-out"
+        className="absolute inset-0 flex mx-[-3vmin] sm:mx-[-4vmin] transition-transform duration-1000 ease-in-out"
         style={{
           transform: `translateX(-${current * (100 / slides.length)}%)`,
         }}

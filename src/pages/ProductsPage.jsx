@@ -20,6 +20,7 @@ import { essProducts } from '../data/essProducts';
 import { useCartStore } from '../store/useStore';
 import Navbar from '../components/Navbar';
 import OptimizedImage from '../components/ui/OptimizedImage';
+import { useResponsive } from '../hooks/useResponsive';
 
 const ProductsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -30,6 +31,7 @@ const ProductsPage = () => {
   const [showFilters, setShowFilters] = useState(false);
   
   const { addItem, items } = useCartStore();
+  const { isMobile, isTablet, mobileLite } = useResponsive();
 
   // Categories with counts
   const categories = useMemo(() => {
@@ -39,10 +41,10 @@ const ProductsPage = () => {
     }, {});
 
     return [
-      { id: 'all', name: 'All Products', count: essProducts.length },
-      { id: 'home-ess', name: 'Home ESS', count: categoryCount['home-ess'] || 0 },
-      { id: 'commercial', name: 'Commercial ESS', count: categoryCount['commercial'] || 0 },
-      { id: 'telecom', name: 'Telecom ESS', count: categoryCount['telecom'] || 0 }
+      { id: 'all', name: 'All Products', shortName: 'All', count: essProducts.length },
+      { id: 'home-ess', name: 'Home ESS', shortName: 'Home', count: categoryCount['home-ess'] || 0 },
+      { id: 'commercial', name: 'Commercial ESS', shortName: 'Comm', count: categoryCount['commercial'] || 0 },
+      { id: 'telecom', name: 'Telecom ESS', shortName: 'Telecom', count: categoryCount['telecom'] || 0 }
     ];
   }, []);
 
@@ -90,11 +92,11 @@ const ProductsPage = () => {
   const ProductCard = ({ product }) => (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 overflow-hidden group border dark:border-gray-700">
       {/* Product Image */}
-      <div className="relative h-64 sm:h-72 lg:h-80 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600">
+      <div className={`relative ${isMobile ? 'h-40' : 'h-64 sm:h-72 lg:h-80'} overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600`}>
         <OptimizedImage
           src={product.image}
           alt={product.name}
-          className="group-hover:scale-105 transition-transform duration-300 p-4"
+          className="group-hover:scale-105 transition-transform duration-300 p-3"
           containerClassName="h-full"
           aspectRatio="aspect-auto"
           objectFit="object-contain"
@@ -115,7 +117,7 @@ const ProductsPage = () => {
         <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center z-10">
           <Link
             to={`/products/${product.id}`}
-            className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-6 py-2 rounded-full font-semibold opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 border dark:border-gray-600"
+            className="tap-target bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-6 py-2 rounded-full font-semibold opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700 border dark:border-gray-600"
           >
             View Details
           </Link>
@@ -123,7 +125,7 @@ const ProductsPage = () => {
       </div>
 
       {/* Product Info */}
-      <div className="p-6">
+      <div className={isMobile ? 'p-3' : 'p-6'}>
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm text-blue-600 dark:text-blue-400 font-medium capitalize">
             {product.category.replace('-', ' ')}
@@ -135,11 +137,11 @@ const ProductsPage = () => {
           </div>
         </div>
 
-        <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-2 line-clamp-2">
+        <h3 className={`${isMobile ? 'text-sm' : 'text-lg'} font-semibold text-gray-800 dark:text-gray-100 mb-2 line-clamp-2`}>
           {product.name}
         </h3>
 
-        <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
+        <p className={`text-gray-600 dark:text-gray-300 ${isMobile ? 'text-xs' : 'text-sm'} mb-4 line-clamp-2`}>
           {product.description}
         </p>
 
@@ -158,7 +160,7 @@ const ProductsPage = () => {
         {/* Price */}
         <div className="flex items-center justify-between mb-4">
           <div>
-            <div className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+            <div className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-gray-800 dark:text-gray-100`}>
               {formatPrice(product.price)}
             </div>
             {product.originalPrice && (
@@ -174,7 +176,7 @@ const ProductsPage = () => {
             <button
               onClick={() => addItem(product)}
               disabled={isInCart(product.id)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-semibold transition-all ${
+              className={`tap-target flex items-center space-x-2 ${isMobile ? 'px-3 py-2' : 'px-4 py-2'} rounded-lg font-semibold transition-all ${
                 isInCart(product.id)
                   ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 cursor-not-allowed'
                   : 'bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-600'
@@ -220,7 +222,7 @@ const ProductsPage = () => {
         </div>
 
         {/* Product Info */}
-        <div className="flex-1 p-6">
+        <div className={`flex-1 ${isMobile ? 'p-4' : 'p-6'}`}>
           <div className="flex justify-between items-start mb-2">
             <div>
               <span className="text-sm text-blue-600 dark:text-blue-400 font-medium capitalize">
@@ -266,14 +268,14 @@ const ProductsPage = () => {
             <div className="flex items-center space-x-3">
               <Link
                 to={`/products/${product.id}`}
-                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold"
+                className="tap-target text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold"
               >
                 View Details
               </Link>
               <button
                 onClick={() => addItem(product)}
                 disabled={isInCart(product.id)}
-                className={`flex items-center space-x-2 px-6 py-2 rounded-lg font-semibold transition-all ${
+                className={`tap-target flex items-center space-x-2 px-6 py-2 rounded-lg font-semibold transition-all ${
                   isInCart(product.id)
                     ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 cursor-not-allowed'
                     : 'bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-600'
@@ -294,15 +296,16 @@ const ProductsPage = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-purple-800 dark:from-gray-800 dark:via-gray-900 dark:to-black text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className={`section-padding mobile-section-tight ${mobileLite ? 'bg-blue-900 dark:bg-gray-900' : 'bg-gradient-to-r from-blue-900 via-blue-800 to-purple-800 dark:from-gray-800 dark:via-gray-900 dark:to-black'} text-white`}>
+        <div className="safe-area-x max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 typo-h2-tight">
               ESS Product Range
             </h1>
-            <p className="text-xl text-blue-100 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl text-blue-100 dark:text-gray-300 mb-8 max-w-3xl mx-auto typo-lead-tight">
               Discover our comprehensive range of Energy Storage Systems designed for home, commercial, and telecom applications
             </p>
+            {!mobileLite && (
             <div className="flex flex-wrap justify-center gap-6 text-sm">
               <div className="flex items-center space-x-2">
                 <Shield className="w-5 h-5" />
@@ -321,71 +324,222 @@ const ProductsPage = () => {
                 <span>High Efficiency</span>
               </div>
             </div>
+            )}
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="safe-area-x max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Search and Filters */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8 border dark:border-gray-700">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-            {/* Search */}
-            <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-              />
+        <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-md ${isMobile ? 'p-4 mb-6' : 'p-6 mb-8'} border dark:border-gray-700`}>
+          {isMobile ? (
+            <div className="flex flex-col gap-3">
+              {/* Search */}
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+                />
+              </div>
+
+              {/* Category chips (compact) */}
+              <div className="flex gap-2 overflow-x-auto py-1">
+                {categories.map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`px-2 py-1 rounded-full border text-xs whitespace-nowrap transition-colors ${
+                      selectedCategory === category.id
+                        ? 'bg-blue-600 text-white border-blue-600'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600'
+                    }`}
+                    aria-pressed={selectedCategory === category.id}
+                  >
+                    {category.shortName}
+                  </button>
+                ))}
+              </div>
+
+              {/* Filters toggle */}
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setShowFilters((v) => !v)}
+                  className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+                >
+                  <Filter className="w-4 h-4" />
+                  Filters
+                </button>
+              </div>
+
+              {/* Collapsible panel */}
+              {showFilters && (
+                <div className="space-y-3 pt-2 border-t border-gray-200 dark:border-gray-700">
+                  <div>
+                    <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Sort</label>
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                    >
+                      <option value="name">Sort by Name</option>
+                      <option value="price-low">Price: Low to High</option>
+                      <option value="price-high">Price: High to Low</option>
+                      <option value="rating">Highest Rated</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">View</label>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setViewMode('grid')}
+                        className={`flex items-center gap-1 px-3 py-2 rounded-lg border text-sm ${viewMode === 'grid' ? 'bg-blue-600 text-white border-blue-600' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600'}`}
+                      >
+                        <Grid className="w-4 h-4" /> Grid
+                      </button>
+                      <button
+                        onClick={() => setViewMode('list')}
+                        className={`flex items-center gap-1 px-3 py-2 rounded-lg border text-sm ${viewMode === 'list' ? 'bg-blue-600 text-white border-blue-600' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600'}`}
+                      >
+                        <List className="w-4 h-4" /> List
+                      </button>
+                    </div>
+                  </div>
+                  {/* Price range (compact slider) */}
+                  <div>
+                    <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Price range</label>
+                    <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-300 mb-1">
+                      <span>₹{priceRange[0].toLocaleString()}</span>
+                      <span>₹{priceRange[1].toLocaleString()}</span>
+                    </div>
+                    <div className="space-y-2">
+                      <input
+                        type="range"
+                        min={0}
+                        max={3000000}
+                        step={50000}
+                        value={priceRange[0]}
+                        onChange={(e) => {
+                          const nextMin = Math.min(Number(e.target.value), priceRange[1]);
+                          setPriceRange([nextMin, priceRange[1]]);
+                        }}
+                        className="w-full"
+                        aria-label="Minimum price"
+                      />
+                      <input
+                        type="range"
+                        min={0}
+                        max={3000000}
+                        step={50000}
+                        value={priceRange[1]}
+                        onChange={(e) => {
+                          const nextMax = Math.max(Number(e.target.value), priceRange[0]);
+                          setPriceRange([priceRange[0], nextMax]);
+                        }}
+                        className="w-full"
+                        aria-label="Maximum price"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
+          ) : (
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+              {/* Search */}
+              <div className="relative flex-1 max-w-md">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+                />
+              </div>
 
-            {/* Category Filter */}
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-            >
-              {categories.map(category => (
-                <option key={category.id} value={category.id}>
-                  {category.name} ({category.count})
-                </option>
-              ))}
-            </select>
-
-            {/* Sort */}
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-            >
-              <option value="name">Sort by Name</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="rating">Highest Rated</option>
-            </select>
-
-            {/* View Mode */}
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={() => setViewMode('grid')}
-                className={`p-2 rounded-lg ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'}`}
+              {/* Category Filter */}
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               >
-                <Grid className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => setViewMode('list')}
-                className={`p-2 rounded-lg ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'}`}
+                {categories.map(category => (
+                  <option key={category.id} value={category.id}>
+                    {category.name} ({category.count})
+                  </option>
+                ))}
+              </select>
+
+              {/* Sort */}
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               >
-                <List className="w-5 h-5" />
-              </button>
+                <option value="name">Sort by Name</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Highest Rated</option>
+              </select>
+
+              {/* Price range (desktop richer selector) */}
+              <div className="flex items-center gap-4">
+                <div className="text-sm text-gray-600 dark:text-gray-300">
+                  ₹{priceRange[0].toLocaleString()} — ₹{priceRange[1].toLocaleString()}
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="range"
+                    min={0}
+                    max={3000000}
+                    step={50000}
+                    value={priceRange[0]}
+                    onChange={(e) => {
+                      const nextMin = Math.min(Number(e.target.value), priceRange[1]);
+                      setPriceRange([nextMin, priceRange[1]]);
+                    }}
+                    aria-label="Minimum price"
+                  />
+                  <input
+                    type="range"
+                    min={0}
+                    max={3000000}
+                    step={50000}
+                    value={priceRange[1]}
+                    onChange={(e) => {
+                      const nextMax = Math.max(Number(e.target.value), priceRange[0]);
+                      setPriceRange([priceRange[0], nextMax]);
+                    }}
+                    aria-label="Maximum price"
+                  />
+                </div>
+              </div>
+
+              {/* View Mode */}
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => setViewMode('grid')}
+                  className={`p-2 rounded-lg ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'}`}
+                >
+                  <Grid className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => setViewMode('list')}
+                  className={`p-2 rounded-lg ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'}`}
+                >
+                  <List className="w-5 h-5" />
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Results Summary */}
-        <div className="flex items-center justify-between mb-6">
+        <div className={`flex items-center justify-between ${isMobile ? 'mb-4' : 'mb-6'}`}>
           <div className="text-gray-600 dark:text-gray-300">
             Showing {filteredProducts.length} of {essProducts.length} products
           </div>
@@ -396,7 +550,7 @@ const ProductsPage = () => {
 
         {/* Products Grid/List */}
         {filteredProducts.length === 0 ? (
-          <div className="text-center py-16">
+          <div className={`text-center ${isMobile ? 'py-12' : 'py-16'}`}>
             <div className="text-gray-400 dark:text-gray-500 mb-4">
               <Search className="w-16 h-16 mx-auto" />
             </div>
@@ -406,8 +560,8 @@ const ProductsPage = () => {
         ) : (
           <div className={
             viewMode === 'grid'
-              ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
-              : 'space-y-6'
+              ? `grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ${isMobile ? 'gap-3' : 'gap-6'}`
+              : `${isMobile ? 'space-y-4' : 'space-y-6'}`
           }>
             {filteredProducts.map(product => (
               viewMode === 'grid' 

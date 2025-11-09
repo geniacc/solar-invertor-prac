@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { 
@@ -28,7 +28,9 @@ import InteractivePricingCalculator from '../components/InteractivePricingCalcul
 import SolarPanelShowcase from '../components/SolarPanelShowcase'
 import AnimatedStats from '../components/AnimatedStats'
 import VoiceProductAssistant from '../components/VoiceProductAssistant'
-import TestimonialsSection from '../components/TestimonialsSection'
+// Lazy-load testimonials for consistent code-splitting across pages
+const TestimonialsSectionLazy = lazy(() => import('../components/TestimonialsSection'))
+import { useResponsive } from '../hooks/useResponsive'
 
 const features = [
   {
@@ -100,6 +102,7 @@ const benefits = [
 ]
 
 export default function HomePage() {
+  const { isMobile, isTablet, mobileLite } = useResponsive()
   return (
     <div className="min-h-screen">
       {/* Hero Section - Using enhanced version */}
@@ -109,41 +112,44 @@ export default function HomePage() {
 
       {/* Removed: Premium Technology Solutions section */}
 
-      {/* Features Section */}
-      <section className="section-padding bg-muted/30">
-        <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center space-y-4 mb-16"
-          >
-            <h2 className="text-3xl lg:text-5xl font-bold font-display">
-              Why Choose Our Zuice Solutions?
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Experience the perfect blend of innovation, reliability, and performance 
-              with our industry-leading Energy Storage System solutions.
-            </p>
-          </motion.div>
+      {/* Features Section (hidden on mobile) */}
+      {!isMobile && (
+        <section className="section-padding bg-muted/30">
+          <div className="container-custom safe-area-x">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className={`text-center space-y-4 ${isMobile ? 'mb-8' : 'mb-16'}`}
+            >
+              <h2 className="text-3xl lg:text-5xl font-bold font-display">
+                Why Choose Our Zuice Solutions?
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                Experience the perfect blend of innovation, reliability, and performance 
+                with our industry-leading Energy Storage System solutions.
+              </p>
+            </motion.div>
 
-          <ThreeDGrid />
-        </div>
-      </section>
+            {/* Mobile-lite: hide heavy 3D grid on touch mobile */}
+            {!mobileLite && <ThreeDGrid />}
+          </div>
+        </section>
+      )}
 
       {/* Interactive Pricing Calculator */}
-      <section className="section-padding">
-        <div className="container-custom">
+      <section className="section-padding mobile-section-tight">
+        <div className="container-custom safe-area-x">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center space-y-4 mb-16"
+            className={`text-center space-y-4 ${isMobile ? 'mb-8' : 'mb-16'}`}
           >
-            <h2 className="text-3xl lg:text-5xl font-bold font-display">
+            <h2 className="text-3xl lg:text-5xl font-bold font-display typo-h2-tight">
               Calculate Your Technology Investment
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto typo-lead-tight">
               Get an instant estimate for your enterprise system with our interactive pricing calculator.
             </p>
           </motion.div>
@@ -151,22 +157,22 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Animated Stats Section */}
-      <AnimatedStats />
+      {/* Mobile-lite: hide animated stats on touch mobile */}
+      {!mobileLite && <AnimatedStats />}
 
       {/* Our Technology Implementations - Carousel Section */}
-      <section className="section-padding bg-muted/30">
-        <div className="container-custom">
+      <section className="section-padding mobile-section-tight bg-muted/30">
+        <div className="container-custom safe-area-x">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center space-y-4 mb-16"
+            className={`text-center space-y-4 ${isMobile ? 'mb-8' : 'mb-16'}`}
           >
-            <h2 className="text-3xl lg:text-5xl font-bold font-display">
+            <h2 className="text-3xl lg:text-5xl font-bold font-display typo-h2-tight">
               Our Technology Implementations
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto typo-lead-tight">
               See our premium technology solutions in action across different industries and environments.
             </p>
           </motion.div>
@@ -176,19 +182,19 @@ export default function HomePage() {
               {
                 title: 'Premium Solar Solutions',
                 button: 'Discover',
-                src: '/images/solar-banner.jpg',
+                src: '/images/hero section.jpg',
                 to: '/products',
               },
               {
                 title: 'Home ESS 12.8V 100AH',
                 button: 'View Details',
-                src: '/images/12.8v 100AH background.jpg',
+                src: '/images/12.8v 100AH.png',
                 to: '/products/home-ess-12v',
               },
               {
                 title: 'Commercial ESS 25.6V 100AH',
                 button: 'Explore Product',
-                src: '/images/25.6v 100AH background.png',
+                src: '/images/25.6v 100AH.png',
                 to: '/products/home-ess-25v',
               },
               {
@@ -202,28 +208,58 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Enhanced Testimonials Section */}
-      <section className="section-padding bg-gradient-to-br from-primary/5 to-purple-500/5">
-        <div className="container-custom">
+      {/* Mobile-lite: hide testimonials on touch mobile */}
+      {!mobileLite && (
+      <section className="section-padding mobile-section-tight bg-gradient-to-br from-primary/5 to-purple-500/5">
+        <div className="container-custom safe-area-x">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center space-y-4 mb-16"
+            className={`text-center space-y-4 ${isMobile ? 'mb-8' : 'mb-16'}`}
           >
             <div className="inline-flex items-center space-x-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
               <Star className="h-4 w-4" />
               <span>Customer Success Stories</span>
             </div>
-            <h2 className="text-3xl lg:text-5xl font-bold font-display">
+            <h2 className="text-3xl lg:text-5xl font-bold font-display typo-h2-tight">
               What Our Customers Say
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto typo-lead-tight">
               Join thousands of satisfied customers who have transformed their energy future with our Zuice solutions.
             </p>
           </motion.div>
 
-          <TestimonialsSection />
+          <Suspense fallback={<div className="min-h-[200px]" />}>
+            <TestimonialsSectionLazy
+              testimonials={[
+                {
+                  rating: 5,
+                  comment: 'Our ESS system has exceeded expectations. Energy efficiency improved by 80% with reliable backup power!',
+                  name: 'Sarah Johnson',
+                  location: 'TechCorp Solutions',
+                  service: 'ESS Installation',
+                  avatar: '/images/cutomer 1.jpg',
+                },
+                {
+                  rating: 5,
+                  comment: 'The ESS technology is reliable, efficient, and comes with excellent customer support. Highly recommend!',
+                  name: 'Mike Chen',
+                  location: 'Green Energy Co.',
+                  service: 'Commercial ESS',
+                  avatar: '/images/customer 2.jpg',
+                },
+                {
+                  rating: 5,
+                  comment: 'Finally, an ESS company that truly delivers on innovation and quality with real energy storage solutions.',
+                  name: 'Emma Davis',
+                  location: 'Sustainable Systems',
+                  service: 'Home ESS',
+                  avatar: '/images/customer 3.jpg',
+                },
+              ]}
+            />
+          </Suspense>
 
           {/* Trust Indicators */}
           <motion.div
@@ -232,7 +268,7 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center"
           >
-            <div className="inline-flex items-center space-x-8 bg-white/50 backdrop-blur-sm rounded-full px-8 py-4 border">
+            <div className={`${isMobile ? 'flex flex-wrap items-center justify-center gap-4 px-4 py-2 text-xs' : 'inline-flex items-center space-x-8 px-8 py-4'} bg-white/50 backdrop-blur-sm rounded-full border`}>
               <div className="flex items-center space-x-2">
                 <CheckCircle className="h-5 w-5 text-green-500" />
                 <span className="text-sm font-medium">5000+ Happy Customers</span>
@@ -249,11 +285,12 @@ export default function HomePage() {
           </motion.div>
         </div>
       </section>
+      )}
 
       {/* Benefits Section */}
-      <section className="section-padding">
-        <div className="container-custom">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <section className="section-padding mobile-section-tight">
+        <div className="container-custom safe-area-x">
+          <div className={`grid lg:grid-cols-2 items-center ${isMobile ? 'gap-6' : 'gap-12'}`}>
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -261,10 +298,10 @@ export default function HomePage() {
               className="space-y-6"
             >
               <div className="space-y-4">
-                <h2 className="text-3xl lg:text-4xl font-bold font-display">
+                <h2 className="text-3xl lg:text-4xl font-bold font-display typo-h2-tight">
                   Complete ESS Solution Package
                 </h2>
-                <p className="text-xl text-muted-foreground">
+                <p className="text-xl text-muted-foreground typo-lead-tight">
                   Everything you need for a seamless transition to clean energy storage, backed by our comprehensive support.
                 </p>
               </div>
@@ -287,25 +324,27 @@ export default function HomePage() {
 
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <Link to="/contact">
-                  <Button size="lg" className="group">
+                  <Button size="lg" className="group tap-target">
                     Get Free Consultation
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
-                <Button variant="outline" size="lg" className="group">
+                <Button variant="outline" size="lg" className="group tap-target">
                   <Phone className="mr-2 h-4 w-4" />
                   Call Now: (555) 123-4567
                 </Button>
               </div>
             </motion.div>
 
+            {/* Mobile-lite: hide decorative savings card on touch mobile */}
+            {!mobileLite && (
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="aspect-square bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-3xl p-8 flex items-center justify-center">
+              <div className={`aspect-square bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-3xl ${isMobile ? 'p-6' : 'p-8'} flex items-center justify-center`}>
                 <div className="text-center space-y-6">
                   <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                     <Sun className="h-12 w-12 text-primary" />
@@ -323,12 +362,13 @@ export default function HomePage() {
                 </div>
               </div>
             </motion.div>
+            )}
           </div>
         </div>
       </section>
 
       {/* Enhanced CTA Section */}
-      <section className="section-padding bg-gradient-to-r from-primary to-primary-600 text-white relative overflow-hidden">
+      <section className="section-padding mobile-section-tight bg-gradient-to-r from-primary to-primary-600 text-white relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -336,7 +376,7 @@ export default function HomePage() {
           }} />
         </div>
 
-        <div className="container-custom text-center space-y-8 relative z-10">
+        <div className="container-custom safe-area-x text-center space-y-8 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -347,10 +387,10 @@ export default function HomePage() {
               <Zap className="h-4 w-4" />
               <span>Limited Time Offer</span>
             </div>
-            <h2 className="text-3xl lg:text-5xl font-bold font-display">
+            <h2 className="text-3xl lg:text-5xl font-bold font-display typo-h2-tight">
               Ready to Transform Your Energy Future?
             </h2>
-            <p className="text-xl opacity-90 max-w-3xl mx-auto">
+            <p className="text-xl opacity-90 max-w-3xl mx-auto typo-lead-tight">
               Start your journey to energy independence today. Get a free consultation 
               and discover how much you can save with our Zuice solutions.
             </p>
@@ -364,13 +404,13 @@ export default function HomePage() {
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
             <Link to="/products">
-              <Button size="xl" variant="secondary" className="group">
+              <Button size={isMobile ? 'lg' : 'xl'} variant="secondary" className="group tap-target">
                 Browse Zuice Solutions
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
             <Link to="/contact">
-              <Button size="xl" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
+              <Button size={isMobile ? 'lg' : 'xl'} variant="outline" className="tap-target border-white text-white hover:bg-white hover:text-primary">
                 <Mail className="mr-2 h-5 w-5" />
                 Get Free Quote
               </Button>
@@ -394,8 +434,8 @@ export default function HomePage() {
       {/* Footer */}
       <Footer />
       
-      {/* Voice Product Assistant */}
-      <VoiceProductAssistant />
+      {/* Mobile-lite: hide voice assistant on touch mobile to keep UI clean */}
+      {!mobileLite && <VoiceProductAssistant />}
 
     </div>
   )

@@ -1279,7 +1279,7 @@ const VoiceProductAssistant = () => {
       <motion.div
         initial={{ x: 100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
-        className={`fixed ${isMobile ? 'bottom-2 right-2' : 'bottom-4 right-4 sm:bottom-6 sm:right-6'} z-[100] ${isMobile ? 'max-w-[calc(100vw-1rem)]' : 'max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-3rem)]'}`}
+        className={`fixed ${isMobile ? 'right-2 stacked-mobile-ui' : 'bottom-4 right-4 sm:bottom-6 sm:right-6'} z-[100] ${isMobile ? 'max-w-[calc(100vw-1rem)]' : 'max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-3rem)]'}`}
       >
         <motion.div
           className={`relative bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white rounded-2xl shadow-2xl backdrop-blur-sm border border-white/20 transition-all duration-500 ${
@@ -1495,7 +1495,7 @@ const VoiceProductAssistant = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed bottom-16 right-4 sm:bottom-20 sm:right-6 z-[99]"
+            className={`fixed ${isMobile ? 'right-2 stacked-mobile-ui--modal' : 'bottom-16 right-4 sm:bottom-20 sm:right-6'} z-[99]`}
             initial={{ opacity: 0, scale: 0.8, x: 50 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             exit={{ opacity: 0, scale: 0.8, x: 50 }}

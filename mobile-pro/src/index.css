@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --safe-bottom: env(safe-area-inset-bottom);
+}
+
+html, body, #root { height: 100%; }
+body { @apply bg-bg text-text font-sans antialiased; }
+
+/* Typography */
+h1 { @apply text-2xl font-bold; }
+h2 { @apply text-xl font-semibold; }
+h3 { @apply text-lg font-semibold; }
+p { @apply text-base; }
+small { @apply text-sm text-muted; }
+
+.app-shell { @apply min-h-full flex flex-col; }
+.content { @apply flex-1 px-4 pt-4 pb-[calc(88px+var(--safe-bottom))]; }
+
+.card { @apply rounded-2xl border border-white/10 bg-card backdrop-blur-sm shadow-soft; }
+.pill { @apply inline-flex items-center gap-2 rounded-full px-3 py-1.5 bg-chip text-sm hover:bg-white/15 transition-colors border border-white/10; }
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Tab bar sizes */
+.tabbar { padding-bottom: calc(var(--safe-bottom)); }
+
+/* Utility accents */
+.btn-primary { @apply pill bg-primary/20 hover:bg-primary/30 ring-1 ring-primary/15; }
+.btn-accent { @apply pill bg-accent/20 hover:bg-accent/30 ring-1 ring-accent/15; }
+
+/* Subtle heading style for secondary titles */
+.heading-subtle { @apply text-sm text-muted tracking-wide uppercase; }
+
+/* Compact chip used in filter bars */
+.chip { @apply pill px-2.5 py-1 bg-chip hover:bg-white/10; }
+
+/* Soft hover scale utility */
+.hover-soft { @apply transition-transform; }
+.hover-soft:hover { transform: translateY(-1px) scale(1.01); }

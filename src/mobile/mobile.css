@@ -1,0 +1,117 @@
+/* Scoped mobile styles: only apply within .mobile-root container */
+
+.mobile-root {
+  /* Default text sizing tuned for readability on small screens */
+  font-size: 16px;
+  line-height: 1.5;
+
+  /* Centralized stacked mobile UI variables */
+  --bottom-nav-h: 56px;           /* approximate height of bottom nav */
+  --quick-actions-h: 64px;        /* approximate height of quick actions bar */
+  --stack-gap: 24px;              /* breathing space above stacked bars */
+  --stacked-offset-bar: calc(env(safe-area-inset-bottom) + var(--bottom-nav-h) + var(--quick-actions-h) + var(--stack-gap));
+  --stacked-offset-modal: calc(var(--stacked-offset-bar) + 16px);
+
+  /* Prevent anchor scroll from being obscured by stacked UI */
+  scroll-padding-bottom: calc(env(safe-area-inset-bottom) + var(--bottom-nav-h) + var(--quick-actions-h));
+}
+
+.mobile-root main {
+  /* Ensure content isn’t overlapped by quick actions and bottom nav */
+  padding-bottom: calc(env(safe-area-inset-bottom) + var(--bottom-nav-h) + var(--quick-actions-h));
+}
+
+/* Loosen section paddings on mobile to avoid cramped layouts */
+.mobile-root .section-padding {
+  padding-top: 3.5rem; /* ~py-14 */
+  padding-bottom: 3.5rem; /* ~py-14 */
+}
+
+/* Quick action bar: horizontal scroll and adequate tap targets */
+.mobile-root nav[aria-label="Mobile quick actions"] .tap-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Bottom nav: ensure minimum tap target size */
+.mobile-root nav[aria-label="Primary mobile navigation"] a {
+  min-height: 44px;
+}
+
+/* Safe area handling for devices with notches */
+.mobile-root .safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Horizontal safe area for devices with curved screens/notches */
+.mobile-root .safe-area-x {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Reserved utility: position fixed elements above stacked mobile UI */
+.mobile-root .stacked-mobile-ui {
+  bottom: var(--stacked-offset-bar) !important;
+}
+.mobile-root .stacked-mobile-ui--modal {
+  bottom: var(--stacked-offset-modal) !important;
+}
+
+/* Typography tuning for professional mobile look (non-intrusive) */
+.mobile-root h1 { line-height: 1.2; }
+.mobile-root h2 { line-height: 1.25; }
+.mobile-root h3 { line-height: 1.3; }
+
+/* Slightly tighten section headings and paragraph spacing */
+.mobile-root h1, 
+.mobile-root h2, 
+.mobile-root h3 {
+  margin-bottom: 0.75rem;
+}
+.mobile-root p { 
+  margin-bottom: 0.75rem;
+}
+
+/* Global tap target utility for buttons/links in mobile */
+.mobile-root .tap-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Utility: tighter vertical padding for cramped sections on small phones */
+.mobile-root .mobile-section-tight {
+  padding-top: clamp(1.25rem, 5vw, 2rem);
+  padding-bottom: clamp(1.25rem, 5vw, 2rem);
+}
+
+/* Ultra-tight variant for very compact pages/sections */
+.mobile-root .mobile-section-ultra-tight {
+  padding-top: clamp(0.75rem, 4vw, 1.25rem);
+  padding-bottom: clamp(0.75rem, 4vw, 1.25rem);
+}
+
+/* Clamp-based typography utilities for mobile-specific tuning */
+.mobile-root .typo-h1 {
+  font-size: clamp(1.75rem, 6vw, 2.25rem);
+  line-height: 1.15;
+}
+.mobile-root .typo-h2 {
+  font-size: clamp(1.5rem, 5.5vw, 2rem);
+  line-height: 1.2;
+}
+.mobile-root .typo-h2-tight {
+  font-size: clamp(1.375rem, 5vw, 1.75rem);
+  line-height: 1.2;
+}
+.mobile-root .typo-lead {
+  font-size: clamp(1rem, 4.5vw, 1.125rem);
+  line-height: 1.5;
+}
+.mobile-root .typo-lead-tight {
+  font-size: clamp(0.9375rem, 4.25vw, 1.0625rem);
+  line-height: 1.5;
+}
+.mobile-root .typo-small {
+  font-size: clamp(0.875rem, 4vw, 1rem);
+  line-height: 1.4;
+}

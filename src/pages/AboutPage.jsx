@@ -29,7 +29,7 @@ import { useResponsive } from '../hooks/useResponsive'
 
 const AboutPage = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const { isMobile, isTablet } = useResponsive();
+  const { isMobile, isTablet, mobileLite } = useResponsive();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -62,32 +62,38 @@ const AboutPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
+    <div className={`min-h-screen ${mobileLite ? 'bg-background' : 'bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100'}`}>
       {/* Hero Section */}
-      <section className="relative py-20 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-blue-600/10"></div>
+      <section className={`section-padding mobile-section-tight safe-area-x relative overflow-hidden`}>
+        {!mobileLite && (
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-blue-600/10"></div>
+        )}
         <motion.div 
           className="max-w-6xl mx-auto text-center relative z-10"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <div className="inline-flex items-center gap-2 bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
+          <div className={`inline-flex items-center gap-2 bg-purple-100 text-purple-700 ${isMobile ? 'px-3 py-1.5 text-xs' : 'px-4 py-2 text-sm'} rounded-full font-medium mb-6`}>
             <Zap className="w-4 h-4" />
             About Zuice
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+          <h1 className={`font-bold text-gray-900 mb-6 typo-h1 ${isMobile ? (mobileLite ? 'text-3xl leading-tight' : 'text-4xl leading-tight') : 'text-5xl md:text-6xl'}`}>
             Powering Tomorrow with 
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600"> Smart Energy</span>
+            {mobileLite ? (
+              <span className="text-gray-900"> Smart Energy</span>
+            ) : (
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600"> Smart Energy</span>
+            )}
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+          <p className={`max-w-3xl mx-auto mb-8 text-gray-600 typo-lead ${isMobile ? 'text-base leading-snug' : 'text-xl leading-relaxed'}`}>
             Zuice is revolutionizing home and office energy solutions with our advanced energy storage technology, 
             making clean, reliable power accessible to everyone.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               size="lg" 
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+              className="tap-target bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
               onClick={() => navigate('/products')}
             >
               <Battery className="w-5 h-5 mr-2" />
@@ -96,6 +102,7 @@ const AboutPage = () => {
             <Button 
               variant="outline" 
               size="lg"
+              className="tap-target"
               onClick={() => navigate('/contact')}
             >
               <Phone className="w-5 h-5 mr-2" />
@@ -106,7 +113,7 @@ const AboutPage = () => {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-16 px-4">
+      <section className={`${isMobile ? 'py-12' : 'py-16'} px-4`}>
         <div className="max-w-6xl mx-auto">
           <motion.div 
             className="grid md:grid-cols-2 gap-12 items-center"
@@ -120,10 +127,10 @@ const AboutPage = () => {
                 <Target className="w-4 h-4" />
                 Our Mission
               </div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">
+              <h2 className="text-4xl font-bold text-gray-900 mb-6 typo-h2-tight">
                 Democratizing Clean Energy Access
               </h2>
-              <p className="text-lg text-gray-600 mb-6">
+              <p className={`${isMobile ? 'text-base leading-snug' : 'text-lg leading-relaxed'} text-gray-600 mb-6 typo-lead-tight`}>
                 At Zuice, we believe that everyone deserves access to reliable, clean energy. Our mission is to make 
                 energy storage solutions affordable, efficient, and easy to use for homes and businesses of all sizes.
               </p>
@@ -156,7 +163,7 @@ const AboutPage = () => {
               <div className="bg-gradient-to-br from-purple-500 to-blue-600 rounded-2xl p-8 text-white">
                 <Sun className="w-16 h-16 mb-6 text-yellow-300" />
                 <h3 className="text-2xl font-bold mb-4">Our Vision</h3>
-                <p className="text-lg opacity-90 mb-6">
+                <p className={`${isMobile ? 'text-base leading-snug' : 'text-lg leading-relaxed'} opacity-90 mb-6`}>
                   To become the leading provider of intelligent energy storage solutions, powering millions of homes 
                   and businesses with clean, reliable energy while contributing to a sustainable planet.
                 </p>
@@ -177,7 +184,7 @@ const AboutPage = () => {
       </section>
 
       {/* Core Values */}
-      <section className="py-16 px-4 bg-white">
+      <section className={`${isMobile ? 'py-12' : 'py-16'} px-4 bg-white`}>
         <div className="max-w-6xl mx-auto">
           <motion.div 
             className="text-center mb-12"
@@ -191,7 +198,7 @@ const AboutPage = () => {
               Our Values
             </div>
             <h2 className="text-4xl font-bold text-gray-900 mb-4">What Drives Us Forward</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className={`${isMobile ? 'text-base leading-snug' : 'text-lg leading-relaxed'} text-gray-600 max-w-2xl mx-auto`}>
               Our core values shape every decision we make and every product we create
             </p>
           </motion.div>
@@ -246,7 +253,7 @@ const AboutPage = () => {
       </section>
 
       {/* Product Focus */}
-      <section className="py-16 px-4 bg-gradient-to-br from-purple-50 to-blue-50">
+      <section className={`${isMobile ? 'py-12' : 'py-16'} px-4 bg-gradient-to-br from-purple-50 to-blue-50`}>
         <div className="max-w-6xl mx-auto">
           <motion.div 
             className="text-center mb-12"
@@ -260,7 +267,7 @@ const AboutPage = () => {
               Our Flagship Product
             </div>
             <h2 className="text-4xl font-bold text-gray-900 mb-4">12.8V 100AH Home ESS</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className={`${isMobile ? 'text-base leading-snug' : 'text-lg leading-relaxed'} text-gray-600 max-w-2xl mx-auto`}>
               Our flagship lithium-ion energy storage system with advanced BMS technology for reliable home backup power
             </p>
           </motion.div>
@@ -352,7 +359,7 @@ const AboutPage = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 px-4 bg-gradient-to-r from-purple-600 to-blue-600">
+      <section className={`${isMobile ? 'py-12' : 'py-16'} px-4 bg-gradient-to-r from-purple-600 to-blue-600`}>
         <motion.div 
           className="max-w-4xl mx-auto text-center text-white"
           initial={{ opacity: 0, y: 30 }}
@@ -361,14 +368,14 @@ const AboutPage = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-4xl font-bold mb-6">Ready to Power Your Future?</h2>
-          <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
+          <p className={`${isMobile ? 'text-base leading-snug' : 'text-xl leading-relaxed'} opacity-90 mb-8 max-w-2xl mx-auto`}>
             Join thousands of satisfied customers who have made the switch to clean, reliable energy with Zuice.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               size="lg" 
               variant="outline" 
-              className="bg-white text-purple-600 hover:bg-gray-100 border-white"
+              className="tap-target bg-white text-purple-600 hover:bg-gray-100 border-white"
               onClick={() => navigate('/products')}
             >
               <Battery className="w-5 h-5 mr-2" />
@@ -377,7 +384,7 @@ const AboutPage = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="bg-transparent border-white text-white hover:bg-white hover:text-purple-600"
+              className="tap-target bg-transparent border-white text-white hover:bg-white hover:text-purple-600"
               onClick={() => navigate('/contact')}
             >
               <Phone className="w-5 h-5 mr-2" />

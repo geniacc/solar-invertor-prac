@@ -49,6 +49,18 @@ const ChatBot = () => {
     }
   }, [assistantsHidden])
 
+  // Allow external components to trigger open/close via window events
+  useEffect(() => {
+    const handleOpen = () => setIsOpen(true)
+    const handleClose = () => setIsOpen(false)
+    window.addEventListener('open-chatbot', handleOpen)
+    window.addEventListener('close-chatbot', handleClose)
+    return () => {
+      window.removeEventListener('open-chatbot', handleOpen)
+      window.removeEventListener('close-chatbot', handleClose)
+    }
+  }, [])
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
