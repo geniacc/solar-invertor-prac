@@ -40,6 +40,7 @@ const India3DMap = () => {
   const globeRef = useRef(null)
   const globeContainerRef = useRef(null)
   const canvasRef = useRef(null)
+  const altitudeRef = useRef(2.3)
 
   // Restore/persist settings
   useEffect(() => {
@@ -215,6 +216,7 @@ const India3DMap = () => {
   useEffect(() => {
     if (globeRef.current) {
       globeRef.current.pointOfView({ lat: 21.0, lng: 78.0, altitude: 2.3 }, 1200)
+      altitudeRef.current = 2.3
       // pointer interaction optimization and touch controls
       const ctrls = globeRef.current.controls()
       ctrls.enableZoom = true
@@ -246,6 +248,7 @@ const India3DMap = () => {
     setSearchQuery('')
     if (globeRef.current) {
       globeRef.current.pointOfView({ lat: 21.0, lng: 78.0, altitude: 2.3 }, 800)
+      altitudeRef.current = 2.3
       const ctrls = globeRef.current.controls()
       if (ctrls && ctrls.target) {
         ctrls.target.set(0, 0, 0)
@@ -254,19 +257,21 @@ const India3DMap = () => {
     }
   }
 
+  const clampAlt = (a) => Math.min(8, Math.max(0.4, a))
   const zoomIn = () => {
-    const ctrls = globeRef.current?.controls?.()
-    if (!ctrls) return
-    // Use OrbitControls dolly for perspective zoom
-    if (typeof ctrls.dollyIn === 'function') ctrls.dollyIn(1.15)
-    ctrls.update?.()
+    if (!globeRef.current) return
+    const cur = globeRef.current.pointOfView?.() || { lat: 21.0, lng: 78.0, altitude: altitudeRef.current }
+    const nextAlt = clampAlt((cur.altitude ?? altitudeRef.current) * 0.85)
+    altitudeRef.current = nextAlt
+    globeRef.current.pointOfView({ ...cur, altitude: nextAlt }, 400)
   }
 
   const zoomOut = () => {
-    const ctrls = globeRef.current?.controls?.()
-    if (!ctrls) return
-    if (typeof ctrls.dollyOut === 'function') ctrls.dollyOut(1.15)
-    ctrls.update?.()
+    if (!globeRef.current) return
+    const cur = globeRef.current.pointOfView?.() || { lat: 21.0, lng: 78.0, altitude: altitudeRef.current }
+    const nextAlt = clampAlt((cur.altitude ?? altitudeRef.current) / 0.85)
+    altitudeRef.current = nextAlt
+    globeRef.current.pointOfView({ ...cur, altitude: nextAlt }, 400)
   }
 
   // Helpers
