@@ -185,14 +185,15 @@ const India3DMap = () => {
       const ctrls = globeRef.current.controls()
       ctrls.enableZoom = true
       ctrls.enableRotate = true
-      ctrls.enablePan = false
+      // Enable pan on mobile to mimic typical browser pinch/pan behavior
+      ctrls.enablePan = isMobile ? true : false
       ctrls.enableDamping = true
       ctrls.dampingFactor = 0.08
-      // Ensure proper touch mappings; TWO-finger = pinch to zoom (dolly + rotate)
+      // Ensure proper touch mappings; TWO-finger = pinch zoom + pan on mobile
       if (ctrls && 'touches' in ctrls && THREE?.TOUCH) {
         ctrls.touches = {
           ONE: THREE.TOUCH.ROTATE,
-          TWO: THREE.TOUCH.DOLLY_ROTATE
+          TWO: THREE.TOUCH.DOLLY_PAN
         }
       }
       // ensure target is centered so globe stays visually centered
