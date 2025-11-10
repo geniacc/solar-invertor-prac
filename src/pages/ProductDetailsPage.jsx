@@ -139,7 +139,7 @@ const ProductDetailsPage = () => {
           </div>
         )}
 
-        <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 lg:gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 lg:gap-12 mb-12">
           {/* Product Images */}
           <div className="space-y-4">
             {/* Main Image */}
@@ -389,7 +389,7 @@ const ProductDetailsPage = () => {
                     </div>
                   )}
                   
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <div className="grid grid-cols-1 gap-4">
                     {product.applications && product.applications.length > 0 && (
                       <div className="space-y-4">
                         <h4 className="font-semibold text-gray-900 dark:text-gray-100 flex items-center">
@@ -440,7 +440,7 @@ const ProductDetailsPage = () => {
                 </div>
                 
                 {product.specifications && Object.keys(product.specifications).length > 0 ? (
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 gap-4">
                     {Object.entries(product.specifications).map(([key, value], index) => (
                       <div key={key} className="group bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20 rounded-lg p-4 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all duration-300">
                         <div className="flex justify-between items-center">
@@ -486,7 +486,7 @@ const ProductDetailsPage = () => {
                 </div>
                 
                 {product.features && product.features.length > 0 ? (
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 gap-4">
                     {product.features.map((feature, index) => (
                       <div key={index} className="group relative overflow-hidden bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-xl p-6 border border-green-100 dark:border-green-800/30 hover:shadow-lg transition-all duration-300">
                         <div className="flex items-start space-x-4">
@@ -520,7 +520,7 @@ const ProductDetailsPage = () => {
                 </div>
                 
                 {product.safetyFeatures && product.safetyFeatures.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 gap-4">
                     {product.safetyFeatures.map((feature, index) => (
                       <div key={index} className="group relative overflow-hidden bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-xl p-6 border border-red-100 dark:border-red-800/30 hover:shadow-lg transition-all duration-300">
                         <div className="flex items-start space-x-4">
@@ -564,7 +564,7 @@ const ProductDetailsPage = () => {
         {relatedProducts.length > 0 && (
           <div className="mb-12">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Related Products</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
               {relatedProducts.map(relatedProduct => (
                 <Link
                   key={relatedProduct.id}

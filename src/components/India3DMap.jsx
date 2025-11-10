@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import * as THREE from 'three'
 import Globe from 'react-globe.gl'
 import { Tooltip } from 'antd'
 import { useResponsive } from '../hooks/useResponsive'
@@ -179,12 +180,20 @@ const India3DMap = () => {
   useEffect(() => {
     if (globeRef.current) {
       globeRef.current.pointOfView({ lat: 21.0, lng: 78.0, altitude: 2.3 }, 1200)
-      // pointer interaction optimization on very low-end mobile
-      globeRef.current.controls().enableZoom = true
-      globeRef.current.controls().enableRotate = true
-      globeRef.current.controls().enablePan = false
-      // ensure target is centered so globe stays visually centered
+      // pointer interaction optimization and touch controls
       const ctrls = globeRef.current.controls()
+      ctrls.enableZoom = true
+      ctrls.enableRotate = true
+      ctrls.enablePan = false
+      ctrls.enableDamping = true
+      ctrls.dampingFactor = 0.08
+      if (ctrls.touches) {
+        ctrls.touches = {
+          ONE: THREE.TOUCH.ROTATE,
+          TWO: THREE.TOUCH.DOLLY_PAN
+        }
+      }
+      // ensure target is centered so globe stays visually centered
       if (ctrls && ctrls.target) {
         ctrls.target.set(0, 0, 0)
         ctrls.update?.()
@@ -310,19 +319,23 @@ const India3DMap = () => {
     </div>
   )
 
-  // Compute size for right column (ensure visible on mobile two-column)
-  const rightWidth = isMobile ? Math.floor(viewport.w * 0.55) : Math.floor(viewport.w * 0.6)
-  const rightHeight = viewport.h
-  const globeSize = Math.max(220, Math.min(rightWidth, rightHeight) - (isMobile ? 20 : 0))
+  // Compute size for right column (stacked layout on mobile for better usability)
+  const rightWidth = isMobile ? Math.floor(viewport.w) : Math.floor(viewport.w * 0.6)
+  const rightHeight = isMobile ? Math.floor(viewport.h * 0.64) : viewport.h
+  const globeSize = Math.max(isMobile ? 280 : 220, Math.min(rightWidth, rightHeight) - (isMobile ? 24 : 0))
 
   return (
-    <div style={{ position: 'relative', width: '100vw', height: '100vh', margin: 0, overflow: 'hidden', background: '#0b1220', display: 'flex', alignItems: 'stretch' }}>
+    <div style={{ position: 'relative', width: '100vw', height: '100vh', margin: 0, overflow: 'hidden', background: '#0b1220', display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'stretch' }}>
       {/* Left content column */}
-      <div style={{ flex: isMobile ? '0 0 45%' : '0 0 40%', height: '100%', padding: isMobile ? 16 : 32, color: '#fff', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-        <div style={{ maxWidth: 560 }}>
-          <h2 style={{ fontSize: isMobile ? 36 : 56, lineHeight: 1.05, fontWeight: 700, margin: 0 }}>Expanding<br/>As We Evolve</h2>
-          <div style={{ fontSize: isMobile ? 24 : 28, marginTop: 18, fontWeight: 500 }}>India</div>
-          <p style={{ marginTop: 16, color: '#e5e7eb' }}>
+      <div style={{ flex: isMobile ? '0 0 auto' : '0 0 40%', width: '100%', height: isMobile ? '36%' : '100%', padding: isMobile ? 16 : 32, color: '#fff', display: 'flex', flexDirection: 'column', justifyContent: isMobile ? 'flex-end' : 'center', alignItems: isMobile ? 'center' : 'flex-start' }}>
+        <div style={{ maxWidth: 560, textAlign: isMobile ? 'center' : 'left' }}>
+          {isMobile ? (
+            <h2 style={{ fontSize: 32, lineHeight: 1.15, fontWeight: 700, margin: 0 }}>Expanding As We Evolve</h2>
+          ) : (
+            <h2 style={{ fontSize: 56, lineHeight: 1.05, fontWeight: 700, margin: 0 }}>Expanding<br/>As We Evolve</h2>
+          )}
+          <div style={{ fontSize: isMobile ? 20 : 28, marginTop: 14, fontWeight: 500 }}>India</div>
+          <p style={{ marginTop: 12, color: '#e5e7eb' }}>
             As a trusted partner for advanced battery solutions, we offer a comprehensive
             range of products and services that cater to the diverse needs of our customers.
           </p>
@@ -330,7 +343,7 @@ const India3DMap = () => {
       </div>
 
       {/* Right globe column (parent container for buttons) */}
-      <div style={{ position: 'relative', flex: isMobile ? '0 0 55%' : 1, height: '100%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ position: 'relative', flex: isMobile ? '0 0 auto' : 1, width: '100%', height: isMobile ? '64%' : '100%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {/* Filters toggle inside parent container */}
         {!filtersOpen && (
           <button
@@ -437,6 +450,7 @@ const India3DMap = () => {
         </div>
 
         {/* Globe in right column */}
+        <div style={{ touchAction: 'none' }}>
         <Globe
           ref={globeRef}
           backgroundColor="#0b1220"
@@ -505,6 +519,7 @@ const India3DMap = () => {
               onPointClick={(p) => setSelected(p)}
               onPointHover={(p) => setHoveredPoint(p || null)}
             />
+        </div>
 
         {/* Hover overlay for details inside parent container */}
         {hoveredPoint && (
