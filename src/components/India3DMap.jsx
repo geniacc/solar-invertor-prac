@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
+// Note: Use THREE.TOUCH enum for OrbitControls touch mappings (available on THREE)
 import Globe from 'react-globe.gl'
 import { Tooltip } from 'antd'
 import { useResponsive } from '../hooks/useResponsive'
@@ -187,10 +188,11 @@ const India3DMap = () => {
       ctrls.enablePan = false
       ctrls.enableDamping = true
       ctrls.dampingFactor = 0.08
-      if (ctrls.touches) {
+      // Ensure proper touch mappings; TWO-finger = pinch to zoom (dolly + rotate)
+      if (ctrls && 'touches' in ctrls && THREE?.TOUCH) {
         ctrls.touches = {
           ONE: THREE.TOUCH.ROTATE,
-          TWO: THREE.TOUCH.DOLLY_PAN
+          TWO: THREE.TOUCH.DOLLY_ROTATE
         }
       }
       // ensure target is centered so globe stays visually centered
