@@ -38,6 +38,8 @@ const India3DMap = () => {
   })
 
   const globeRef = useRef(null)
+  const globeContainerRef = useRef(null)
+  const canvasRef = useRef(null)
 
   // Restore/persist settings
   useEffect(() => {
@@ -49,6 +51,38 @@ const India3DMap = () => {
       if (typeof saved.showBoundary === 'boolean') setShowBoundary(saved.showBoundary)
     } catch {}
   }, [])
+
+  // Prevent iOS Safari page zoom from hijacking pinch on the globe
+  useEffect(() => {
+    if (!isMobile || !globeContainerRef.current) return
+    const el = globeContainerRef.current
+    const prevent = (e) => {
+      // Stop Safari's native page zoom so OrbitControls can handle pinch
+      e.preventDefault()
+    }
+    el.addEventListener('gesturestart', prevent)
+    el.addEventListener('gesturechange', prevent)
+    el.addEventListener('gestureend', prevent)
+    // Also enforce touch-action on the actual canvas element once available
+    const trySetCanvasTouch = () => {
+      const canvas = el.querySelector('canvas')
+      if (canvas) {
+        canvasRef.current = canvas
+        canvas.style.touchAction = 'none'
+        canvas.style.webkitUserSelect = 'none'
+        canvas.style.userSelect = 'none'
+      }
+    }
+    // attempt now and after a microtask render
+    trySetCanvasTouch()
+    const t = setTimeout(trySetCanvasTouch, 50)
+    return () => {
+      el.removeEventListener('gesturestart', prevent)
+      el.removeEventListener('gesturechange', prevent)
+      el.removeEventListener('gestureend', prevent)
+      clearTimeout(t)
+    }
+  }, [isMobile])
 
   // Track viewport size for a free, full-viewport globe while keeping it perfectly round
   useEffect(() => {
@@ -187,6 +221,8 @@ const India3DMap = () => {
       ctrls.enableRotate = true
       // Enable pan on mobile to mimic typical browser pinch/pan behavior
       ctrls.enablePan = isMobile ? true : false
+      ctrls.zoomSpeed = 1.2
+      ctrls.panSpeed = 0.8
       ctrls.enableDamping = true
       ctrls.dampingFactor = 0.08
       // Ensure proper touch mappings; TWO-finger = pinch zoom + pan on mobile
@@ -216,6 +252,21 @@ const India3DMap = () => {
         ctrls.update?.()
       }
     }
+  }
+
+  const zoomIn = () => {
+    const ctrls = globeRef.current?.controls?.()
+    if (!ctrls) return
+    // Use OrbitControls dolly for perspective zoom
+    if (typeof ctrls.dollyIn === 'function') ctrls.dollyIn(1.15)
+    ctrls.update?.()
+  }
+
+  const zoomOut = () => {
+    const ctrls = globeRef.current?.controls?.()
+    if (!ctrls) return
+    if (typeof ctrls.dollyOut === 'function') ctrls.dollyOut(1.15)
+    ctrls.update?.()
   }
 
   // Helpers
@@ -346,7 +397,7 @@ const India3DMap = () => {
       </div>
 
       {/* Right globe column (parent container for buttons) */}
-      <div style={{ position: 'relative', flex: isMobile ? '0 0 auto' : 1, width: '100%', height: isMobile ? '64%' : '100%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div ref={globeContainerRef} style={{ position: 'relative', flex: isMobile ? '0 0 auto' : 1, width: '100%', height: isMobile ? '64%' : '100%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', touchAction: 'none', WebkitUserSelect: 'none', userSelect: 'none', overscrollBehavior: 'contain' }}>
         {/* Filters toggle inside parent container */}
         {!filtersOpen && (
           <button
@@ -418,6 +469,60 @@ const India3DMap = () => {
               </svg>
             ) : (
               'Reset View'
+            )}
+          </button>
+          <button
+            onClick={zoomIn}
+            aria-label="Zoom in"
+            title="Zoom in"
+            style={{
+              background: '#111827',
+              border: '1px solid #374151',
+              color: '#e5e7eb',
+              padding: isMobile ? 0 : '8px 10px',
+              width: isMobile ? 28 : 'auto',
+              height: isMobile ? 28 : 'auto',
+              borderRadius: isMobile ? 8 : 10,
+              fontSize: isMobile ? 12 : 14,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer'
+            }}
+          >
+            {isMobile ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5v14M5 12h14" stroke="#e5e7eb" strokeWidth="1.5" />
+              </svg>
+            ) : (
+              '+'
+            )}
+          </button>
+          <button
+            onClick={zoomOut}
+            aria-label="Zoom out"
+            title="Zoom out"
+            style={{
+              background: '#111827',
+              border: '1px solid #374151',
+              color: '#e5e7eb',
+              padding: isMobile ? 0 : '8px 10px',
+              width: isMobile ? 28 : 'auto',
+              height: isMobile ? 28 : 'auto',
+              borderRadius: isMobile ? 8 : 10,
+              fontSize: isMobile ? 12 : 14,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer'
+            }}
+          >
+            {isMobile ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 12h14" stroke="#e5e7eb" strokeWidth="1.5" />
+              </svg>
+            ) : (
+              '–'
             )}
           </button>
           <button
