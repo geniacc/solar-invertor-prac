@@ -278,8 +278,8 @@ const ChatBot = () => {
 
   const { isMobile } = useResponsive()
 
-  // Do not hide assistants on mobile; only hide on larger screens near footer
-  if (assistantsHidden && !isMobile) return null
+  // Hide assistant whenever footer is in view (all devices)
+  if (assistantsHidden) return null
 
   return (
     <>

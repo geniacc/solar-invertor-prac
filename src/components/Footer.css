@@ -115,6 +115,23 @@
 @media (max-width: 560px) {
   .footer-minimal { padding: 22px 0; }
   .footer-contact-row { margin: 16px 0; }
-  .footer-tiles { grid-template-columns: 1fr; }
+  /* Compact mobile layout: place link tiles side-by-side and reduce font sizes */
+  .footer-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: start; }
+  .tile-title { font-size: 12px; margin-bottom: 6px; }
+  .tile-links { gap: 6px; }
+  .tile-link { font-size: 12px; }
   .newsletter-min { grid-template-columns: 1fr; }
+  /* Footer bottom tidy stacking */
+  .footer-bottom-simple { flex-direction: column; align-items: center; gap: 8px; }
+  .footer-bottom-simple p { font-size: 12px; text-align: center; }
+  .legal-links { flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .legal-links a, .legal-links button { font-size: 12px; }
+}
+
+@media (max-width: 420px) {
+  /* Ultra-compact phones: use two columns and even smaller text */
+  .footer-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .tile-title { font-size: 11px; }
+  .tile-link { font-size: 11px; }
+  .tile-links { gap: 5px; }
 }

@@ -22,6 +22,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import HeroSection from '../components/HeroSection'
 import FeaturesSection from '../components/FeaturesSection'
 import Footer from '../components/Footer'
+/* Reverting: remove temporary OurTechnologySection */
 const ThreeDGridLazy = lazy(() => import('../components/ThreeDGrid'))
 const CarouselLazy = lazy(() => import('../components/Carousel'))
 const InteractivePricingCalculatorLazy = lazy(() => import('../components/InteractivePricingCalculator'))

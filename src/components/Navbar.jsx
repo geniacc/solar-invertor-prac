@@ -281,6 +281,17 @@ const Navbar = () => {
               {/* Theme Toggle */}
               <ThemeToggle />
 
+              {/* Mobile Login/Profile icon at top-right */}
+              <div className="md:hidden">
+                <Link
+                  to={isAuthenticated ? "/profile" : "/login"}
+                  className="p-2 text-gray-400 hover:text-white transition-colors duration-200"
+                  aria-label={isAuthenticated ? 'Profile' : 'Sign In'}
+                >
+                  <User className="h-6 w-6" />
+                </Link>
+              </div>
+
               {/* Cart */}
               <motion.div
                 className="relative"

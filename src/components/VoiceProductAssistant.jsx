@@ -51,8 +51,8 @@ const VoiceProductAssistant = () => {
   const assistantsHidden = useUIStore((s) => s.assistantsHidden);
 
   useEffect(() => {
-    // Do not auto-hide on mobile when footer intersects
-    if (assistantsHidden && !isMobile) {
+    // Hide assistant when footer is visible (all devices)
+    if (assistantsHidden) {
       setIsOpen(false);
       // ensure no audio/listening continues when hidden
       try { stopListening(); } catch {}
@@ -1273,7 +1273,7 @@ const VoiceProductAssistant = () => {
   };
 
   // Keep assistant visible on mobile; only hide on larger screens
-  if (assistantsHidden && !isMobile) return null;
+  if (assistantsHidden) return null;
 
   return (
     <>
