@@ -32,6 +32,7 @@ import {
 import { essProducts } from '../data/essProducts';
 import { useCartStore } from '../store/useStore';
 import { useTheme } from '../hooks/useTheme';
+import { useResponsive } from '../hooks/useResponsive';
 import Navbar from '../components/Navbar';
 
 const ProductDetailsPage = () => {
@@ -48,6 +49,7 @@ const ProductDetailsPage = () => {
 
   const { addItem, items } = useCartStore();
   const { theme } = useTheme();
+  const { isMobile } = useResponsive();
 
   useEffect(() => {
     const foundProduct = essProducts.find(p => p.id === id);
@@ -281,29 +283,29 @@ const ProductDetailsPage = () => {
                 <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 transition-colors duration-300">
                   <button
                     onClick={() => handleQuantityChange(-1)}
-                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors text-gray-700 dark:text-gray-300"
+                    className={`${isMobile ? 'p-3' : 'p-2'} hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors text-gray-700 dark:text-gray-300`}
                     disabled={quantity <= 1}
                   >
-                    <Minus className="w-4 h-4" />
+                    <Minus className={isMobile ? 'w-5 h-5' : 'w-4 h-4'} />
                   </button>
-                  <span className="px-4 py-2 font-medium text-gray-900 dark:text-gray-100">{quantity}</span>
+                  <span className={`${isMobile ? 'px-4 py-3' : 'px-4 py-2'} font-medium text-gray-900 dark:text-gray-100`}>{quantity}</span>
                   <button
                     onClick={() => handleQuantityChange(1)}
-                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors text-gray-700 dark:text-gray-300"
+                    className={`${isMobile ? 'p-3' : 'p-2'} hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors text-gray-700 dark:text-gray-300`}
                   >
-                    <Plus className="w-4 h-4" />
+                    <Plus className={isMobile ? 'w-5 h-5' : 'w-4 h-4'} />
                   </button>
                 </div>
                 <button
                   onClick={handleAddToCart}
                   disabled={!product.inStock || isInCart()}
-                  className={`flex-1 flex items-center justify-center space-x-2 px-6 py-3 rounded-lg font-semibold transition-all ${
+                  className={`tap-target flex-1 flex items-center justify-center space-x-2 ${isMobile ? 'px-4 py-3 text-sm' : 'px-6 py-3'} rounded-lg font-semibold transition-all ${
                     !product.inStock || isInCart()
                       ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
                       : 'bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 dark:hover:bg-blue-600'
                   }`}
                 >
-                  <ShoppingCart className="w-5 h-5" />
+                  <ShoppingCart className={isMobile ? 'w-5 h-5' : 'w-5 h-5'} />
                   <span>{isInCart() ? 'Added to Cart' : 'Add to Cart'}</span>
                 </button>
               </div>
@@ -312,17 +314,17 @@ const ProductDetailsPage = () => {
               <div className="flex space-x-3">
                 <button
                   onClick={() => setIsWishlisted(!isWishlisted)}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg border transition-all ${
+                  className={`tap-target flex items-center space-x-2 ${isMobile ? 'px-4 py-3 text-sm' : 'px-4 py-2'} rounded-lg border transition-all ${
                     isWishlisted
                       ? 'border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400'
                       : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-700'
                   }`}
                 >
-                  <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
+                  <Heart className={`${isMobile ? 'w-5 h-5' : 'w-4 h-4'} ${isWishlisted ? 'fill-current' : ''}`} />
                   <span>{isWishlisted ? 'Wishlisted' : 'Add to Wishlist'}</span>
                 </button>
-                <button className="flex items-center space-x-2 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-700 transition-all">
-                  <Share2 className="w-4 h-4" />
+                <button className={`tap-target flex items-center space-x-2 ${isMobile ? 'px-4 py-3 text-sm' : 'px-4 py-2'} rounded-lg border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-700 transition-all`}>
+                  <Share2 className={isMobile ? 'w-5 h-5' : 'w-4 h-4'} />
                   <span>Share</span>
                 </button>
               </div>

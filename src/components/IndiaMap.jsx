@@ -276,36 +276,39 @@ const IndiaMap = () => {
         >{tourPlaying ? 'Pause Tour' : 'Play Tour'}</button>
       </div>
 
-      <div style={{ position: 'relative', width, height }}>
-        <India
-          fill="#ff9966"
-          stroke="#fff"
-          strokeWidth={2}
-          style={{ width, height, display: 'block' }}
-        />
-        {filtered.map(({ id, name, cx, cy, type }) => (
-          <Tooltip title={`${name} • ${type.replace('_', ' ')}`} key={id} placement="top">
-            <div
-              id={`marker-${id}`}
-              onClick={() => setSelected(markers.find(m => m.id === id))}
-              role="button"
-              aria-label={`Marker ${name}`}
-              style={{
-                position: 'absolute',
-                left: cx - 8,
-                top: cy - 8,
-                width: 16,
-                height: 16,
-                borderRadius: '50%',
-                backgroundColor: '#fff',
-                border: selected?.id === id ? '4px solid #22c55e' : '3px solid #f44336',
-                boxShadow: selected?.id === id ? '0 0 10px #22c55e' : '0 0 8px #f44336',
-                cursor: 'pointer',
-                zIndex: 2,
-              }}
-            />
-          </Tooltip>
-        ))}
+      <div style={{ position: 'relative', width, height, overflow: 'hidden' }}>
+        {/* Subtle default zoom-in to make India appear closer */}
+        <div style={{ position: 'relative', width, height, transform: 'scale(1.12)', transformOrigin: 'center center' }}>
+          <India
+            fill="#ff9966"
+            stroke="#fff"
+            strokeWidth={2}
+            style={{ width, height, display: 'block' }}
+          />
+          {filtered.map(({ id, name, cx, cy, type }) => (
+            <Tooltip title={`${name} • ${type.replace('_', ' ')}`} key={id} placement="top">
+              <div
+                id={`marker-${id}`}
+                onClick={() => setSelected(markers.find(m => m.id === id))}
+                role="button"
+                aria-label={`Marker ${name}`}
+                style={{
+                  position: 'absolute',
+                  left: cx - 8,
+                  top: cy - 8,
+                  width: 16,
+                  height: 16,
+                  borderRadius: '50%',
+                  backgroundColor: '#fff',
+                  border: selected?.id === id ? '4px solid #22c55e' : '3px solid #f44336',
+                  boxShadow: selected?.id === id ? '0 0 10px #22c55e' : '0 0 8px #f44336',
+                  cursor: 'pointer',
+                  zIndex: 2,
+                }}
+              />
+            </Tooltip>
+          ))}
+        </div>
       </div>
 
       {/* Selected panel */}

@@ -130,32 +130,38 @@ const ProductsPage = () => {
           <span className="text-sm text-blue-600 dark:text-blue-400 font-medium capitalize">
             {product.category.replace('-', ' ')}
           </span>
-          <div className="flex items-center space-x-1">
-            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-            <span className="text-sm text-gray-600 dark:text-gray-300">{product.rating}</span>
-            <span className="text-sm text-gray-400 dark:text-gray-500">({product.reviews})</span>
-          </div>
+          {!isMobile && (
+            <div className="flex items-center space-x-1">
+              <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+              <span className="text-sm text-gray-600 dark:text-gray-300">{product.rating}</span>
+              <span className="text-sm text-gray-400 dark:text-gray-500">({product.reviews})</span>
+            </div>
+          )}
         </div>
 
         <h3 className={`${isMobile ? 'text-sm' : 'text-lg'} font-semibold text-gray-800 dark:text-gray-100 mb-2 line-clamp-2`}>
           {product.name}
         </h3>
 
-        <p className={`text-gray-600 dark:text-gray-300 ${isMobile ? 'text-xs' : 'text-sm'} mb-4 line-clamp-2`}>
-          {product.description}
-        </p>
+        {!isMobile && (
+          <p className={`text-gray-600 dark:text-gray-300 ${isTablet ? 'text-sm' : 'text-sm'} mb-4 line-clamp-2`}>
+            {product.description}
+          </p>
+        )}
 
         {/* Key Features */}
-        <div className="flex flex-wrap gap-2 mb-4">
-          <div className="flex items-center space-x-1 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-1 rounded-full text-xs">
-            <Battery className="w-3 h-3" />
-            <span>{product.specifications?.Energy || product.specifications?.Capacity}</span>
+        {!isMobile && (
+          <div className="flex flex-wrap gap-2 mb-4">
+            <div className="flex items-center space-x-1 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-1 rounded-full text-xs">
+              <Battery className="w-3 h-3" />
+              <span>{product.specifications?.Energy || product.specifications?.Capacity}</span>
+            </div>
+            <div className="flex items-center space-x-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full text-xs">
+              <Zap className="w-3 h-3" />
+              <span>{product.specifications?.['Cycle Life']}</span>
+            </div>
           </div>
-          <div className="flex items-center space-x-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full text-xs">
-            <Zap className="w-3 h-3" />
-            <span>{product.specifications?.['Cycle Life']}</span>
-          </div>
-        </div>
+        )}
 
         {/* Price */}
         <div className="flex items-center justify-between mb-4">
@@ -170,35 +176,52 @@ const ProductsPage = () => {
             )}
           </div>
           <div className="flex items-center space-x-2">
-            <button className="p-2 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 transition-colors">
+            <button className="p-2 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 transition-colors" aria-label="Wishlist">
               <Heart className="w-5 h-5" />
             </button>
-            <button
-              onClick={() => addItem(product)}
-              disabled={isInCart(product.id)}
-              className={`tap-target flex items-center space-x-2 ${isMobile ? 'px-3 py-2' : 'px-4 py-2'} rounded-lg font-semibold transition-all ${
-                isInCart(product.id)
-                  ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 cursor-not-allowed'
-                  : 'bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-600'
-              }`}
-            >
-              <ShoppingCart className="w-4 h-4" />
-              <span>{isInCart(product.id) ? 'Added' : 'Add to Cart'}</span>
-            </button>
+            {isMobile ? (
+              <button
+                onClick={() => addItem(product)}
+                disabled={isInCart(product.id)}
+                className={`tap-target p-2 rounded-full ${
+                  isInCart(product.id)
+                    ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 cursor-not-allowed'
+                    : 'bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-600'
+                }`}
+                aria-label={isInCart(product.id) ? 'Added to Cart' : 'Add to Cart'}
+              >
+                <ShoppingCart className="w-5 h-5" />
+              </button>
+            ) : (
+              <button
+                onClick={() => addItem(product)}
+                disabled={isInCart(product.id)}
+                className={`tap-target flex items-center space-x-2 px-4 py-2 rounded-lg font-semibold transition-all ${
+                  isInCart(product.id)
+                    ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 cursor-not-allowed'
+                    : 'bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-600'
+                }`}
+              >
+                <ShoppingCart className="w-4 h-4" />
+                <span>{isInCart(product.id) ? 'Added' : 'Add to Cart'}</span>
+              </button>
+            )}
           </div>
         </div>
 
         {/* Stock Status */}
-        <div className="flex items-center justify-between text-sm">
-          <div className={`flex items-center space-x-1 ${product.inStock ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
-            <div className={`w-2 h-2 rounded-full ${product.inStock ? 'bg-green-500' : 'bg-red-500'}`}></div>
-            <span>{product.inStock ? 'In Stock' : 'Out of Stock'}</span>
+        {!isMobile && (
+          <div className="flex items-center justify-between text-sm">
+            <div className={`flex items-center space-x-1 ${product.inStock ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+              <div className={`w-2 h-2 rounded-full ${product.inStock ? 'bg-green-500' : 'bg-red-500'}`}></div>
+              <span>{product.inStock ? 'In Stock' : 'Out of Stock'}</span>
+            </div>
+            <div className="flex items-center space-x-1 text-gray-500 dark:text-gray-400">
+              <Truck className="w-4 h-4" />
+              <span>Free Delivery</span>
+            </div>
           </div>
-          <div className="flex items-center space-x-1 text-gray-500 dark:text-gray-400">
-            <Truck className="w-4 h-4" />
-            <span>Free Delivery</span>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
@@ -242,16 +265,20 @@ const ProductsPage = () => {
           </div>
 
           <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">{product.name}</h3>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">{product.description}</p>
+          {!isMobile && (
+            <p className="text-gray-600 dark:text-gray-300 mb-4">{product.description}</p>
+          )}
 
           {/* Features */}
-          <div className="flex flex-wrap gap-2 mb-4">
-            {product.features.slice(0, 3).map((feature, index) => (
-              <span key={index} className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm">
-                {feature.split(' - ')[0]}
-              </span>
-            ))}
-          </div>
+          {!isMobile && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {product.features.slice(0, 3).map((feature, index) => (
+                <span key={index} className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm">
+                  {feature.split(' - ')[0]}
+                </span>
+              ))}
+            </div>
+          )}
 
           {/* Price and Actions */}
           <div className="flex items-center justify-between">
@@ -272,18 +299,33 @@ const ProductsPage = () => {
               >
                 View Details
               </Link>
-              <button
-                onClick={() => addItem(product)}
-                disabled={isInCart(product.id)}
-                className={`tap-target flex items-center space-x-2 px-6 py-2 rounded-lg font-semibold transition-all ${
-                  isInCart(product.id)
-                    ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 cursor-not-allowed'
-                    : 'bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-600'
-                }`}
-              >
-                <ShoppingCart className="w-4 h-4" />
-                <span>{isInCart(product.id) ? 'Added' : 'Add to Cart'}</span>
-              </button>
+              {isMobile ? (
+                <button
+                  onClick={() => addItem(product)}
+                  disabled={isInCart(product.id)}
+                  className={`tap-target p-2 rounded-full ${
+                    isInCart(product.id)
+                      ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 cursor-not-allowed'
+                      : 'bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-600'
+                  }`}
+                  aria-label={isInCart(product.id) ? 'Added to Cart' : 'Add to Cart'}
+                >
+                  <ShoppingCart className="w-5 h-5" />
+                </button>
+              ) : (
+                <button
+                  onClick={() => addItem(product)}
+                  disabled={isInCart(product.id)}
+                  className={`tap-target flex items-center space-x-2 px-6 py-2 rounded-lg font-semibold transition-all ${
+                    isInCart(product.id)
+                      ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 cursor-not-allowed'
+                      : 'bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-600'
+                  }`}
+                >
+                  <ShoppingCart className="w-4 h-4" />
+                  <span>{isInCart(product.id) ? 'Added' : 'Add to Cart'}</span>
+                </button>
+              )}
             </div>
           </div>
         </div>

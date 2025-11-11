@@ -31,6 +31,7 @@ const India3DMap = () => {
   const [hoveredPoint, setHoveredPoint] = useState(null)
   const [statePolygons, setStatePolygons] = useState([])
   const [hoveredStateKey, setHoveredStateKey] = useState(null)
+  const [worldCountries, setWorldCountries] = useState([])
   const [dataReady, setDataReady] = useState({ world: false, states: false })
   const [viewport, setViewport] = useState({
     w: typeof window !== 'undefined' ? window.innerWidth : 800,
@@ -98,38 +99,129 @@ const India3DMap = () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ filters, searchQuery, showRoutes, showBoundary }))
   }, [filters, searchQuery, showRoutes, showBoundary])
 
+  // Helper: load JSON with local-first fallbacks and resilient error handling
+  const loadJsonWithFallbacks = async (urls = [], signal) => {
+    for (const url of urls) {
+      try {
+        const res = await fetch(url, { signal })
+        if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`)
+        const json = await res.json()
+        return json
+      } catch (err) {
+        // Ignore AbortError quietly
+        if (err?.name === 'AbortError') throw err
+        console.warn('Data fetch failed, trying next fallback:', url, err)
+        continue
+      }
+    }
+    throw new Error('All data sources failed')
+  }
+
   // Load India boundary polygon for richer visual detail
   useEffect(() => {
     const controller = new AbortController()
-    fetch('https://raw.githubusercontent.com/vasturiano/three-globe/master/example/datasets/geojson/world.json', { signal: controller.signal })
-      .then(res => res.json())
+    const base = (import.meta?.env?.BASE_URL ?? '/')
+    const local = `${base}data/world.json`
+    loadJsonWithFallbacks([
+      'https://raw.githubusercontent.com/vasturiano/three-globe/master/example/datasets/geojson/world.json',
+      local
+    ], controller.signal)
       .then(world => {
-        const features = world.features || []
+        const features = world?.features || []
         const india = features.filter(f => (
-          f.properties?.ADMIN === 'India' ||
-          f.properties?.NAME === 'India' ||
-          f.properties?.name === 'India'
+          f?.properties?.ADMIN === 'India' ||
+          f?.properties?.NAME === 'India' ||
+          f?.properties?.name === 'India'
         ))
         setIndiaPolygon(india)
         if ((india || []).length) setDataReady(prev => ({ ...prev, world: true }))
       })
-      .catch((err) => { console.warn('Failed to load world.json for India boundary', err) })
+      .catch((err) => {
+        if (err?.name !== 'AbortError') console.warn('India boundary load failed', err)
+      })
+    return () => controller.abort()
+  }, [])
+
+  // Load world countries for realistic land coloring
+  useEffect(() => {
+    const controller = new AbortController()
+    const base = (import.meta?.env?.BASE_URL ?? '/')
+    const local = `${base}data/world-countries.json`
+    loadJsonWithFallbacks([
+      'https://raw.githubusercontent.com/vasturiano/three-globe/master/example/globe-data/world-countries.json',
+      local
+    ], controller.signal)
+      .then(json => {
+        const features = json?.features || []
+        setWorldCountries(features)
+      })
+      .catch((err) => {
+        if (err?.name !== 'AbortError') console.warn('World countries load failed', err)
+      })
     return () => controller.abort()
   }, [])
 
   // Load India state polygons (GeoJSON) for detailed regions
   useEffect(() => {
     const controller = new AbortController()
-    fetch('https://gist.githubusercontent.com/jbrobst/56c13bbbf9d97d187fea01ca62ea5112/raw/e388c4cae20aa53cb5090210a42ebb9b765c0a36/india_states.geojson', { signal: controller.signal })
-      .then(res => res.json())
+    const base = (import.meta?.env?.BASE_URL ?? '/')
+    const local = `${base}data/india_states.geojson`
+    loadJsonWithFallbacks([
+      'https://gist.githubusercontent.com/jbrobst/56c13bbbf9d97d187fea01ca62ea5112/raw/e388c4cae20aa53cb5090210a42ebb9b765c0a36/india_states.geojson',
+      local
+    ], controller.signal)
       .then(json => {
         const features = json?.features || []
         setStatePolygons(features)
         if ((features || []).length) setDataReady(prev => ({ ...prev, states: true }))
       })
-      .catch((err) => { console.warn('Failed to load india_states.geojson', err) })
+      .catch((err) => {
+        if (err?.name !== 'AbortError') console.warn('India states load failed', err)
+      })
     return () => controller.abort()
   }, [])
+
+  // Compute polygon dataset: world countries + optional India overlay
+  const polygonData = useMemo(() => {
+    const base = worldCountries || []
+    const overlay = showBoundary ? (statePolygons.length ? statePolygons : indiaPolygon) : []
+    return [...base, ...overlay]
+  }, [worldCountries, statePolygons, indiaPolygon, showBoundary])
+
+  // Color palette per continent for softer, realistic land tint
+  const CONTINENT_COLORS = {
+    Africa: '#f59e0b',
+    Asia: '#22c55e',
+    Europe: '#60a5fa',
+    'North America': '#38bdf8',
+    'South America': '#84cc16',
+    Oceania: '#a78bfa',
+    Antarctica: '#e5e7eb'
+  }
+
+  // Helper: convert a hex color to rgba string with provided alpha
+  const hexToRgba = (hex, alpha = 0.8) => {
+    const h = hex.replace('#', '')
+    const bigint = parseInt(h, 16)
+    const r = (bigint >> 16) & 255
+    const g = (bigint >> 8) & 255
+    const b = bigint & 255
+    return `rgba(${r},${g},${b},${alpha})`
+  }
+
+  const getContinent = (feat) => (
+    feat?.properties?.CONTINENT ||
+    feat?.properties?.continent ||
+    feat?.properties?.REGION_UN ||
+    'Asia'
+  )
+
+  const isIndiaState = (feat) => Boolean(
+    feat?.properties?.ST_NAME ||
+    feat?.properties?.ST_NM ||
+    feat?.properties?.NAME_1 ||
+    feat?.properties?.NAME
+  )
 
   // Derived counts and filtered list
   const countsAll = useMemo(() => ({
@@ -215,15 +307,17 @@ const India3DMap = () => {
   // Initial camera to India
   useEffect(() => {
     if (globeRef.current) {
-      globeRef.current.pointOfView({ lat: 21.0, lng: 78.0, altitude: 2.3 }, 1200)
-      altitudeRef.current = 2.3
+      // Slightly closer by default for a more India-focused view
+      globeRef.current.pointOfView({ lat: 21.0, lng: 78.0, altitude: 1.8 }, 1200)
+      altitudeRef.current = 1.8
       // pointer interaction optimization and touch controls
       const ctrls = globeRef.current.controls()
       ctrls.enableZoom = true
       ctrls.enableRotate = true
       // Enable pan on mobile to mimic typical browser pinch/pan behavior
       ctrls.enablePan = isMobile ? true : false
-      ctrls.zoomSpeed = 1.2
+      // Increase zoom speed for wheel/pinch
+      ctrls.zoomSpeed = 1.8
       ctrls.panSpeed = 0.8
       ctrls.enableDamping = true
       ctrls.dampingFactor = 0.08
@@ -247,8 +341,9 @@ const India3DMap = () => {
     setTourPlaying(false)
     setSearchQuery('')
     if (globeRef.current) {
-      globeRef.current.pointOfView({ lat: 21.0, lng: 78.0, altitude: 2.3 }, 800)
-      altitudeRef.current = 2.3
+      // Reset to the new closer default
+      globeRef.current.pointOfView({ lat: 21.0, lng: 78.0, altitude: 1.8 }, 800)
+      altitudeRef.current = 1.8
       const ctrls = globeRef.current.controls()
       if (ctrls && ctrls.target) {
         ctrls.target.set(0, 0, 0)
@@ -257,11 +352,13 @@ const India3DMap = () => {
     }
   }
 
-  const clampAlt = (a) => Math.min(8, Math.max(0.4, a))
+  // Allow getting closer before clamping
+  const clampAlt = (a) => Math.min(8, Math.max(0.25, a))
   const zoomIn = () => {
     if (!globeRef.current) return
     const cur = globeRef.current.pointOfView?.() || { lat: 21.0, lng: 78.0, altitude: altitudeRef.current }
-    const nextAlt = clampAlt((cur.altitude ?? altitudeRef.current) * 0.85)
+    // Give more zooming power to "+" per click
+    const nextAlt = clampAlt((cur.altitude ?? altitudeRef.current) * 0.7)
     altitudeRef.current = nextAlt
     globeRef.current.pointOfView({ ...cur, altitude: nextAlt }, 400)
   }
@@ -278,6 +375,7 @@ const India3DMap = () => {
   const getStateKey = (feat) => (
     // Prefer human-readable names, then fall back to codes
     feat?.properties?.ST_NM ||
+    feat?.properties?.ST_NAME ||
     feat?.properties?.NAME_1 ||
     feat?.properties?.NAME ||
     feat?.properties?.name ||
@@ -569,11 +667,12 @@ const India3DMap = () => {
           backgroundColor="#0b1220"
           width={globeSize}
           height={globeSize}
-              globeImageUrl={'https://raw.githubusercontent.com/vasturiano/three-globe/master/example/img/earth-dark.jpg'}
+              globeImageUrl={'https://raw.githubusercontent.com/vasturiano/three-globe/master/example/img/earth-blue-marble.jpg'}
               bumpImageUrl={'https://raw.githubusercontent.com/vasturiano/three-globe/master/example/img/earth-topology.png'}
               backgroundImageUrl={'https://raw.githubusercontent.com/vasturiano/three-globe/master/example/img/night-sky.png'}
               showAtmosphere={!mobileLite}
-              atmosphereColor="rgba(255,255,255,0.6)"
+              atmosphereColor="rgba(148,197,255,0.55)"
+              atmosphereAltitude={0.25}
               animateIn={true}
               // Points (markers)
               pointsData={filtered}
@@ -608,17 +707,28 @@ const India3DMap = () => {
               hexAltitude={({ sumWeight }) => Math.min(0.06, sumWeight * 0.008)}
               // Arcs disabled
               arcsData={[]}
-              // India state polygons with hover highlight (fallback to country boundary)
-              polygonsData={showBoundary ? (statePolygons.length ? statePolygons : indiaPolygon) : []}
+              // World polygons for realistic land colors + India overlay
+              polygonsData={polygonData}
               polygonGeoJsonGeometry={(feat) => feat.geometry}
-              polygonCapColor={(feat) => getStateKey(feat) === hoveredStateKey ? 'rgba(56,189,248,0.35)' : 'rgba(255,255,255,0.18)'}
-              polygonSideColor={() => 'rgba(56,189,248,0.25)'}
-              polygonStrokeColor={(feat) => getStateKey(feat) === hoveredStateKey ? 'rgba(56,189,248,0.95)' : 'rgba(148,163,184,0.75)'}
-              polygonStrokeWidth={0.9}
-              polygonAltitude={(feat) => getStateKey(feat) === hoveredStateKey ? 0.009 : 0.004}
-              polygonsTransitionDuration={300}
-              polygonLabel={(feat) => (statePolygons.length ? `State: ${getStateKey(feat) || 'Unknown'}` : 'India')}
-              onPolygonHover={(feat) => setHoveredStateKey(feat ? getStateKey(feat) : null)}
+              polygonCapColor={(feat) => {
+                if (isIndiaState(feat)) {
+                  return getStateKey(feat) === hoveredStateKey ? 'rgba(56,189,248,0.40)' : 'rgba(255,255,255,0.18)'
+                }
+                const cont = getContinent(feat)
+                const base = CONTINENT_COLORS[cont] || '#60a5fa'
+                // soften with transparency for a natural look using rgba
+                return hexToRgba(base, 0.8)
+              }}
+              polygonSideColor={(feat) => (isIndiaState(feat) ? 'rgba(56,189,248,0.25)' : 'rgba(0,0,0,0.15)')}
+              polygonStrokeColor={(feat) => (isIndiaState(feat) ? (getStateKey(feat) === hoveredStateKey ? 'rgba(56,189,248,0.95)' : 'rgba(148,163,184,0.6)') : 'rgba(255,255,255,0.08)')}
+              polygonStrokeWidth={0.8}
+              polygonAltitude={(feat) => {
+                if (isIndiaState(feat)) return getStateKey(feat) === hoveredStateKey ? 0.009 : 0.005
+                return 0.002
+              }}
+              polygonsTransitionDuration={400}
+              polygonLabel={(feat) => (isIndiaState(feat) ? `State: ${getStateKey(feat) || 'Unknown'}` : (feat?.properties?.ADMIN || feat?.properties?.NAME || feat?.properties?.name || 'Country'))}
+              onPolygonHover={(feat) => setHoveredStateKey(feat && isIndiaState(feat) ? getStateKey(feat) : null)}
               // Rings: pulse animations for active sites
               ringsData={activeRings}
               ringLat={(d) => d.lat}

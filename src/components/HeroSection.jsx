@@ -5,6 +5,7 @@ import { ArrowRight, Play, Zap, Shield, Battery, Sun, Sparkles, Power, X } from 
 import { Button } from './ui/Button';
 import DotGrid from './DotGrid';
 import { useResponsive } from '../hooks/useResponsive';
+import MultiStepOnboarding from './ui/MultiStepOnboarding';
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -12,6 +13,17 @@ const HeroSection = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const heroRef = useRef(null);
   const { isMobile, isTablet, mobileLite } = useResponsive();
+  const [onboardingOpen, setOnboardingOpen] = useState(false);
+  const [loadingDisabled, setLoadingDisabled] = useState(false);
+  const onboardingSteps = [
+    'Welcome to Zuice',
+    'Browse inverter solutions',
+    'Check availability near you',
+    'Choose install preference',
+    'Apply offers and warranty',
+    'Proceed to checkout',
+    'Need help? Chat with us anytime'
+  ];
 
   // Typewriter effect text states (mobile-only)
   const subtitleFull = 'Home Energy Storage System';
@@ -209,9 +221,10 @@ const HeroSection = () => {
             animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
             transition={{ duration: 1, delay: 0.3 }}
           >
-            {/* Company Badge */}
-            <motion.div
-              className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-blue-500/30 rounded-full px-4 py-2 cursor-pointer"
+            {/* Company Badge (click to open onboarding) */}
+            <motion.button
+              type="button"
+              className={`inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-blue-500/30 rounded-full px-4 py-2 ${loadingDisabled ? 'opacity-60 pointer-events-none' : 'cursor-pointer'}`}
               animate={{
                 scale: [1, 1.05, 1],
                 borderColor: ['rgba(59, 130, 246, 0.3)', 'rgba(147, 51, 234, 0.3)', 'rgba(59, 130, 246, 0.3)'],
@@ -223,11 +236,15 @@ const HeroSection = () => {
               }}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                setOnboardingOpen(true);
+                setLoadingDisabled(true);
+              }}
             >
               <Power className="h-4 w-4 text-blue-400" />
               <span className="text-sm font-medium text-white">Zuice</span>
               <Sparkles className="h-3 w-3 text-purple-400" />
-            </motion.div>
+            </motion.button>
 
             {/* Main Heading - Focused on μ1000 */}
             <motion.div
@@ -539,6 +556,21 @@ const HeroSection = () => {
           </motion.div>
         </motion.div>
       )}
+      {/* Onboarding Loader Modal */}
+      <MultiStepOnboarding
+        open={onboardingOpen}
+        steps={onboardingSteps}
+        textOnly
+        showProgress={false}
+        onClose={() => {
+          setOnboardingOpen(false)
+          setLoadingDisabled(false)
+        }}
+        onComplete={() => {
+          setOnboardingOpen(false)
+          setLoadingDisabled(false)
+        }}
+      />
     </section>
   );
 };

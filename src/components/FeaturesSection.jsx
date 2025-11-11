@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, animate } from 'framer-motion';
 import { 
   Zap, 
   Shield, 
@@ -26,6 +26,7 @@ import './FeaturesSection.css';
 import LithiumInverter3DModal from './LithiumInverter3DModal';
 import ARCameraView from './ARCameraView';
 import { essProducts } from '../data/essProducts';
+import { useResponsive } from '../hooks/useResponsive';
 
 const FeaturesSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -35,7 +36,12 @@ const FeaturesSection = () => {
   const [expandedDetails, setExpandedDetails] = useState(null);
   const [show3DModal, setShow3DModal] = useState(false);
   const [showARModal, setShowARModal] = useState(false);
+  const [isGalleryDragging, setIsGalleryDragging] = useState(false);
+  const [isGalleryResuming, setIsGalleryResuming] = useState(false);
   const sectionRef = useRef(null);
+  const { isMobile } = useResponsive();
+  const trackX = useMotionValue(0);
+  const galleryTrackRef = useRef(null);
 
   // Get featured product from essProducts (using the 48V 100AH as featured)
   const featuredProduct = essProducts.find(product => product.id === "home-ess-48v") || essProducts[2];
@@ -337,13 +343,44 @@ const FeaturesSection = () => {
       </motion.div>
 
       {/* Rolling Gallery */}
-      <div className="rolling-gallery">
-        <div className="gallery-track">
+      <div className="rolling-gallery" aria-roledescription="carousel">
+        <motion.div
+          ref={galleryTrackRef}
+          className={`gallery-track ${isGalleryDragging ? 'paused' : ''} ${isGalleryResuming ? 'resuming' : ''}`}
+          drag={isMobile ? 'x' : false}
+          dragElastic={0.15}
+          dragMomentum={true}
+          onDragStart={() => setIsGalleryDragging(true)}
+          onDragEnd={() => {
+            const trackEl = galleryTrackRef.current;
+            const firstItem = trackEl?.querySelector('.gallery-item');
+            const itemWidth = firstItem ? firstItem.getBoundingClientRect().width : 200;
+            let gapPx = 16;
+            if (trackEl) {
+              const style = window.getComputedStyle(trackEl);
+              const gapStr = style.gap || style.columnGap || '16px';
+              const parsed = parseInt(gapStr, 10);
+              if (!Number.isNaN(parsed)) gapPx = parsed;
+            }
+            const step = itemWidth + gapPx;
+            const current = trackX.get();
+            const snapped = Math.round(current / step) * step;
+            setIsGalleryResuming(true);
+            animate(trackX, snapped, { type: 'spring', stiffness: 300, damping: 35 }).then(() => {
+              setTimeout(() => {
+                setIsGalleryResuming(false);
+              }, 2000);
+            });
+            setIsGalleryDragging(false);
+          }}
+          style={isMobile && (isGalleryDragging || isGalleryResuming) ? { x: trackX } : undefined}
+        >
           {products.concat(products).map((product, index) => (
             <motion.div
               key={`${product.id}-${index}`}
               className="gallery-item"
               whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => {
                 setSelectedProduct(product);
                 setShowModal(true);
@@ -364,19 +401,25 @@ const FeaturesSection = () => {
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
       {/* Feature Cards Grid */}
-      <div className="features-grid">
+      <div className={`features-grid ${isMobile ? 'compact-mobile' : ''}`}>
         {features.map((feature, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, y: 50 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: index * 0.1 }}
-            className={`feature-card ${activeFeature === index ? 'active' : ''}`}
-            onMouseEnter={() => setActiveFeature(index)}
+            className={`feature-card ${isMobile ? 'compact-mobile' : ''} ${activeFeature === index ? 'active' : ''}`}
+            onMouseEnter={() => !isMobile && setActiveFeature(index)}
+            onClick={() => {
+              if (isMobile) setExpandedDetails(expandedDetails === index ? null : index)
+            }}
+            role={isMobile ? 'button' : undefined}
+            aria-expanded={isMobile ? (expandedDetails === index) : undefined}
+            aria-controls={isMobile ? `feature-sheet-${index}` : undefined}
           >
             <div className={`feature-icon bg-gradient-to-r ${feature.color}`}>
               <feature.icon size={32} />
@@ -384,32 +427,35 @@ const FeaturesSection = () => {
             
             <div className="feature-content">
               <h3>{feature.title}</h3>
-              <p>{feature.description}</p>
-              
-              <button
-                className="feature-button"
-                onClick={() => setExpandedDetails(expandedDetails === index ? null : index)}
-              >
-                Learn More
-                <ChevronRight size={16} />
-              </button>
+              {!isMobile && <p>{feature.description}</p>}
+              {!isMobile && (
+                <button
+                  className="feature-button"
+                  onClick={() => setExpandedDetails(expandedDetails === index ? null : index)}
+                >
+                  Learn More
+                  <ChevronRight size={16} />
+                </button>
+              )}
             </div>
 
             {/* Efficiency Progress Bar */}
-            <div className="efficiency-progress">
-              <div className="progress-label">
-                <span>Performance</span>
-                <span>{feature.progress}%</span>
+            {!isMobile && (
+              <div className="efficiency-progress">
+                <div className="progress-label">
+                  <span>Performance</span>
+                  <span>{feature.progress}%</span>
+                </div>
+                <div className="progress-bar">
+                  <motion.div
+                    className="progress-fill"
+                    initial={{ width: 0 }}
+                    animate={isVisible ? { width: `${feature.progress}%` } : {}}
+                    transition={{ duration: 1.5, delay: index * 0.2 }}
+                  />
+                </div>
               </div>
-              <div className="progress-bar">
-                <motion.div
-                  className="progress-fill"
-                  initial={{ width: 0 }}
-                  animate={isVisible ? { width: `${feature.progress}%` } : {}}
-                  transition={{ duration: 1.5, delay: index * 0.2 }}
-                />
-              </div>
-            </div>
+            )}
           </motion.div>
         ))}
       </div>
@@ -442,17 +488,17 @@ const FeaturesSection = () => {
         ))}
       </motion.div>
 
-      {/* Expanded Details */}
+      {/* Expanded Details - Desktop Centered Modal */}
       <AnimatePresence>
-        {expandedDetails !== null && (
+        {!isMobile && expandedDetails !== null && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="expanded-details"
+            className={`expanded-details`}
           >
             <div className="details-content">
-              <h4>{features[expandedDetails].title} - Deep Dive</h4>
+              <h4>{features[expandedDetails].title}</h4>
               <p>{features[expandedDetails].details}</p>
               <button
                 className="close-details"
@@ -462,6 +508,47 @@ const FeaturesSection = () => {
               </button>
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Expanded Details - Mobile Bottom Sheet */}
+      <AnimatePresence>
+        {isMobile && expandedDetails !== null && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.6 }}
+              exit={{ opacity: 0 }}
+              className="feature-overlay-backdrop"
+              onClick={() => setExpandedDetails(null)}
+            />
+            <motion.div
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', stiffness: 260, damping: 30 }}
+              className="feature-bottom-sheet"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={`feature-sheet-title-${expandedDetails}`}
+              id={`feature-sheet-${expandedDetails}`}
+            >
+              <div className="feature-sheet-header">
+                <div className="sheet-handle" />
+                <h4 id={`feature-sheet-title-${expandedDetails}`}>{features[expandedDetails].title}</h4>
+                <button
+                  className="feature-sheet-close"
+                  onClick={() => setExpandedDetails(null)}
+                  aria-label="Close"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+              <div className="feature-sheet-content">
+                <p>{features[expandedDetails].details}</p>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 
