@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, useMotionValue, useAnimation, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useAnimation, useTransform, useReducedMotion } from 'framer-motion';
 
 const DEFAULT_IMGS = [
   '/images/solar-banner.jpg',
@@ -12,6 +12,7 @@ const RollingGallery = ({ autoplay = false, pauseOnHover = false, images = [] })
   const imageSources = images.length > 0 ? images : DEFAULT_IMGS;
   
   const [isScreenSizeSm, setIsScreenSizeSm] = useState(window.innerWidth <= 640);
+  const prefersReducedMotion = useReducedMotion();
 
   const cylinderWidth = isScreenSizeSm ? 900 : 1400;
   const faceCount = imageSources.length;
@@ -39,16 +40,16 @@ const RollingGallery = ({ autoplay = false, pauseOnHover = false, images = [] })
   });
 
   useEffect(() => {
-    if (autoplay) {
+    if (autoplay && !prefersReducedMotion) {
       autoplayRef.current = setInterval(() => {
         const currentRotation = rotation.get();
         const nextRotation = currentRotation - 360 / faceCount;
         controls.start({
           rotateY: nextRotation,
-          transition: { duration: 2, ease: 'linear' }
+          transition: { duration: 2.4, ease: 'linear' }
         });
         rotation.set(nextRotation);
-      }, 3000);
+      }, 3600);
     }
 
     return () => {
@@ -56,7 +57,7 @@ const RollingGallery = ({ autoplay = false, pauseOnHover = false, images = [] })
         clearInterval(autoplayRef.current);
       }
     };
-  }, [autoplay, controls, faceCount, rotation]);
+  }, [autoplay, controls, faceCount, rotation, prefersReducedMotion]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -87,16 +88,16 @@ const RollingGallery = ({ autoplay = false, pauseOnHover = false, images = [] })
             }
           }}
           onMouseLeave={() => {
-            if (pauseOnHover && autoplay) {
+            if (pauseOnHover && autoplay && !prefersReducedMotion) {
               autoplayRef.current = setInterval(() => {
                 const currentRotation = rotation.get();
                 const nextRotation = currentRotation - 360 / faceCount;
                 controls.start({
                   rotateY: nextRotation,
-                  transition: { duration: 2, ease: 'linear' }
+                  transition: { duration: 2.4, ease: 'linear' }
                 });
                 rotation.set(nextRotation);
-              }, 3000);
+              }, 3600);
             }
           }}
         >
@@ -113,13 +114,14 @@ const RollingGallery = ({ autoplay = false, pauseOnHover = false, images = [] })
                   translateZ(${radius}px)
                 `,
               }}
-              whileHover={{ scale: 1.05 }}
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.03 }}
             >
               <img
                 src={src}
                 alt={`Gallery image ${i + 1}`}
                 className="w-full h-full object-cover rounded-lg shadow-2xl border-4 border-white/20"
                 draggable={false}
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg" />
             </motion.div>

@@ -40,6 +40,16 @@ const FeaturesSection = () => {
   const [isGalleryResuming, setIsGalleryResuming] = useState(false);
   const sectionRef = useRef(null);
   const { isMobile } = useResponsive();
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setPrefersReducedMotion(Boolean(mq.matches));
+    update();
+    mq.addEventListener?.('change', update);
+    return () => mq.removeEventListener?.('change', update);
+  }, []);
   const trackX = useMotionValue(0);
   const galleryTrackRef = useRef(null);
 
@@ -250,11 +260,13 @@ const FeaturesSection = () => {
   return (
     <section className="features-section section-padding mobile-section-tight" ref={sectionRef}>
       {/* 3D Background Elements */}
-      <div className="bg-3d">
-        <div className="floating-orb orb-1"></div>
-        <div className="floating-orb orb-2"></div>
-        <div className="floating-orb orb-3"></div>
-      </div>
+      {!isMobile && !prefersReducedMotion && (
+        <div className="bg-3d" style={{ willChange: 'transform' }}>
+          <div className="floating-orb orb-1"></div>
+          <div className="floating-orb orb-2"></div>
+          <div className="floating-orb orb-3"></div>
+        </div>
+      )}
 
       {/* Section Header */}
       <motion.div

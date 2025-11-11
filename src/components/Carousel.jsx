@@ -15,10 +15,11 @@ const Slide = ({
   const xRef = useRef(0);
   const yRef = useRef(0);
   const frameRef = useRef();
+  const isHoveringRef = useRef(false);
 
   useEffect(() => {
     const animate = () => {
-      if (!slideRef.current) return;
+      if (!slideRef.current || !isHoveringRef.current) return;
 
       const x = xRef.current;
       const y = yRef.current;
@@ -29,8 +30,7 @@ const Slide = ({
       frameRef.current = requestAnimationFrame(animate);
     };
 
-    frameRef.current = requestAnimationFrame(animate);
-
+    // start animation only when hovering; see handlers below
     return () => {
       if (frameRef.current) {
         cancelAnimationFrame(frameRef.current);
@@ -50,6 +50,23 @@ const Slide = ({
   const handleMouseLeave = () => {
     xRef.current = 0;
     yRef.current = 0;
+    isHoveringRef.current = false;
+    if (frameRef.current) cancelAnimationFrame(frameRef.current);
+  };
+
+  const handleMouseEnter = () => {
+    isHoveringRef.current = true;
+    if (!frameRef.current) {
+      frameRef.current = requestAnimationFrame(() => {
+        // kick off the loop; the effect will keep it running while hovering
+        frameRef.current = requestAnimationFrame(() => {});
+      });
+    }
+    // ensure an immediate update on enter
+    if (slideRef.current) {
+      slideRef.current.style.setProperty("--x", `${xRef.current}px`);
+      slideRef.current.style.setProperty("--y", `${yRef.current}px`);
+    }
   };
 
   const imageLoaded = (event) => {
@@ -65,6 +82,7 @@ const Slide = ({
         className="flex flex-1 flex-col items-center justify-center relative text-center text-white opacity-100 transition-all duration-300 ease-in-out mx-[3vmin] sm:mx-[4vmin] z-10"
         onClick={() => handleSlideClick(index)}
         onMouseMove={handleMouseMove}
+        onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         style={{
           transform:
@@ -75,6 +93,7 @@ const Slide = ({
           transformOrigin: "bottom",
           width: "var(--carousel-size)",
           height: "var(--carousel-size)",
+          willChange: "transform",
         }}
       >
         <div
@@ -94,8 +113,8 @@ const Slide = ({
             alt={title}
             src={src}
             onLoad={imageLoaded}
-            loading="eager"
-            decoding="sync"
+            loading="lazy"
+            decoding="async"
           />
           {current === index && (
             <div className="absolute inset-0 bg-black/30 transition-all duration-1000" />

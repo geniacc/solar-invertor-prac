@@ -19,6 +19,7 @@ const STORAGE_KEY = 'india-3d-map-settings'
 
 const India3DMap = () => {
   const { isMobile, mobileLite } = useResponsive()
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const [markers, setMarkers] = useState(DEFAULT_MARKERS)
   const [selected, setSelected] = useState(null)
   const [tourPlaying, setTourPlaying] = useState(false)
@@ -42,6 +43,16 @@ const India3DMap = () => {
   const globeContainerRef = useRef(null)
   const canvasRef = useRef(null)
   const altitudeRef = useRef(2.3)
+
+  // Detect reduced motion preference
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const update = () => setPrefersReducedMotion(Boolean(mq.matches))
+    update()
+    mq.addEventListener?.('change', update)
+    return () => mq.removeEventListener?.('change', update)
+  }, [])
 
   // Restore/persist settings
   useEffect(() => {
@@ -673,7 +684,8 @@ const India3DMap = () => {
               showAtmosphere={!mobileLite}
               atmosphereColor="rgba(148,197,255,0.55)"
               atmosphereAltitude={0.25}
-              animateIn={true}
+              animateIn={!prefersReducedMotion}
+              enablePointerInteraction={!isMobile}
               // Points (markers)
               pointsData={filtered}
               pointLat={(d) => d.lat}
@@ -701,7 +713,7 @@ const India3DMap = () => {
               hexBinPointLat={(d) => d.lat}
               hexBinPointLng={(d) => d.lng}
               hexBinPointWeight={(d) => (d.status === 'active' ? 1 : 0.6)}
-              hexBinResolution={6}
+              hexBinResolution={isMobile ? 4 : 6}
               hexTopColor={({ sumWeight }) => weightColor(sumWeight)}
               hexSideColor={({ sumWeight }) => weightColor(sumWeight)}
               hexAltitude={({ sumWeight }) => Math.min(0.06, sumWeight * 0.008)}
@@ -726,18 +738,18 @@ const India3DMap = () => {
                 if (isIndiaState(feat)) return getStateKey(feat) === hoveredStateKey ? 0.009 : 0.005
                 return 0.002
               }}
-              polygonsTransitionDuration={400}
+              polygonsTransitionDuration={prefersReducedMotion ? 0 : 250}
               polygonLabel={(feat) => (isIndiaState(feat) ? `State: ${getStateKey(feat) || 'Unknown'}` : (feat?.properties?.ADMIN || feat?.properties?.NAME || feat?.properties?.name || 'Country'))}
-              onPolygonHover={(feat) => setHoveredStateKey(feat && isIndiaState(feat) ? getStateKey(feat) : null)}
+              onPolygonHover={prefersReducedMotion ? undefined : (feat) => setHoveredStateKey(feat && isIndiaState(feat) ? getStateKey(feat) : null)}
               // Rings: pulse animations for active sites
-              ringsData={activeRings}
+              ringsData={(prefersReducedMotion || isMobile) ? [] : activeRings}
               ringLat={(d) => d.lat}
               ringLng={(d) => d.lng}
               ringAltitude={0.005}
               ringColor={() => 'rgba(34,197,94,0.7)'}
               ringMaxRadius={1.0}
-              ringPropagationSpeed={0.75}
-              ringRepeatPeriod={1200}
+              ringPropagationSpeed={0.5}
+              ringRepeatPeriod={2000}
               // Events
               onPointClick={(p) => setSelected(p)}
               onPointHover={(p) => setHoveredPoint(p || null)}

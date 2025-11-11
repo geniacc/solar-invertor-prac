@@ -22,13 +22,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import HeroSection from '../components/HeroSection'
 import FeaturesSection from '../components/FeaturesSection'
 import Footer from '../components/Footer'
-import ThreeDGrid from '../components/ThreeDGrid'
-import { Carousel } from '../components/Carousel'
-import InteractivePricingCalculator from '../components/InteractivePricingCalculator'
-import SolarPanelShowcase from '../components/SolarPanelShowcase'
-import AnimatedStats from '../components/AnimatedStats'
-import India3DMap from '../components/India3DMap'
-import VoiceProductAssistant from '../components/VoiceProductAssistant'
+const ThreeDGridLazy = lazy(() => import('../components/ThreeDGrid'))
+const CarouselLazy = lazy(() => import('../components/Carousel'))
+const InteractivePricingCalculatorLazy = lazy(() => import('../components/InteractivePricingCalculator'))
+const AnimatedStatsLazy = lazy(() => import('../components/AnimatedStats'))
+const India3DMapLazy = lazy(() => import('../components/India3DMap'))
+const VoiceProductAssistantLazy = lazy(() => import('../components/VoiceProductAssistant'))
 // Lazy-load testimonials for consistent code-splitting across pages
 const TestimonialsSectionLazy = lazy(() => import('../components/TestimonialsSection'))
 import { useResponsive } from '../hooks/useResponsive'
@@ -133,7 +132,12 @@ export default function HomePage() {
             </motion.div>
 
             {/* Mobile-lite: hide heavy 3D grid on touch mobile */}
-            {!mobileLite && <ThreeDGrid />}
+            {!mobileLite && (
+              <Suspense fallback={<div style={{height: 280}} />}
+              >
+                <ThreeDGridLazy />
+              </Suspense>
+            )}
           </div>
         </section>
       )}
@@ -154,12 +158,20 @@ export default function HomePage() {
               Get an instant estimate for your enterprise system with our interactive pricing calculator.
             </p>
           </motion.div>
-          <InteractivePricingCalculator />
+          <Suspense fallback={<div style={{height: 260}} />}
+          >
+            <InteractivePricingCalculatorLazy />
+          </Suspense>
         </div>
       </section>
 
       {/* Mobile-lite: hide animated stats on touch mobile */}
-      {!mobileLite && <AnimatedStats />}
+      {!mobileLite && (
+        <Suspense fallback={<div style={{height: 200}} />}
+        >
+          <AnimatedStatsLazy />
+        </Suspense>
+      )}
 
       {/* Our Technology Implementations - Carousel Section */}
       <section className="section-padding mobile-section-tight bg-muted/30">
@@ -178,7 +190,9 @@ export default function HomePage() {
             </p>
           </motion.div>
           {/* New Carousel replacing previous RollingGallery */}
-          <Carousel
+          <Suspense fallback={<div style={{height: 320}} />}
+          >
+          <CarouselLazy
             slides={[
               {
                 title: 'Premium Solar Solutions',
@@ -206,6 +220,7 @@ export default function HomePage() {
               },
             ]}
           />
+          </Suspense>
         </div>
       </section>
 
@@ -226,12 +241,15 @@ export default function HomePage() {
         </div>
         {/* Place globe outside container and center vertically/horizontally in the page space */}
         <div className="min-h-[70vh] flex items-center justify-center">
-          <India3DMap />
+          <Suspense fallback={<div style={{width: '80vmin', height: '60vmin'}} />}
+          >
+            <India3DMapLazy />
+          </Suspense>
         </div>
       </section>
 
-      {/* Mobile-lite: hide testimonials on touch mobile */}
-      {!mobileLite && (
+      {/* Testimonials Section: visible on mobile */}
+      (
       <section className="section-padding mobile-section-tight bg-gradient-to-br from-primary/5 to-purple-500/5">
         <div className="container-custom safe-area-x">
           <motion.div
@@ -307,7 +325,7 @@ export default function HomePage() {
           </motion.div>
         </div>
       </section>
-      )}
+      )
 
       {/* Benefits Section */}
       <section className="section-padding mobile-section-tight">
@@ -457,7 +475,12 @@ export default function HomePage() {
       <Footer />
       
       {/* Mobile-lite: hide voice assistant on touch mobile to keep UI clean */}
-      {!mobileLite && <VoiceProductAssistant />}
+      {!mobileLite && (
+        <Suspense fallback={<div style={{height: 160}} />}
+        >
+          <VoiceProductAssistantLazy />
+        </Suspense>
+      )}
 
     </div>
   )
