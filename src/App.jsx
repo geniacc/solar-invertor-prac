@@ -7,6 +7,7 @@ import MobileBottomBar from './components/MobileBottomBar'
 import './mobile/mobile.css'
 import CartDrawer from './components/Cart/CartDrawer'
 import ChatBot from './components/ChatBot/ChatBot'
+import VoiceProductAssistant from './components/VoiceProductAssistant'
 import HomePage from './pages/HomePage'
 import ProductsPage from './pages/ProductsPage'
 import ProductDetailsPage from './pages/ProductDetailsPage'
@@ -56,6 +57,7 @@ function App() {
           </main>
           <CartDrawer />
           <ChatBot />
+          {isPhone && <VoiceProductAssistant />}
           {isPhone && (
             <>
               {/* Quick actions bar removed per request; only show bottom nav */}

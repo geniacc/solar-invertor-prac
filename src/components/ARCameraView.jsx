@@ -7,14 +7,14 @@ import OptimizedInverterModel from './OptimizedInverterModel';
 import './ARCameraView.css';
 
 // AR Scene Component
-const ARScene = ({ 
-  inverterPosition, 
-  inverterRotation, 
-  inverterScale, 
-  onInverterMove, 
+const ARScene = ({
+  inverterPosition,
+  inverterRotation,
+  inverterScale,
+  onInverterMove,
   detailLevel = 'medium',
   autoRotate = false,
-  showGroundPlane = true 
+  showGroundPlane = true
 }) => {
   const { camera, gl } = useThree();
 
@@ -85,9 +85,9 @@ const ARScene = ({
       />
       
       {/* Enhanced Controls */}
-      <OrbitControls 
-        enablePan={true} 
-        enableZoom={true} 
+      <OrbitControls
+        enablePan={true}
+        enableZoom={true}
         enableRotate={true}
         minDistance={2}
         maxDistance={15}
@@ -97,6 +97,72 @@ const ARScene = ({
       />
     </>
   );
+};
+
+const SmartPlacementController = ({ enabled, preference, onAutoPlace, modelDims }) => {
+  const { gl, camera } = useThree();
+  const sessionRef = useRef(null);
+  const hitTestSourceRef = useRef(null);
+  const viewerSpaceRef = useRef(null);
+  const localSpaceRef = useRef(null);
+  const placedRef = useRef(false);
+
+  useEffect(() => {
+    const start = async () => {
+      if (!enabled) return;
+      if (!navigator.xr) return;
+      try {
+        gl.xr.enabled = true;
+        const session = await navigator.xr.requestSession('immersive-ar', {
+          requiredFeatures: ['hit-test'],
+          optionalFeatures: ['anchors', 'dom-overlay'],
+          domOverlay: { root: document.body }
+        });
+        sessionRef.current = session;
+        gl.xr.setSession(session);
+        viewerSpaceRef.current = await session.requestReferenceSpace('viewer');
+        localSpaceRef.current = await session.requestReferenceSpace('local');
+        hitTestSourceRef.current = await session.requestHitTestSource({ space: viewerSpaceRef.current });
+        const onXRFrame = (t, frame) => {
+          if (!enabled) return;
+          const src = hitTestSourceRef.current;
+          const ref = localSpaceRef.current;
+          if (!src || !ref) {
+            session.requestAnimationFrame(onXRFrame);
+            return;
+          }
+          const results = frame.getHitTestResults(src);
+          if (results && results.length && !placedRef.current) {
+            const pose = results[0].getPose(ref);
+            if (pose) {
+              const m = new THREE.Matrix4().fromArray(pose.transform.matrix);
+              const pos = new THREE.Vector3().setFromMatrixPosition(m);
+              const look = new THREE.Vector3().subVectors(pos, camera.position);
+              const yaw = Math.atan2(look.x, look.z);
+              const rot = [0, yaw, 0];
+              onAutoPlace([pos.x, pos.y, pos.z], rot, modelDims);
+              placedRef.current = true;
+            }
+          }
+          session.requestAnimationFrame(onXRFrame);
+        };
+        session.requestAnimationFrame(onXRFrame);
+      } catch {}
+    };
+    start();
+    return () => {
+      const s = sessionRef.current;
+      placedRef.current = false;
+      hitTestSourceRef.current = null;
+      if (s) {
+        s.end?.();
+        sessionRef.current = null;
+      }
+      gl.xr.enabled = false;
+    };
+  }, [enabled, gl, camera, onAutoPlace, modelDims, preference]);
+
+  return null;
 };
 
 const ARCameraView = ({ isVisible, onClose, product }) => {
@@ -112,6 +178,9 @@ const ARCameraView = ({ isVisible, onClose, product }) => {
   const [detailLevel, setDetailLevel] = useState('medium');
   const [autoRotate, setAutoRotate] = useState(false);
   const [showGroundPlane, setShowGroundPlane] = useState(true);
+  const [smartPlacement, setSmartPlacement] = useState(false);
+  const [placementPreference, setPlacementPreference] = useState('wall');
+  const [scanStatus, setScanStatus] = useState('idle');
 
   // Initialize camera
   useEffect(() => {
@@ -179,6 +248,14 @@ const ARCameraView = ({ isVisible, onClose, product }) => {
     setInverterScale([value, value, value]);
   };
 
+  const productDims = product?.dimensions || { width: 0.6, height: 1.0, depth: 0.3 };
+  const onAutoPlace = (pos, rot) => {
+    setInverterPosition([pos[0], pos[1], pos[2]]);
+    setInverterRotation([rot[0], rot[1], rot[2]]);
+    setSmartPlacement(false);
+    setScanStatus('placed');
+  };
+
   const resetPosition = () => {
     setInverterPosition([0, 0, 0]);
     setInverterRotation([0, 0, 0]);
@@ -222,6 +299,12 @@ const ARCameraView = ({ isVisible, onClose, product }) => {
                 autoRotate={autoRotate}
                 showGroundPlane={showGroundPlane}
               />
+              <SmartPlacementController
+                enabled={smartPlacement}
+                preference={placementPreference}
+                onAutoPlace={onAutoPlace}
+                modelDims={productDims}
+              />
             </Suspense>
           </Canvas>
         </div>
@@ -262,6 +345,32 @@ const ARCameraView = ({ isVisible, onClose, product }) => {
                 >
                   ×
                 </button>
+              </div>
+
+              <div className="ar-control-section">
+                <h4>Smart Placement</h4>
+                <div className="ar-control-group">
+                  <label>Preference:</label>
+                  <select
+                    value={placementPreference}
+                    onChange={(e) => setPlacementPreference(e.target.value)}
+                    className="ar-select"
+                  >
+                    <option value="wall">Wall</option>
+                    <option value="floor">Floor</option>
+                  </select>
+                </div>
+                <div className="ar-control-group">
+                  <button
+                    className={`ar-toggle-btn ${smartPlacement ? 'active' : ''}`}
+                    onClick={() => {
+                      setScanStatus('scanning');
+                      setSmartPlacement(true);
+                    }}
+                  >
+                    {scanStatus === 'scanning' ? 'Scanning…' : 'Scan & Auto Place'}
+                  </button>
+                </div>
               </div>
 
               {/* Performance & Visual Controls */}

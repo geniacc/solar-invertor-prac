@@ -52,7 +52,7 @@ const India3DMap = () => {
     update()
     mq.addEventListener?.('change', update)
     return () => mq.removeEventListener?.('change', update)
-  }, [])
+  }, [isMobile])
 
   // Restore/persist settings
   useEffect(() => {
@@ -63,7 +63,7 @@ const India3DMap = () => {
       if (typeof saved.showRoutes === 'boolean') setShowRoutes(saved.showRoutes)
       if (typeof saved.showBoundary === 'boolean') setShowBoundary(saved.showBoundary)
     } catch {}
-  }, [])
+  }, [isMobile])
 
   // Prevent iOS Safari page zoom from hijacking pinch on the globe
   useEffect(() => {
@@ -104,7 +104,7 @@ const India3DMap = () => {
     }
     window.addEventListener('resize', onResize)
     return () => window.removeEventListener('resize', onResize)
-  }, [])
+  }, [isMobile])
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ filters, searchQuery, showRoutes, showBoundary }))
@@ -345,7 +345,7 @@ const India3DMap = () => {
         ctrls.update?.()
       }
     }
-  }, [])
+  }, [isMobile])
 
   const resetView = () => {
     setSelected(null)
@@ -685,7 +685,7 @@ const India3DMap = () => {
               atmosphereColor="rgba(148,197,255,0.55)"
               atmosphereAltitude={0.25}
               animateIn={!prefersReducedMotion}
-              enablePointerInteraction={!isMobile}
+              enablePointerInteraction={true}
               // Points (markers)
               pointsData={filtered}
               pointLat={(d) => d.lat}
@@ -752,7 +752,7 @@ const India3DMap = () => {
               ringRepeatPeriod={2000}
               // Events
               onPointClick={(p) => setSelected(p)}
-              onPointHover={(p) => setHoveredPoint(p || null)}
+              onPointHover={isMobile ? undefined : (p) => setHoveredPoint(p || null)}
             />
         </div>
 
