@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   MessageCircle, 
@@ -294,12 +294,6 @@ const ChatBot = () => {
   }
 
   const { isMobile } = useResponsive()
-  const reducedMotion = useMemo(() => {
-    if (typeof window !== 'undefined' && window.matchMedia) {
-      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches || isMobile } catch { return isMobile }
-    }
-    return isMobile
-  }, [isMobile])
 
   // Hide assistant whenever footer is in view (all devices)
   if (assistantsHidden) return null
@@ -324,13 +318,13 @@ const ChatBot = () => {
               {/* Pulsing ring effect */}
               <motion.div
                 className="absolute inset-0 rounded-full bg-purple-500/30"
-                animate={reducedMotion ? { opacity: 0.6 } : {
+                animate={{
                   scale: [1, 1.3, 1],
                   opacity: [0.7, 0, 0.7],
                 }}
                 transition={{
                   duration: 2,
-                  repeat: reducedMotion ? 0 : Infinity,
+                  repeat: Infinity,
                   ease: "easeInOut"
                 }}
               />
@@ -341,10 +335,12 @@ const ChatBot = () => {
               {/* Notification dot */}
               <motion.div
                 className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center"
-                animate={reducedMotion ? { scale: 1 } : { scale: [1, 1.2, 1] }}
+                animate={{
+                  scale: [1, 1.2, 1],
+                }}
                 transition={{
                   duration: 1.5,
-                  repeat: reducedMotion ? 0 : Infinity,
+                  repeat: Infinity,
                 }}
               >
                 <span className="text-xs font-bold text-white">!</span>
