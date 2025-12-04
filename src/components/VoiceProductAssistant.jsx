@@ -1503,7 +1503,7 @@ const VoiceProductAssistant = () => {
             exit={{ opacity: 0, scale: 0.8, x: 50 }}
           >
             <motion.div 
-              className={`bg-gradient-to-br from-white via-gray-50 to-white dark:from-gray-800 dark:via-gray-850 dark:to-gray-800 rounded-3xl shadow-2xl ${isMobile ? 'w-[calc(100vw-1.5rem)] h-[70vh] max-h-[72vh]' : 'w-96 h-[500px]'} max-w-[calc(100vw-3rem)] max-h-[calc(100vh-8rem)] flex flex-col overflow-hidden border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm`}
+              className={`bg-gradient-to-br from-white via-gray-50 to-white dark:from-gray-800 dark:via-gray-850 dark:to-gray-800 rounded-3xl shadow-2xl ${isMobile ? 'w-[calc(100vw-1.5rem)] h-[62vh] max-h-[65vh]' : 'w-96 h-[500px]'} max-w-[calc(100vw-3rem)] max-h-[calc(100vh-8rem)] flex flex-col overflow-hidden border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm`}
               style={{
                 boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05)"
               }}

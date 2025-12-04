@@ -16,6 +16,7 @@ import {
   RotateCcw
 } from 'lucide-react'
 import { Button } from '../ui/Button'
+import { essProducts } from '../../data/essProducts'
 import { Card, CardContent } from '../ui/Card'
 import { cn } from '../../lib/utils'
 import { useUIStore } from '../../store/useStore'
@@ -112,6 +113,38 @@ const ChatBot = () => {
 
   const generateBotResponse = (userMessage) => {
     const message = userMessage.toLowerCase()
+    const vols = ['12.8', '25.6', '48', '51.2', '96', '125']
+    const cats = [
+      { key: 'home-ess', terms: ['home', 'home ess', 'residential', 'wall', 'stack', 'cabinet'] },
+      { key: 'commercial', terms: ['commercial', 'industrial', 'enterprise', '125kw', 'large'] },
+      { key: 'telecom', terms: ['telecom', 'rack', '19"', 'tower'] }
+    ]
+    const hasTerm = (t) => message.includes(t)
+    const matchCat = cats.find(c => c.terms.some(hasTerm))?.key
+    const matchVol = vols.find(v => message.includes(v))
+    const matchName = essProducts.find(p => p.name.toLowerCase().split(/\s|\//).some(s => s && message.includes(s)))
+    const byCat = matchCat ? essProducts.filter(p => p.category === matchCat) : []
+    const byVol = matchVol ? essProducts.filter(p => p.name.includes(matchVol)) : []
+
+    if (message.includes('spec') && (matchName || matchVol)) {
+      const p = matchName || byVol[0]
+      if (p) {
+        const specs = Object.entries(p.specifications || {}).map(([k, v]) => `• ${k}: ${v}`).join('\n')
+        const info = `${p.name}\n₹${p.price.toLocaleString()} • ${p.specifications?.Energy || p.features?.[0] || ''}\n${specs}`
+        return { content: info, suggestions: ['Compare with another model', 'View pricing', 'Installation requirements'] }
+      }
+    }
+
+    if (message.includes('price') || message.includes('cost')) {
+      const list = (matchCat ? byCat : essProducts).slice().sort((a,b) => (a.price||0)-(b.price||0))
+      const top = list.slice(0, 5).map(p => `• ${p.name}: ₹${p.price.toLocaleString()} (${p.specifications?.Energy || ''})`).join('\n')
+      return { content: `Pricing${matchCat ? ` — ${matchCat}` : ''}:\n${top}`, suggestions: ['Show specifications', 'Best value picks', 'Compare two models'] }
+    }
+
+    if (matchCat || matchVol) {
+      const list = (matchCat ? byCat : byVol).map(p => `• ${p.name} — ₹${p.price.toLocaleString()} • ${p.specifications?.Energy || ''}`).join('\n')
+      return { content: `Recommended models:\n${list}`, suggestions: ['Show specs for the first', 'Compare options', 'Installation guidance'] }
+    }
     
     // Find matching knowledge base entry
     for (const [category, data] of Object.entries(solarKnowledgeBase)) {
@@ -137,17 +170,7 @@ const ChatBot = () => {
       }
     }
 
-    if (message.includes('price') || message.includes('cost')) {
-      return {
-        content: "Zuice μ1000 Pricing Information:\n\n💰 **Zuice μ1000 - 50Ah**: ₹45,000 (was ₹55,000) - 18% discount\n💰 **Zuice μ1000 Pro - 86Ah**: ₹65,000 (was ₹75,000) - 13% discount\n💰 **Zuice μ1000 Max - 100Ah**: ₹75,000 (was ₹85,000) - 12% discount\n💰 **Zuice μ1000 Monitoring Kit**: ₹8,000 (was ₹10,000) - 20% discount\n\nAll prices include GST. Professional installation available. Ready to get a detailed quote?",
-        suggestions: [
-          "Compare model features",
-          "Installation costs",
-          "Financing options",
-          "Get a quote"
-        ]
-      }
-    }
+    
 
     if (message.includes('warranty') || message.includes('guarantee')) {
       return {
@@ -162,15 +185,9 @@ const ChatBot = () => {
     }
 
     // Generic helpful response
-    return {
-      content: "I'd be happy to help with that! I specialize in Zuice solutions - from technical specifications to installation guidance. Could you be more specific about what you'd like to know?",
-      quickReplies: [
-        "Zuice μ1000 model comparison",
-        "Installation process",
-        "Pricing details",
-        "Technical support"
-      ]
-    }
+    const counts = essProducts.reduce((acc,p)=>{acc[p.category]=(acc[p.category]||0)+1;return acc}, {})
+    const summary = `We offer ${essProducts.length} products — Home ESS (${counts['home-ess']||0}), Commercial (${counts['commercial']||0}), Telecom (${counts['telecom']||0}). Ask for specs, prices, or comparisons for 12.8V, 25.6V, 48V, 51.2V, 96V, or our 125kW system.`
+    return { content: summary, suggestions: ['Show Home ESS options', 'Compare 48V vs 51.2V', 'Telecom rack specs'] }
   }
 
   const getRelatedSuggestions = (category) => {
@@ -342,7 +359,7 @@ const ChatBot = () => {
               opacity: 1, 
               y: 0, 
               scale: 1,
-              height: isMinimized ? 'auto' : '600px'
+              height: isMinimized ? 'auto' : (isMobile ? '65vh' : '600px')
             }}
             exit={{ opacity: 0, y: 100, scale: 0.8 }}
             className={cn(
