@@ -1,0 +1,236 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "ENERGY STORAGE SYSTEM",
+      "category": "ESS",
+      "price": 0,
+      "originalPrice": 0,
+      "discount": 0,
+      "rating": 0,
+      "reviews": 0,
+      "inStock": true,
+      "badge": "New",
+      "specifications": {},
+      "description": "Auto-generated from brochure content."
+    },
+    {
+      "id": 2,
+      "name": "S HOME ESS VOLTAGERANGE ~~ '",
+      "category": "Home ESS",
+      "price": 0,
+      "originalPrice": 0,
+      "discount": 0,
+      "rating": 0,
+      "reviews": 0,
+      "inStock": true,
+      "badge": "New",
+      "features": [
+        "—"
+      ],
+      "specifications": {},
+      "images": [
+        "/images/brochure/page-3-img-1.png",
+        "/images/brochure/page-3-img-2.png",
+        "/images/brochure/page-3-img-3.png",
+        "/images/brochure/page-3-img-4.png"
+      ],
+      "description": "| —— ) | 1 1 - py on @ il =5 PB | Can ® | EE I= . EE"
+    },
+    {
+      "id": 3,
+      "name": "Technical Specifications For Home ESS",
+      "category": "Home ESS",
+      "price": 0,
+      "originalPrice": 0,
+      "discount": 0,
+      "rating": 0,
+      "reviews": 0,
+      "inStock": true,
+      "badge": "New",
+      "specifications": {},
+      "description": "f BHARATSZELL Technical Specifications For Home ESS IE I I I EE ET"
+    },
+    {
+      "id": 4,
+      "name": "Battery Specifications",
+      "category": "ESS",
+      "price": 0,
+      "originalPrice": 0,
+      "discount": 0,
+      "rating": 0,
+      "reviews": 0,
+      "inStock": true,
+      "badge": "New",
+      "specifications": {},
+      "description": ". oro . BHARATITELL | ve | S 3 f at s For C oh | urn sarees I'echnical ¢ peciicauons ror Le"
+    },
+    {
+      "id": 5,
+      "name": "HOMEESS} 60 MONTHS",
+      "category": "Home ESS",
+      "price": 0,
+      "originalPrice": 0,
+      "discount": 0,
+      "rating": 0,
+      "reviews": 0,
+      "inStock": true,
+      "badge": "New",
+      "features": [
+        "3 LITHIUM-ION BATTERIES",
+        "- ¥ ~"
+      ],
+      "specifications": {
+        "a": "ro i"
+      },
+      "images": [
+        "/images/brochure/page-10-img-1.png",
+        "/images/brochure/page-10-img-2.png"
+      ],
+      "description": "asian, SO BHARATSZELL - 3 LITHIUM-ION BATTERIES HOMEESS} 60 MONTHS"
+    },
+    {
+      "id": 6,
+      "name": "+ Smart BMS Protection - Advanced Battery Management System for safety, efficiency, and protection. cell & pack level.",
+      "category": "ESS",
+      "price": 0,
+      "originalPrice": 0,
+      "discount": 0,
+      "rating": 0,
+      "reviews": 0,
+      "inStock": true,
+      "badge": "New",
+      "features": [
+        "3 LITHIUM-ION BATTERIES",
+        "- ¥ ~"
+      ],
+      "specifications": {
+        "a": "ro i"
+      },
+      "images": [
+        "/images/brochure/page-10-img-1.png",
+        "/images/brochure/page-10-img-2.png"
+      ],
+      "description": "asian, SO BHARATSZELL - 3 LITHIUM-ION BATTERIES HOMEESS} 60 MONTHS"
+    },
+    {
+      "id": 7,
+      "name": "fs Battery Specifications",
+      "category": "ESS",
+      "price": 0,
+      "originalPrice": 0,
+      "discount": 0,
+      "rating": 0,
+      "reviews": 0,
+      "inStock": true,
+      "badge": "New",
+      "specifications": {
+        "k R epant": "° gow .",
+        "High efficiency": "over 95% at 25% load. = Extra protection te oe uw"
+      },
+      "images": [
+        "/images/brochure/page-11-img-1.png",
+        "/images/brochure/page-11-img-2.png"
+      ],
+      "description": "£5505 \" BHARATSZELL | HOME ESS i k R epant - ° gow ."
+    },
+    {
+      "id": 8,
+      "name": "TR —_— | Battery Specifications",
+      "category": "ESS",
+      "price": 0,
+      "originalPrice": 0,
+      "discount": 0,
+      "rating": 0,
+      "reviews": 0,
+      "inStock": true,
+      "badge": "New",
+      "features": [
+        "8",
+        "iE",
+        "i"
+      ],
+      "specifications": {},
+      "images": [
+        "/images/brochure/page-13-img-1.png",
+        "/images/brochure/page-13-img-2.png"
+      ],
+      "description": "Ld = NG 2550 BHARAT/ZELL i] 4 “arpa . - goo - 3 : Technical Specification"
+    },
+    {
+      "id": 9,
+      "name": "Te Battery Specifications 240",
+      "category": "ESS",
+      "price": 0,
+      "originalPrice": 0,
+      "discount": 0,
+      "rating": 0,
+      "reviews": 0,
+      "inStock": true,
+      "badge": "New",
+      "features": [
+        "EEE EET"
+      ],
+      "specifications": {},
+      "images": [
+        "/images/brochure/page-17-img-1.png",
+        "/images/brochure/page-17-img-2.png"
+      ],
+      "description": "BHARATITELL Umum. ion Barresies . : ope ."
+    },
+    {
+      "id": 10,
+      "name": "% | Battery Specifications",
+      "category": "ESS",
+      "price": 0,
+      "originalPrice": 0,
+      "discount": 0,
+      "rating": 0,
+      "reviews": 0,
+      "inStock": true,
+      "badge": "New",
+      "specifications": {
+        "INDUSTRIAL Gin": "Eat",
+        "LE": "0",
+        "High Power Capability": "Supports high discharge currents for peak power demands. 3"
+      },
+      "images": [
+        "/images/brochure/page-18-img-1.png",
+        "/images/brochure/page-18-img-2.png"
+      ],
+      "description": "~ == Bb BHARAT/CELL COMMERCIAL& “1s es P——- - ] ."
+    },
+    {
+      "id": 11,
+      "name": "= Fire Safety Aerosol fire suppression",
+      "category": "ESS",
+      "power": "125 KW",
+      "price": 0,
+      "originalPrice": 0,
+      "discount": 0,
+      "rating": 0,
+      "reviews": 0,
+      "inStock": true,
+      "badge": "New",
+      "features": [
+        "Cn —",
+        "~— a ecnnica ecification",
+        "ia Parameters/Model 125kW/261kWh",
+        "— S| Ivy",
+        "j : ho, Ti Apparent Output 138KVA",
+        "- = =F = Rina ean ~"
+      ],
+      "specifications": {
+        "cM M ERCIAL & LITHIUM": "ION BATTERIES",
+        "co": "55 =i A b= fre J Nominal Input Frequency 50/60Hz",
+        "a": "ge | | — | ° parameter",
+        "multi": "effect matching a variety Systems design AC and DC cloud maintenance"
+      },
+      "images": [
+        "/images/brochure/page-20-img-1.png",
+        "/images/brochure/page-20-img-2.png"
+      ],
+      "description": "Pe — - Cn — © EE I BHARATITELL"
+    }
+  ]
+}
