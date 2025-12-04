@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Mic, 
@@ -43,6 +43,16 @@ const VoiceProductAssistant = () => {
   const [lastUserInput, setLastUserInput] = useState('');
   
   const { isMobile, isTablet } = useResponsive();
+  const reducedMotion = useMemo(() => {
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      try {
+        return window.matchMedia('(prefers-reduced-motion: reduce)').matches || isMobile;
+      } catch {
+        return isMobile;
+      }
+    }
+    return isMobile;
+  }, [isMobile]);
   
   const messagesEndRef = useRef(null);
   const recognitionRef = useRef(null);
@@ -1300,14 +1310,14 @@ const VoiceProductAssistant = () => {
           {/* Animated background overlay */}
           <motion.div
             className="absolute inset-0 rounded-2xl opacity-30"
-            animate={{
+            animate={reducedMotion ? { background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent)' } : {
               background: isListening 
                 ? ['linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent)',
                    'linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent)',
                    'linear-gradient(225deg, transparent, rgba(255,255,255,0.1), transparent)']
                 : 'linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent)'
             }}
-            transition={{ duration: 2, repeat: Infinity }}
+            transition={{ duration: 2, repeat: reducedMotion ? 0 : Infinity }}
           />
           <div className="flex items-center space-x-2">
             {/* Voice Assistant Icon */}
@@ -1319,7 +1329,7 @@ const VoiceProductAssistant = () => {
               }}
               transition={{
                 duration: isListening ? 0.8 : 0.3,
-                repeat: isListening ? Infinity : 0,
+                repeat: isListening && !reducedMotion ? Infinity : 0,
                 ease: "easeInOut"
               }}
             >
@@ -1332,7 +1342,7 @@ const VoiceProductAssistant = () => {
                 }}
                 transition={{
                   duration: 1.5,
-                  repeat: isListening ? Infinity : 0,
+                  repeat: isListening && !reducedMotion ? Infinity : 0,
                 }}
               />
               
@@ -1346,7 +1356,7 @@ const VoiceProductAssistant = () => {
                   }}
                   transition={{
                     duration: 1.2,
-                    repeat: Infinity,
+                    repeat: reducedMotion ? 0 : Infinity,
                     ease: "easeOut"
                   }}
                 />
@@ -1390,8 +1400,8 @@ const VoiceProductAssistant = () => {
               {!isOpen && (
                 <motion.div 
                   className="text-[10px] opacity-80 truncate font-medium"
-                  animate={{ opacity: [0.6, 1, 0.6] }}
-                  transition={{ duration: 2, repeat: Infinity }}
+                  animate={reducedMotion ? { opacity: 0.8 } : { opacity: [0.6, 1, 0.6] }}
+                  transition={{ duration: 2, repeat: reducedMotion ? 0 : Infinity }}
                 >
                   Get necessary advice!
                 </motion.div>
@@ -1519,7 +1529,9 @@ const VoiceProductAssistant = () => {
                 {/* Animated background pattern */}
                 <motion.div
                   className="absolute inset-0 opacity-20"
-                  animate={{
+                  animate={reducedMotion ? {
+                    background: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)'
+                  } : {
                     background: [
                       'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
                       'radial-gradient(circle at 80% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
@@ -1527,7 +1539,7 @@ const VoiceProductAssistant = () => {
                       'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)'
                     ]
                   }}
-                  transition={{ duration: 4, repeat: Infinity }}
+                  transition={{ duration: 4, repeat: reducedMotion ? 0 : Infinity }}
                 />
                 
                 <div className="flex items-center space-x-4 relative z-10">
@@ -1550,7 +1562,7 @@ const VoiceProductAssistant = () => {
                       }}
                       transition={{
                         duration: 1.2,
-                        repeat: isListening ? Infinity : 0,
+                        repeat: isListening && !reducedMotion ? Infinity : 0,
                       }}
                     />
                     
@@ -1567,7 +1579,7 @@ const VoiceProductAssistant = () => {
                         }}
                         transition={{
                           duration: 1.5,
-                          repeat: Infinity,
+                          repeat: reducedMotion ? 0 : Infinity,
                           ease: "easeOut"
                         }}
                       />

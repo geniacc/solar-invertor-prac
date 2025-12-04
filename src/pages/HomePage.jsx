@@ -28,7 +28,6 @@ const CarouselLazy = lazy(() => import('../components/Carousel'))
 const InteractivePricingCalculatorLazy = lazy(() => import('../components/InteractivePricingCalculator'))
 const AnimatedStatsLazy = lazy(() => import('../components/AnimatedStats'))
 const India3DMapLazy = lazy(() => import('../components/India3DMap'))
-const VoiceProductAssistantLazy = lazy(() => import('../components/VoiceProductAssistant'))
 // Lazy-load testimonials for consistent code-splitting across pages
 const TestimonialsSectionLazy = lazy(() => import('../components/TestimonialsSection'))
 import { useResponsive } from '../hooks/useResponsive'
